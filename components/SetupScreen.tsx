@@ -116,7 +116,7 @@ export function SetupScreen({
   const [categoryWiggle, setCategoryWiggle] = useState<
     Partial<Record<CategoryId, number>>
   >({});
-  const [difficulty, setDifficulty] = useState<Difficulty>("easy");
+  const [difficulty, setDifficulty] = useState<Difficulty>("hard");
   const [starting, setStarting] = useState(false);
 
   return (
