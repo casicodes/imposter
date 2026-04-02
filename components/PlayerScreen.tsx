@@ -34,28 +34,6 @@ function BackChevronIcon() {
   );
 }
 
-function RefreshIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={22}
-      height={22}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#FFFFFF"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-      <path d="M3 3v5h5" />
-      <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-      <path d="M16 16h5v5" />
-    </svg>
-  );
-}
-
 type PlayerScreenProps = {
   playerIndex: number;
   playerCount: number;
@@ -265,7 +243,7 @@ export function PlayerScreen({
             <h1 className="text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
               You are the imposter
             </h1>
-            <p className="leading-5 text-[#6F6F6F]">(hint: {hint})</p>
+            <p className="leading-5 text-[#6F6F6F] italic">(hint: {hint})</p>
           </motion.div>
           <motion.div
             className={`col-start-1 row-start-1 flex w-full max-w-full flex-col justify-center gap-2 text-center ${revealed && !isImposter ? "z-10" : "pointer-events-none z-0"
@@ -286,7 +264,7 @@ export function PlayerScreen({
             <h1 className="capitalize text-[48px] font-semibold leading-none tracking-[-0.03em] text-white">
               {word}
             </h1>
-            <p className="leading-5 text-[#6F6F6F]">(hint: {hint}) </p>
+            <p className="leading-5 text-[#6F6F6F] italic">(hint: {hint}) </p>
           </motion.div>
         </div>
       </div>
@@ -313,10 +291,9 @@ export function PlayerScreen({
           <button
             type="button"
             onClick={onExitToSetup}
-            className={`flex size-10 shrink-0 items-center justify-center rounded-full bg-[#181818] ${outlineSubtle}`}
-            aria-label="Restart game — return to home"
+            className={`flex shrink-0 items-center justify-center rounded-full bg-[#181818] px-4 py-2.5 text-sm font-semibold text-white ${outlineSubtle}`}
           >
-            <RefreshIcon />
+            Restart
           </button>
         </div>
       </div>
