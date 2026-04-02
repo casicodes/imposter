@@ -184,7 +184,7 @@ export function PlayerScreen({
             </h1>
           </motion.div>
           <motion.div
-            className={`col-start-1 row-start-1 flex w-full max-w-full flex-col justify-center gap-2 text-center ${revealed && isImposter ? "z-10" : "pointer-events-none z-0"
+            className={`relative col-start-1 row-start-1 flex w-full max-w-full flex-col justify-center gap-2 text-center ${revealed && isImposter ? "z-10" : "pointer-events-none z-0"
               }`}
             initial={false}
             animate={{
@@ -199,68 +199,91 @@ export function PlayerScreen({
             style={{ transformOrigin: "center" }}
             aria-hidden={!revealed || !isImposter}
           >
-            <motion.span
-              className="inline-block text-4xl select-none"
-              style={{ transformOrigin: "50% 92%" }}
-              initial={false}
-              animate={
-                revealed && isImposter
-                  ? {
-                    /* yes nod (y + squash), pause, then no shake (rotate), tail pause */
-                    y: [
-                      0, 11, -3, 0, 8, -2, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                      0, 0,
-                    ],
-                    scaleY: [
-                      1, 0.78, 1.08, 1, 0.82, 1.05, 1, 0.88, 1, 1, 1, 1, 1, 1,
-                      1, 1, 1, 1, 1, 1,
-                    ],
-                    rotate: [
-                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -17, 14, -15, 13, -11, 9,
-                      -6, 0, 0, 0,
-                    ],
-                  }
-                  : { y: 0, scaleY: 1, rotate: 0 }
-              }
-              transition={
-                revealed && isImposter
-                  ? {
-                    delay: 1,
-                    duration: 3.45,
-                    repeat: Infinity,
-                    repeatDelay: 0.42,
-                    ease: "easeInOut",
-                    times: [
-                      0, 0.065, 0.11, 0.155, 0.205, 0.25, 0.3, 0.345, 0.39,
-                      0.43, 0.465, 0.5, 0.535, 0.57, 0.605, 0.64, 0.675, 0.71,
-                      0.82, 1,
-                    ],
-                  }
-                  : { duration: 0.2 }
-              }
+            <div
               aria-hidden
-            >
-              😈
-            </motion.span>
-            <h1 className="text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
-              You are the imposter
-            </h1>
-            <motion.p
-              className="leading-5 text-[#6F6F6F] italic"
-              initial={false}
-              animate={{
-                opacity: revealed && isImposter ? 1 : 0,
+              className="pointer-events-none absolute z-0"
+              style={{
+                top: "35%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 350,
+                height: 350,
+                background:
+                  "radial-gradient(circle, rgba(255, 50, 50, 0.1) 0%, transparent 70%)",
               }}
-              transition={{
-                opacity: {
-                  duration: 0.28,
-                  delay: revealed && isImposter ? HINT_REVEAL_DELAY_S : 0,
-                  ease: "easeOut",
-                },
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-0"
+              style={{
+                background:
+                  "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255, 0, 0, 0.016) 3px, rgba(255, 0, 0, 0.016) 6px)",
               }}
-            >
-              (hint: {hint})
-            </motion.p>
+            />
+            <div className="relative z-[1] flex w-full flex-col items-center gap-2">
+              <motion.span
+                className="inline-block text-4xl select-none"
+                style={{ transformOrigin: "50% 92%" }}
+                initial={false}
+                animate={
+                  revealed && isImposter
+                    ? {
+                        /* yes nod (y + squash), pause, then no shake (rotate), tail pause */
+                        y: [
+                          0, 11, -3, 0, 8, -2, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0,
+                        ],
+                        scaleY: [
+                          1, 0.78, 1.08, 1, 0.82, 1.05, 1, 0.88, 1, 1, 1, 1, 1,
+                          1, 1, 1, 1, 1, 1, 1,
+                        ],
+                        rotate: [
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -17, 14, -15, 13, -11,
+                          9, -6, 0, 0, 0,
+                        ],
+                      }
+                    : { y: 0, scaleY: 1, rotate: 0 }
+                }
+                transition={
+                  revealed && isImposter
+                    ? {
+                        delay: 1,
+                        duration: 3.45,
+                        repeat: Infinity,
+                        repeatDelay: 0.42,
+                        ease: "easeInOut",
+                        times: [
+                          0, 0.065, 0.11, 0.155, 0.205, 0.25, 0.3, 0.345, 0.39,
+                          0.43, 0.465, 0.5, 0.535, 0.57, 0.605, 0.64, 0.675,
+                          0.71, 0.82, 1,
+                        ],
+                      }
+                    : { duration: 0.2 }
+                }
+                aria-hidden
+              >
+                😈
+              </motion.span>
+              <h1 className="text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
+                You are the imposter
+              </h1>
+              <motion.p
+                className="leading-5 text-[#6F6F6F] italic"
+                initial={false}
+                animate={{
+                  opacity: revealed && isImposter ? 1 : 0,
+                }}
+                transition={{
+                  opacity: {
+                    duration: 0.28,
+                    delay: revealed && isImposter ? HINT_REVEAL_DELAY_S : 0,
+                    ease: "easeOut",
+                  },
+                }}
+              >
+                (hint: {hint})
+              </motion.p>
+            </div>
           </motion.div>
           <motion.div
             className={`col-start-1 row-start-1 flex w-full max-w-full flex-col justify-center gap-2 text-center ${revealed && !isImposter ? "z-10" : "pointer-events-none z-0"
