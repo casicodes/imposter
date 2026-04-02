@@ -62,8 +62,8 @@ body {
   inset: 0;
   z-index: 1;
   border-radius: inherit;
-  /* High-contrast wash — previous green-on-charcoal was nearly invisible */
-  background-color: rgb(232, 0, 8);
+  /* Light wash — white tint on charcoal; full white would hide the white label */
+  background-color: rgba(255, 255, 255, 0.09);
   /* scaleX fill; clip-path inset() animates incorrectly on iOS (split / wrong width) */
   transform: scaleX(0);
   transform-origin: left center;
