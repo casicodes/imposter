@@ -78,7 +78,7 @@ function CategoryIcon({
         wiggleKey > 0
           ? {
             rotate: [0, -10, 8, -5, 3, 0],
-            scale: [1, 1.18, 1.14, 1.1, 1.05, 1],
+            scale: [1, 2, 1.8, 1.9, 1.5, 1],
           }
           : { rotate: 0, scale: 1 }
       }
