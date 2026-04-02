@@ -29,7 +29,7 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Hold-to-reveal: clip-path fill must stay in sync with HOLD_DURATION_MS in PlayerScreen */
+/* Hold-to-reveal: overlay scaleX (1.5s) — keep in sync with HOLD_DURATION_MS in PlayerScreen */
 .reveal-hold-btn {
   position: relative;
   overflow: hidden;
@@ -51,42 +51,14 @@ body {
   border-radius: inherit;
   /* High-contrast wash — previous green-on-charcoal was nearly invisible */
   background-color: rgba(229, 72, 77, 0.5);
-  -webkit-clip-path: inset(0 100% 0 0);
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 0.2s ease-out, -webkit-clip-path 0.2s ease-out;
+  /* scaleX fill; clip-path inset() animates incorrectly on iOS (split / wrong width) */
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s ease-out;
   pointer-events: none;
 }
 
 .reveal-hold-btn.reveal-hold-btn--pressing .reveal-hold-overlay {
-  -webkit-clip-path: inset(0 0 0 0);
-  clip-path: inset(0 0 0 0);
-  transition: clip-path 1.5s linear, -webkit-clip-path 1.5s linear;
-}
-
-/* scaleX progress: animates reliably everywhere (clip-path is flaky on WebKit) */
-.reveal-hold-progress-track {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  z-index: 3;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: 0 0 0.75rem 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.reveal-hold-progress-fill {
-  height: 100%;
-  width: 100%;
-  background: #f87171;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.2s ease-out;
-}
-
-.reveal-hold-btn.reveal-hold-btn--pressing .reveal-hold-progress-fill {
   transform: scaleX(1);
   transition: transform 1.5s linear;
 }

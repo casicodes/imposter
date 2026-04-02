@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Inter } from "next/font/google";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-/** Must match `transition: clip-path 1.5s linear` in globals.css (`.reveal-hold-btn--pressing .reveal-hold-overlay`). */
+/** Must match `transition: transform 1.5s linear` on `.reveal-hold-overlay` in globals.css. */
 const HOLD_DURATION_MS = 1500;
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -102,7 +102,7 @@ export function PlayerScreen({
     holdActiveRef.current = true;
     setPressingReveal(true);
     clearRevealFallback();
-    /* Fallback if clip-path transitionend never fires (some mobile browsers). */
+    /* Fallback if transform transitionend never fires (some mobile browsers). */
     revealFallbackTimerRef.current = setTimeout(() => {
       revealFallbackTimerRef.current = null;
       if (!holdActiveRef.current) return;
@@ -111,9 +111,8 @@ export function PlayerScreen({
     }, HOLD_DURATION_MS + 250);
   }, [clearRevealFallback, endHold, revealed]);
 
-  const onHoldProgressTransitionEnd = useCallback(
+  const onHoldOverlayTransitionEnd = useCallback(
     (e: React.TransitionEvent<HTMLDivElement>) => {
-      /* transform bar is authoritative; clip-path often omits transitionend on Safari */
       if (e.propertyName !== "transform") return;
       if (!holdActiveRef.current) return;
       setRevealed(true);
@@ -182,10 +181,10 @@ export function PlayerScreen({
             initial={false}
             animate={{
               opacity: revealed && isImposter ? 1 : 0,
-              scale: revealed && isImposter ? 1 : 0.85,
+              scale: revealed && isImposter ? 1 : 0.5,
             }}
             transition={{
-              duration: revealed && isImposter ? 0.3 : 0.1,
+              duration: revealed && isImposter ? 0.35 : 0.1,
               ease: "easeOut",
             }}
             style={{ transformOrigin: "center" }}
@@ -202,10 +201,10 @@ export function PlayerScreen({
             initial={false}
             animate={{
               opacity: revealed && !isImposter ? 1 : 0,
-              scale: revealed && !isImposter ? 1 : 0.85,
+              scale: revealed && !isImposter ? 1 : 0.5,
             }}
             transition={{
-              duration: revealed && !isImposter ? 0.3 : 0.1,
+              duration: revealed && !isImposter ? 0.35 : 0.1,
               ease: "easeOut",
             }}
             style={{ transformOrigin: "center" }}
@@ -275,13 +274,11 @@ export function PlayerScreen({
               }}
               onContextMenu={(e) => e.preventDefault()}
             >
-              <div className="reveal-hold-overlay" aria-hidden />
-              <div className="reveal-hold-progress-track" aria-hidden>
-                <div
-                  className="reveal-hold-progress-fill"
-                  onTransitionEnd={onHoldProgressTransitionEnd}
-                />
-              </div>
+              <div
+                className="reveal-hold-overlay"
+                aria-hidden
+                onTransitionEnd={onHoldOverlayTransitionEnd}
+              />
               <span className="reveal-hold-label">Hold to reveal</span>
             </button>
           ) : (
