@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Inter } from "next/font/google";
 import { useState, type ReactNode } from "react";
 import type { CategoryId, Difficulty } from "@/lib/categories";
@@ -28,10 +29,8 @@ const sectionLabelRuleClass =
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <div className="flex w-full items-center gap-4">
-      <div className={sectionLabelRuleClass} aria-hidden />
+    <div className="flex w-full">
       <p className={sectionLabelClass}>{children}</p>
-      <div className={sectionLabelRuleClass} aria-hidden />
     </div>
   );
 }
@@ -50,18 +49,23 @@ const CATEGORY_IMAGE = {
   sports: "/category-sports.png",
 } as const satisfies Record<CategoryId, string>;
 
+const categoryIconWiggleTransition = { duration: 0.38 } as const;
+
 function CategoryIcon({
   id,
   selected,
+  wiggleKey,
 }: {
   id: CategoryId;
   selected: boolean;
+  wiggleKey: number;
 }) {
   const dim = 26;
   const fade = { opacity: selected ? 1 : 0.88 } as const;
 
   return (
-    <img
+    <motion.img
+      key={`${id}-${wiggleKey}`}
       src={CATEGORY_IMAGE[id]}
       alt=""
       width={dim}
@@ -69,6 +73,18 @@ function CategoryIcon({
       className="shrink-0 object-contain"
       style={fade}
       aria-hidden
+      initial={{ rotate: 0, scale: 1 }}
+      animate={
+        wiggleKey > 0
+          ? {
+            rotate: [0, -10, 8, -5, 3, 0],
+            scale: [1, 1.18, 1.14, 1.1, 1.05, 1],
+          }
+          : { rotate: 0, scale: 1 }
+      }
+      transition={
+        wiggleKey > 0 ? categoryIconWiggleTransition : { duration: 0 }
+      }
     />
   );
 }
@@ -100,6 +116,9 @@ export function SetupScreen({
   const [players, setPlayers] = useState<PlayerChoice>("4");
   const [customCount, setCustomCount] = useState(6);
   const [category, setCategory] = useState<CategoryId>("food");
+  const [categoryWiggle, setCategoryWiggle] = useState<
+    Partial<Record<CategoryId, number>>
+  >({});
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [starting, setStarting] = useState(false);
 
@@ -110,7 +129,7 @@ export function SetupScreen({
     <div
       className={`relative flex min-h-dvh w-full flex-col bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased ${inter.className}`}
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
           <h1 className="text-xl font-semibold leading-[30px] text-white">
             Find the imposter
@@ -119,7 +138,7 @@ export function SetupScreen({
 
         <div className="flex flex-col gap-3">
           <SectionLabel>Select number of players</SectionLabel>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             {(["3", "4", "5"] as const).map((n) => {
               const on = players === n;
               return (
@@ -183,16 +202,22 @@ export function SetupScreen({
 
         <div className="flex flex-col gap-3">
           <SectionLabel>Categories</SectionLabel>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-3">
             {CATEGORY_ROWS.map((row) => (
-              <div key={row.map((c) => c.id).join("-")} className="flex gap-2">
+              <div key={row.map((c) => c.id).join("-")} className="flex gap-3">
                 {row.map(({ id, label }) => {
                   const on = category === id;
                   return (
                     <button
                       key={id}
                       type="button"
-                      onClick={() => setCategory(id)}
+                      onClick={() => {
+                        setCategory(id);
+                        setCategoryWiggle((w) => ({
+                          ...w,
+                          [id]: (w[id] ?? 0) + 1,
+                        }));
+                      }}
                       className={`flex min-h-[76px] flex-1 flex-col items-center justify-center gap-[5px] rounded-xl px-1.5 pb-2.5 pt-[9px] ${on
                         ? "bg-white"
                         : `bg-[#1A1A1A] ${outlineMuted}`
@@ -200,7 +225,11 @@ export function SetupScreen({
                       /* Preflight uses `font: inherit` on buttons; pin size here so labels are truly 14px */
                       style={{ fontSize: 15, lineHeight: "20px" }}
                     >
-                      <CategoryIcon id={id} selected={on} />
+                      <CategoryIcon
+                        id={id}
+                        selected={on}
+                        wiggleKey={categoryWiggle[id] ?? 0}
+                      />
                       <span
                         className={`block max-w-full text-center font-medium ${on ? "text-black" : "text-white"
                           }`}
@@ -220,7 +249,7 @@ export function SetupScreen({
             role="alert"
             className="rounded-xl border border-red-500/40 bg-red-950/40 px-3 py-2 text-sm text-red-200"
           >
-            <div className="flex items-start justify-between gap-2">
+            <div className="flex items-start justify-between gap-3">
               <span>{startError}</span>
               {onDismissError ? (
                 <button
@@ -235,9 +264,9 @@ export function SetupScreen({
           </div>
         ) : null}
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           <SectionLabel>Hint difficulty</SectionLabel>
-          <div className="flex gap-1.5">
+          <div className="flex gap-3">
             {(
               [
                 { id: "easy" as const, label: "Easy" },
