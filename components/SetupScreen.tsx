@@ -366,10 +366,12 @@ export function SetupScreen({
                           ? "bg-white"
                           : `bg-[#1A1A1A] ${outlineMuted}`
                       }`}
+                      /* Preflight uses `font: inherit` on buttons; pin size here so labels are truly 14px */
+                      style={{ fontSize: 14, lineHeight: "18px" }}
                     >
                       <CategoryIcon id={id} selected={on} />
                       <span
-                        className={`text-center text-[14px] font-medium leading-[18px] ${
+                        className={`block max-w-full text-center font-medium ${
                           on ? "text-black" : "text-white"
                         }`}
                       >

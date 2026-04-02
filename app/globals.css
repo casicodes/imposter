@@ -21,6 +21,10 @@
 
 html {
   background: #000000;
+  /* Stable rem + stop mobile browsers from “helpfully” resizing small text */
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
