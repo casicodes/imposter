@@ -9,6 +9,8 @@ const HOLD_DURATION_MS = 1500;
 /** Countdown: 3 → 2 → 1 with 1 landing when the hold completes. */
 const HOLD_COUNTDOWN_TO_2_MS = HOLD_DURATION_MS / 2;
 const HOLD_COUNTDOWN_TO_1_MS = HOLD_DURATION_MS;
+/** After role is shown, hint fades in after this delay (crew + imposter). */
+const HINT_REVEAL_DELAY_S = 1.5;
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -170,7 +172,7 @@ export function PlayerScreen({
           >
             <h1
               className={`tracking-[-0.03em] text-white ${holdCountdown !== null
-                ? "text-[72px] font-bold leading-none tabular-nums"
+                ? "text-[72px] font-bold leading-none tabular-nums tracking-tighter"
                 : "text-[24px] font-semibold leading-10"
                 }`}
             >
@@ -243,7 +245,22 @@ export function PlayerScreen({
             <h1 className="text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
               You are the imposter
             </h1>
-            <p className="leading-5 text-[#6F6F6F] italic">(hint: {hint})</p>
+            <motion.p
+              className="leading-5 text-[#6F6F6F] italic"
+              initial={false}
+              animate={{
+                opacity: revealed && isImposter ? 1 : 0,
+              }}
+              transition={{
+                opacity: {
+                  duration: 0.28,
+                  delay: revealed && isImposter ? HINT_REVEAL_DELAY_S : 0,
+                  ease: "easeOut",
+                },
+              }}
+            >
+              (hint: {hint})
+            </motion.p>
           </motion.div>
           <motion.div
             className={`col-start-1 row-start-1 flex w-full max-w-full flex-col justify-center gap-2 text-center ${revealed && !isImposter ? "z-10" : "pointer-events-none z-0"
@@ -264,7 +281,22 @@ export function PlayerScreen({
             <h1 className="capitalize text-[48px] font-semibold leading-none tracking-[-0.03em] text-white">
               {word}
             </h1>
-            <p className="leading-5 text-[#6F6F6F] italic">(hint: {hint}) </p>
+            <motion.p
+              className="leading-5 text-[#6F6F6F] italic"
+              initial={false}
+              animate={{
+                opacity: revealed && !isImposter ? 1 : 0,
+              }}
+              transition={{
+                opacity: {
+                  duration: 0.28,
+                  delay: revealed && !isImposter ? HINT_REVEAL_DELAY_S : 0,
+                  ease: "easeOut",
+                },
+              }}
+            >
+              (hint: {hint})
+            </motion.p>
           </motion.div>
         </div>
       </div>

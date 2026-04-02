@@ -33,6 +33,44 @@ function SectionLabel({ children }: { children: ReactNode }) {
   );
 }
 
+function MinusIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={20}
+      height={20}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M5 12h14" />
+    </svg>
+  );
+}
+
+function PlusIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={20}
+      height={20}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
 /** Pin control text size (Tailwind `text-sm` / rem can read small on some devices). */
 const controlTextStyle = { fontSize: 15, lineHeight: "20px" } as const;
 
@@ -149,10 +187,10 @@ export function SetupScreen({
                 setPlayerCount((n) => Math.max(MIN_PLAYERS, n - 1))
               }
               disabled={playerCount <= MIN_PLAYERS}
-              className={`flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-lg font-medium text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={`flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
               aria-label="Fewer players"
             >
-              −
+              <MinusIcon />
             </button>
             <span
               className="flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center font-medium text-black"
@@ -166,10 +204,10 @@ export function SetupScreen({
                 setPlayerCount((n) => Math.min(MAX_PLAYERS, n + 1))
               }
               disabled={playerCount >= MAX_PLAYERS}
-              className={`flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-lg font-medium text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={`flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
               aria-label="More players"
             >
-              +
+              <PlusIcon />
             </button>
           </div>
         </div>
