@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Inter } from "next/font/google";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { CategoryId, Difficulty } from "@/lib/categories";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -118,6 +118,22 @@ export function SetupScreen({
   >({});
   const [difficulty, setDifficulty] = useState<Difficulty>("hard");
   const [starting, setStarting] = useState(false);
+  const [startDots, setStartDots] = useState("");
+
+  useEffect(() => {
+    if (!starting) {
+      setStartDots("");
+      return;
+    }
+    let n = 0;
+    const tick = () => {
+      n = (n + 1) % 4;
+      setStartDots(".".repeat(n));
+    };
+    tick();
+    const id = setInterval(tick, 400);
+    return () => clearInterval(id);
+  }, [starting]);
 
   return (
     <div
@@ -272,7 +288,16 @@ export function SetupScreen({
             }}
             className="flex h-16 w-full items-center justify-center rounded-xl bg-[#1F8E35] text-lg font-bold leading-[22px] text-white [outline:1px_solid_#4BBB5B] disabled:cursor-wait"
           >
-            {starting ? "Starting…" : "Start"}
+            {starting ? (
+              <>
+                Starting
+                <span className="inline-block min-w-[3ch] text-left">
+                  {startDots}
+                </span>
+              </>
+            ) : (
+              "Start"
+            )}
           </button>
         </div>
       </div>
