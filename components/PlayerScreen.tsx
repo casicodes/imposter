@@ -6,6 +6,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 /** Must match `transition: transform 1.5s linear` on `.reveal-hold-overlay` in globals.css. */
 const HOLD_DURATION_MS = 1500;
+/** Countdown: 3 → 2 → 1 with 1 landing when the hold completes. */
+const HOLD_COUNTDOWN_TO_2_MS = HOLD_DURATION_MS / 2;
+const HOLD_COUNTDOWN_TO_1_MS = HOLD_DURATION_MS;
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -83,6 +86,17 @@ export function PlayerScreen({
   const revealFallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
+  /** Browser timer ids (numbers); avoid `ReturnType<typeof setTimeout>` (Node Timeout vs DOM). */
+  const holdCountdownTimersRef = useRef<number[]>([]);
+
+  const clearHoldCountdownTimers = useCallback(() => {
+    for (const id of holdCountdownTimersRef.current) {
+      clearTimeout(id);
+    }
+    holdCountdownTimersRef.current = [];
+  }, []);
+
+  const [holdCountdown, setHoldCountdown] = useState<number | null>(null);
 
   const clearRevealFallback = useCallback(() => {
     if (revealFallbackTimerRef.current !== null) {
@@ -95,12 +109,20 @@ export function PlayerScreen({
     holdActiveRef.current = false;
     setPressingReveal(false);
     clearRevealFallback();
-  }, [clearRevealFallback]);
+    clearHoldCountdownTimers();
+    setHoldCountdown(null);
+  }, [clearHoldCountdownTimers, clearRevealFallback]);
 
   const startHold = useCallback(() => {
     if (revealed) return;
     holdActiveRef.current = true;
     setPressingReveal(true);
+    clearHoldCountdownTimers();
+    setHoldCountdown(3);
+    holdCountdownTimersRef.current.push(
+      window.setTimeout(() => setHoldCountdown(2), HOLD_COUNTDOWN_TO_2_MS),
+      window.setTimeout(() => setHoldCountdown(1), HOLD_COUNTDOWN_TO_1_MS),
+    );
     clearRevealFallback();
     /* Fallback if transform transitionend never fires (some mobile browsers). */
     revealFallbackTimerRef.current = setTimeout(() => {
@@ -109,7 +131,7 @@ export function PlayerScreen({
       setRevealed(true);
       endHold();
     }, HOLD_DURATION_MS + 250);
-  }, [clearRevealFallback, endHold, revealed]);
+  }, [clearHoldCountdownTimers, clearRevealFallback, endHold, revealed]);
 
   const onHoldOverlayTransitionEnd = useCallback(
     (e: React.TransitionEvent<HTMLDivElement>) => {
@@ -161,19 +183,28 @@ export function PlayerScreen({
       <div className="flex min-h-0 flex-1 flex-col items-stretch justify-center gap-6">
         <div className="relative grid w-full justify-items-center">
           <motion.div
-            className={`col-start-1 row-start-1 flex w-full max-w-full flex-col gap-2 text-center ${revealed ? "pointer-events-none z-0" : "z-10"
+            className={`col-start-1 row-start-1 flex w-full max-w-full flex-col justify-center gap-2 text-center ${revealed ? "pointer-events-none z-0" : "z-10"
               }`}
             initial={false}
             animate={{ opacity: revealed ? 0 : 1 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
             aria-hidden={revealed}
           >
-            <h1 className="text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
-              Player {displayPlayer}
+            <h1
+              className={`tracking-[-0.03em] text-white ${holdCountdown !== null
+                ? "text-[72px] font-bold leading-none tabular-nums"
+                : "text-[24px] font-semibold leading-10"
+                }`}
+            >
+              {revealed
+                ? "\u00a0"
+                : holdCountdown !== null
+                  ? holdCountdown
+                  : `Player ${displayPlayer}`}
             </h1>
           </motion.div>
           <motion.div
-            className={`col-start-1 row-start-1 flex w-full max-w-full flex-col gap-2 text-center ${revealed && isImposter ? "z-10" : "pointer-events-none z-0"
+            className={`col-start-1 row-start-1 flex w-full max-w-full flex-col justify-center gap-2 text-center ${revealed && isImposter ? "z-10" : "pointer-events-none z-0"
               }`}
             initial={false}
             animate={{
@@ -237,7 +268,7 @@ export function PlayerScreen({
             <p className="leading-5 text-[#6F6F6F]">hint: {hint}</p>
           </motion.div>
           <motion.div
-            className={`col-start-1 row-start-1 flex w-full max-w-full flex-col gap-2 text-center ${revealed && !isImposter ? "z-10" : "pointer-events-none z-0"
+            className={`col-start-1 row-start-1 flex w-full max-w-full flex-col justify-center gap-2 text-center ${revealed && !isImposter ? "z-10" : "pointer-events-none z-0"
               }`}
             initial={false}
             animate={{
