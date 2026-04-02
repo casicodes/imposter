@@ -214,6 +214,7 @@ export function PlayerScreen({
               transition={
                 revealed && isImposter
                   ? {
+                      delay: 1,
                       duration: 3.45,
                       repeat: Infinity,
                       repeatDelay: 0.42,
