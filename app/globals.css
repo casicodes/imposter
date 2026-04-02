@@ -19,8 +19,83 @@
   }
 }
 
+html {
+  background: #000000;
+}
+
 body {
-  background: var(--background);
+  background: #000000;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Hold-to-reveal: clip-path fill must stay in sync with HOLD_DURATION_MS in PlayerScreen */
+.reveal-hold-btn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal-hold-btn:active {
+  transform: scale(0.97);
+}
+
+.reveal-hold-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  /* High-contrast wash — previous green-on-charcoal was nearly invisible */
+  background-color: rgba(229, 72, 77, 0.5);
+  -webkit-clip-path: inset(0 100% 0 0);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.2s ease-out, -webkit-clip-path 0.2s ease-out;
+  pointer-events: none;
+}
+
+.reveal-hold-btn.reveal-hold-btn--pressing .reveal-hold-overlay {
+  -webkit-clip-path: inset(0 0 0 0);
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1.5s linear, -webkit-clip-path 1.5s linear;
+}
+
+/* scaleX progress: animates reliably everywhere (clip-path is flaky on WebKit) */
+.reveal-hold-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 0 0 0.75rem 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.reveal-hold-progress-fill {
+  height: 100%;
+  width: 100%;
+  background: #f87171;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s ease-out;
+}
+
+.reveal-hold-btn.reveal-hold-btn--pressing .reveal-hold-progress-fill {
+  transform: scaleX(1);
+  transition: transform 1.5s linear;
+}
+
+.reveal-hold-label {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }

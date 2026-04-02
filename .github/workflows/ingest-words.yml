@@ -1,0 +1,18 @@
+# Optional: use when not on Vercel Cron. Set repo secrets APP_URL and CRON_SECRET.
+name: Ingest words
+on:
+  schedule:
+    - cron: "0 6,18 * * *"
+  workflow_dispatch:
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger ingest API
+        run: |
+          curl -sfS -X POST "${APP_URL}/api/internal/ingest-words" \
+            -H "Authorization: Bearer ${CRON_SECRET}"
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
