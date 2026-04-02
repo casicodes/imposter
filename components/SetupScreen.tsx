@@ -60,7 +60,7 @@ function CategoryIcon({
   selected: boolean;
   wiggleKey: number;
 }) {
-  const dim = 26;
+  const dim = 20;
   const fade = { opacity: selected ? 1 : 0.88 } as const;
 
   return (
