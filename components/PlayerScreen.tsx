@@ -183,15 +183,17 @@ export function PlayerScreen({
               opacity: revealed && isImposter ? 1 : 0,
               scale: revealed && isImposter ? 1 : 0.5,
             }}
-            transition={{
-              duration: revealed && isImposter ? 0.35 : 0.1,
-              ease: "easeOut",
-            }}
+            transition={
+              revealed && isImposter
+                ? { type: "spring", stiffness: 420, damping: 28, mass: 0.85 }
+                : { duration: 0.12, ease: "easeIn" }
+            }
             style={{ transformOrigin: "center" }}
             aria-hidden={!revealed || !isImposter}
           >
+
             <h1 className="text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
-              You are the imposter
+              😈 You are the imposter
             </h1>
             <p className="leading-5 text-[#6F6F6F]">Hint: {hint}</p>
           </motion.div>
@@ -203,10 +205,11 @@ export function PlayerScreen({
               opacity: revealed && !isImposter ? 1 : 0,
               scale: revealed && !isImposter ? 1 : 0.5,
             }}
-            transition={{
-              duration: revealed && !isImposter ? 0.35 : 0.1,
-              ease: "easeOut",
-            }}
+            transition={
+              revealed && !isImposter
+                ? { type: "spring", stiffness: 420, damping: 28, mass: 0.85 }
+                : { duration: 0.12, ease: "easeIn" }
+            }
             style={{ transformOrigin: "center" }}
             aria-hidden={!revealed || isImposter}
           >

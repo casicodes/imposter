@@ -50,7 +50,7 @@ body {
   z-index: 1;
   border-radius: inherit;
   /* High-contrast wash — previous green-on-charcoal was nearly invisible */
-  background-color: rgba(229, 72, 77, 0.5);
+  background-color: rgb(232, 0, 8);
   /* scaleX fill; clip-path inset() animates incorrectly on iOS (split / wrong width) */
   transform: scaleX(0);
   transform-origin: left center;
