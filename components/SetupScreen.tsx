@@ -1,7 +1,7 @@
 "use client";
 
 import { Inter } from "next/font/google";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { CategoryId, Difficulty } from "@/lib/categories";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -19,6 +19,22 @@ type SetupScreenProps = {
 };
 
 const outlineMuted = "[outline:1px_solid_rgba(233,233,233,0.16)]";
+
+const sectionLabelClass =
+  "shrink-0 text-center text-[13px] font-medium leading-[18px] text-[#8A8A8A]";
+
+const sectionLabelRuleClass =
+  "h-px min-h-0 min-w-0 flex-1 bg-[rgba(233,233,233,0.16)]";
+
+function SectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex w-full items-center gap-4">
+      <div className={sectionLabelRuleClass} aria-hidden />
+      <p className={sectionLabelClass}>{children}</p>
+      <div className={sectionLabelRuleClass} aria-hidden />
+    </div>
+  );
+}
 
 /** Pin control text size (Tailwind `text-sm` / rem can read small on some devices). */
 const controlTextStyle = { fontSize: 15, lineHeight: "20px" } as const;
@@ -90,8 +106,6 @@ export function SetupScreen({
   const resolvedPlayerCount =
     players === "custom" ? customCount : Number.parseInt(players, 10);
 
-  const labelMuted = "text-[15px] font-medium leading-5 text-[#8A8A8A]";
-
   return (
     <div
       className={`relative flex min-h-dvh w-full flex-col bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased ${inter.className}`}
@@ -103,8 +117,8 @@ export function SetupScreen({
           </h1>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <p className={`self-stretch ${labelMuted}`}>Select number of players</p>
+        <div className="flex flex-col gap-3">
+          <SectionLabel>Select number of players</SectionLabel>
           <div className="flex gap-2">
             {(["3", "4", "5"] as const).map((n) => {
               const on = players === n;
@@ -136,7 +150,7 @@ export function SetupScreen({
             </button>
           </div>
           {players === "custom" ? (
-            <div className="mt-2 flex items-center gap-2">
+            <div className="mt-2 flex items-center gap-3">
               <button
                 type="button"
                 onClick={() =>
@@ -167,8 +181,8 @@ export function SetupScreen({
           ) : null}
         </div>
 
-        <div className="flex flex-col gap-2">
-          <p className={`self-stretch ${labelMuted}`}>Categories</p>
+        <div className="flex flex-col gap-3">
+          <SectionLabel>Categories</SectionLabel>
           <div className="flex flex-col gap-2">
             {CATEGORY_ROWS.map((row) => (
               <div key={row.map((c) => c.id).join("-")} className="flex gap-2">
@@ -222,7 +236,7 @@ export function SetupScreen({
         ) : null}
 
         <div className="flex flex-col gap-2">
-          <p className={`self-stretch ${labelMuted}`}>Hint difficulty</p>
+          <SectionLabel>Hint difficulty</SectionLabel>
           <div className="flex gap-1.5">
             {(
               [
