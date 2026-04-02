@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Page canvas; chrome bars use a tint of this color */
+  --app-canvas: #000000;
 }
 
 @theme inline {
@@ -20,7 +22,7 @@
 }
 
 html {
-  background: #000000;
+  background: var(--app-canvas);
   /* Stable rem + stop mobile browsers from “helpfully” resizing small text */
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
@@ -28,9 +30,16 @@ html {
 }
 
 body {
-  background: #000000;
+  background: var(--app-canvas);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Fixed top/bottom bars: tint of canvas, not black — avoids a “wrong footer” strip */
+.app-chrome-frost {
+  background: color-mix(in srgb, var(--app-canvas) 86%, transparent);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 /* Hold-to-reveal: overlay scaleX (1.5s) — keep in sync with HOLD_DURATION_MS in PlayerScreen */

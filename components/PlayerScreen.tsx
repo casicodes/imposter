@@ -156,7 +156,7 @@ export function PlayerScreen({
 
   return (
     <div
-      className={`relative flex min-h-dvh w-full flex-col overflow-hidden bg-black px-[15px] pb-[120px] pt-[30px] antialiased ${inter.className}`}
+      className={`relative flex min-h-dvh w-full flex-col overflow-hidden bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased ${inter.className}`}
     >
       <div className="flex min-h-0 flex-1 flex-col items-stretch justify-center gap-6">
         <div className="relative grid w-full justify-items-center">
@@ -218,7 +218,7 @@ export function PlayerScreen({
         </div>
       </div>
 
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-10 flex justify-center bg-[rgba(0,0,0,0.71)] backdrop-blur-[4px]">
+      <div className="app-chrome-frost pointer-events-none fixed inset-x-0 top-0 z-10 flex justify-center">
         <div
           className={`pointer-events-auto flex w-full max-w-[390px] items-center px-[15px] py-[15px] ${showBackButton ? "justify-between" : "justify-end"
             }`}
@@ -248,7 +248,7 @@ export function PlayerScreen({
         </div>
       </div>
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-10 flex justify-center bg-[rgba(0,0,0,0.71)] backdrop-blur-[4px]">
+      <div className="app-chrome-frost pointer-events-none fixed inset-x-0 bottom-0 z-10 flex justify-center">
         <div className="pointer-events-auto w-full max-w-[390px] px-[15px] py-[15px]">
           {!revealed ? (
             <button
