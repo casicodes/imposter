@@ -7,8 +7,6 @@ import type { CategoryId, Difficulty } from "@/lib/categories";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
-type PlayerChoice = "3" | "4" | "5" | "custom";
-
 type SetupScreenProps = {
   onStart: (config: {
     playerCount: number;
@@ -21,11 +19,11 @@ type SetupScreenProps = {
 
 const outlineMuted = "[outline:1px_solid_rgba(233,233,233,0.16)]";
 
+const MIN_PLAYERS = 3;
+const MAX_PLAYERS = 12;
+
 const sectionLabelClass =
   "shrink-0 text-center text-[13px] font-medium leading-[18px] text-[#8A8A8A]";
-
-const sectionLabelRuleClass =
-  "h-px min-h-0 min-w-0 flex-1 bg-[rgba(233,233,233,0.16)]";
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
@@ -113,8 +111,7 @@ export function SetupScreen({
   startError,
   onDismissError,
 }: SetupScreenProps) {
-  const [players, setPlayers] = useState<PlayerChoice>("4");
-  const [customCount, setCustomCount] = useState(6);
+  const [playerCount, setPlayerCount] = useState(4);
   const [category, setCategory] = useState<CategoryId>("food");
   const [categoryWiggle, setCategoryWiggle] = useState<
     Partial<Record<CategoryId, number>>
@@ -122,77 +119,43 @@ export function SetupScreen({
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [starting, setStarting] = useState(false);
 
-  const resolvedPlayerCount =
-    players === "custom" ? customCount : Number.parseInt(players, 10);
-
   return (
     <div
       className={`relative flex min-h-dvh w-full flex-col bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased ${inter.className}`}
     >
       <div className="flex flex-col gap-8">
-
         <div className="flex flex-col gap-3">
-          <SectionLabel>Select number of players</SectionLabel>
-          <div className="flex gap-3">
-            {(["3", "4", "5"] as const).map((n) => {
-              const on = players === n;
-              return (
-                <button
-                  key={n}
-                  type="button"
-                  onClick={() => setPlayers(n)}
-                  style={controlTextStyle}
-                  className={`flex h-10 w-16 shrink-0 items-center justify-center rounded-[10px] font-medium ${on
-                    ? "bg-white text-black"
-                    : `bg-[#1A1A1A] text-white ${outlineMuted}`
-                    }`}
-                >
-                  {n}
-                </button>
-              );
-            })}
+          <SectionLabel>Number of players</SectionLabel>
+          <div className="flex w-full gap-3">
             <button
               type="button"
-              onClick={() => setPlayers("custom")}
-              style={controlTextStyle}
-              className={`flex h-10 flex-1 items-center justify-center rounded-[10px] font-medium ${players === "custom"
-                ? "bg-white text-black"
-                : `bg-[#1A1A1A] text-white ${outlineMuted}`
-                }`}
+              onClick={() =>
+                setPlayerCount((n) => Math.max(MIN_PLAYERS, n - 1))
+              }
+              disabled={playerCount <= MIN_PLAYERS}
+              className={`flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-lg font-medium text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
+              aria-label="Fewer players"
             >
-              Custom
+              −
+            </button>
+            <span
+              className="flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center font-medium text-black"
+              style={controlTextStyle}
+            >
+              {playerCount}
+            </span>
+            <button
+              type="button"
+              onClick={() =>
+                setPlayerCount((n) => Math.min(MAX_PLAYERS, n + 1))
+              }
+              disabled={playerCount >= MAX_PLAYERS}
+              className={`flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-lg font-medium text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
+              aria-label="More players"
+            >
+              +
             </button>
           </div>
-          {players === "custom" ? (
-            <div className="mt-2 flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() =>
-                  setCustomCount((n) => Math.max(3, n - 1))
-                }
-                className={`flex h-10 w-12 items-center justify-center rounded-[10px] text-lg font-medium text-white ${outlineMuted} bg-[#1A1A1A]`}
-                aria-label="Fewer players"
-              >
-                −
-              </button>
-              <span
-                className="min-w-[3ch] text-center text-white"
-                style={controlTextStyle}
-              >
-                {customCount}
-              </span>
-              <button
-                type="button"
-                onClick={() =>
-                  setCustomCount((n) => Math.min(12, n + 1))
-                }
-                className={`flex h-10 w-12 items-center justify-center rounded-[10px] text-lg font-medium text-white ${outlineMuted} bg-[#1A1A1A]`}
-                aria-label="More players"
-              >
-                +
-              </button>
-            </div>
-          ) : null}
         </div>
 
         <div className="flex flex-col gap-3">
@@ -299,7 +262,7 @@ export function SetupScreen({
               setStarting(true);
               try {
                 await onStart({
-                  playerCount: resolvedPlayerCount,
+                  playerCount,
                   category,
                   difficulty,
                 });
