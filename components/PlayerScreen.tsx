@@ -20,8 +20,8 @@ function BackChevronIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={24}
-      height={24}
+      width={20}
+      height={20}
       viewBox="0 0 24 24"
       fill="none"
       stroke="#FFFFFF"
@@ -228,36 +228,36 @@ export function PlayerScreen({
                 animate={
                   revealed && isImposter
                     ? {
-                        /* yes nod (y + squash), pause, then no shake (rotate), tail pause */
-                        y: [
-                          0, 11, -3, 0, 8, -2, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                          0, 0, 0,
-                        ],
-                        scaleY: [
-                          1, 0.78, 1.08, 1, 0.82, 1.05, 1, 0.88, 1, 1, 1, 1, 1,
-                          1, 1, 1, 1, 1, 1, 1,
-                        ],
-                        rotate: [
-                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -17, 14, -15, 13, -11,
-                          9, -6, 0, 0, 0,
-                        ],
-                      }
+                      /* yes nod (y + squash), pause, then no shake (rotate), tail pause */
+                      y: [
+                        0, 11, -3, 0, 8, -2, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0,
+                      ],
+                      scaleY: [
+                        1, 0.78, 1.08, 1, 0.82, 1.05, 1, 0.88, 1, 1, 1, 1, 1,
+                        1, 1, 1, 1, 1, 1, 1,
+                      ],
+                      rotate: [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -17, 14, -15, 13, -11,
+                        9, -6, 0, 0, 0,
+                      ],
+                    }
                     : { y: 0, scaleY: 1, rotate: 0 }
                 }
                 transition={
                   revealed && isImposter
                     ? {
-                        delay: 1,
-                        duration: 3.45,
-                        repeat: Infinity,
-                        repeatDelay: 0.42,
-                        ease: "easeInOut",
-                        times: [
-                          0, 0.065, 0.11, 0.155, 0.205, 0.25, 0.3, 0.345, 0.39,
-                          0.43, 0.465, 0.5, 0.535, 0.57, 0.605, 0.64, 0.675,
-                          0.71, 0.82, 1,
-                        ],
-                      }
+                      delay: 1,
+                      duration: 3.45,
+                      repeat: Infinity,
+                      repeatDelay: 0.42,
+                      ease: "easeInOut",
+                      times: [
+                        0, 0.065, 0.11, 0.155, 0.205, 0.25, 0.3, 0.345, 0.39,
+                        0.43, 0.465, 0.5, 0.535, 0.57, 0.605, 0.64, 0.675,
+                        0.71, 0.82, 1,
+                      ],
+                    }
                     : { duration: 0.2 }
                 }
                 aria-hidden
@@ -346,7 +346,7 @@ export function PlayerScreen({
           <button
             type="button"
             onClick={onExitToSetup}
-            className={`flex shrink-0 items-center justify-center rounded-full bg-[#181818] px-4 py-2.5 text-sm font-semibold text-white ${outlineSubtle}`}
+            className={`flex shrink-0 items-center justify-center rounded-full bg-[#181818] px-4 py-2.5 text-sm font-medium text-white ${outlineSubtle}`}
           >
             Restart
           </button>
@@ -358,7 +358,7 @@ export function PlayerScreen({
           {!revealed ? (
             <button
               type="button"
-              className={`reveal-hold-btn flex h-16 w-full items-center justify-center rounded-xl bg-[#181818] text-lg font-bold leading-[22px] text-white ${outlineSubtle} ${pressingReveal ? "reveal-hold-btn--pressing" : ""}`}
+              className={`reveal-hold-btn flex h-16 w-full items-center justify-center rounded-xl bg-[#181818] text-lg font-medium leading-[22px] text-white ${outlineSubtle} ${pressingReveal ? "reveal-hold-btn--pressing" : ""}`}
               aria-label="Hold to reveal your role"
               onPointerDown={(e) => {
                 e.currentTarget.setPointerCapture(e.pointerId);
@@ -394,7 +394,7 @@ export function PlayerScreen({
                 setRevealed(false);
                 onNextPlayer();
               }}
-              className={`flex h-16 w-full items-center justify-center rounded-xl bg-white text-lg font-bold leading-[22px] text-black ${nextButtonArmed ? "" : "pointer-events-none"}`}
+              className={`flex h-16 w-full items-center justify-center rounded-xl bg-white text-lg font-medium leading-[22px] text-black ${nextButtonArmed ? "" : "pointer-events-none"}`}
               aria-disabled={!nextButtonArmed}
               aria-label={
                 nextButtonArmed

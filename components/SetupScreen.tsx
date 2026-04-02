@@ -113,8 +113,8 @@ function CategoryIcon({
       animate={
         wiggleKey > 0
           ? {
-            rotate: [0, -10, 8, -5, 3, 0],
-            scale: [1, 2, 1.8, 1.9, 1.5, 1],
+            rotate: [0, -10, 5, 0],
+            scale: [1, 1.3, 0.9, 1],
           }
           : { rotate: 0, scale: 1 }
       }
@@ -324,7 +324,7 @@ export function SetupScreen({
                 setStarting(false);
               }
             }}
-            className="flex h-16 w-full items-center justify-center rounded-xl bg-[#1F8E35] text-lg font-bold leading-[22px] text-white [outline:1px_solid_#4BBB5B] disabled:cursor-wait"
+            className="flex h-16 w-full items-center justify-center rounded-xl bg-[#1F8E35] text-lg font-medium leading-[22px] text-white [outline:1px_solid_#4BBB5B] disabled:cursor-wait"
           >
             {starting ? (
               <>
