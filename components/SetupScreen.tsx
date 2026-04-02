@@ -369,7 +369,7 @@ export function SetupScreen({
                     >
                       <CategoryIcon id={id} selected={on} />
                       <span
-                        className={`text-center text-xs font-medium leading-[15px] ${
+                        className={`text-center text-[14px] font-medium leading-[18px] ${
                           on ? "text-black" : "text-white"
                         }`}
                       >

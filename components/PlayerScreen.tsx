@@ -171,9 +171,6 @@ export function PlayerScreen({
             <h1 className="text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
               Player {displayPlayer}
             </h1>
-            <p className="text-[#6F6F6F]">
-              Hold Reveal when you&apos;re ready
-            </p>
           </motion.div>
           <motion.div
             className={`col-start-1 row-start-1 flex w-full max-w-full flex-col gap-2 text-center ${revealed && isImposter ? "z-10" : "pointer-events-none z-0"
@@ -195,7 +192,7 @@ export function PlayerScreen({
             <h1 className="text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
               😈 You are the imposter
             </h1>
-            <p className="leading-5 text-[#6F6F6F]">Hint: {hint}</p>
+            <p className="leading-5 text-[#6F6F6F]">hint: {hint}</p>
           </motion.div>
           <motion.div
             className={`col-start-1 row-start-1 flex w-full max-w-full flex-col gap-2 text-center ${revealed && !isImposter ? "z-10" : "pointer-events-none z-0"
@@ -216,7 +213,7 @@ export function PlayerScreen({
             <h1 className="capitalize text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
               {word}
             </h1>
-            <p className="leading-5 text-[#6F6F6F]">Hint: {hint}</p>
+            <p className="leading-5 text-[#6F6F6F]">hint: {hint}</p>
           </motion.div>
         </div>
       </div>
