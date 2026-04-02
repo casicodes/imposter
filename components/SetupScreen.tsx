@@ -98,7 +98,7 @@ export function SetupScreen({
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold leading-[30px] text-white">
+          <h1 className="text-xl font-semibold leading-[30px] text-white">
             Find the imposter
           </h1>
         </div>
@@ -114,11 +114,10 @@ export function SetupScreen({
                   type="button"
                   onClick={() => setPlayers(n)}
                   style={controlTextStyle}
-                  className={`flex h-10 w-16 shrink-0 items-center justify-center rounded-[10px] font-medium ${
-                    on
-                      ? "bg-white text-black"
-                      : `bg-[#1A1A1A] text-white ${outlineMuted}`
-                  }`}
+                  className={`flex h-10 w-16 shrink-0 items-center justify-center rounded-[10px] font-medium ${on
+                    ? "bg-white text-black"
+                    : `bg-[#1A1A1A] text-white ${outlineMuted}`
+                    }`}
                 >
                   {n}
                 </button>
@@ -128,11 +127,10 @@ export function SetupScreen({
               type="button"
               onClick={() => setPlayers("custom")}
               style={controlTextStyle}
-              className={`flex h-10 flex-1 items-center justify-center rounded-[10px] font-medium ${
-                players === "custom"
-                  ? "bg-white text-black"
-                  : `bg-[#1A1A1A] text-white ${outlineMuted}`
-              }`}
+              className={`flex h-10 flex-1 items-center justify-center rounded-[10px] font-medium ${players === "custom"
+                ? "bg-white text-black"
+                : `bg-[#1A1A1A] text-white ${outlineMuted}`
+                }`}
             >
               Custom
             </button>
@@ -150,7 +148,7 @@ export function SetupScreen({
                 −
               </button>
               <span
-                className="min-w-[3ch] text-center font-medium text-white"
+                className="min-w-[3ch] text-center text-white"
                 style={controlTextStyle}
               >
                 {customCount}
@@ -181,19 +179,17 @@ export function SetupScreen({
                       key={id}
                       type="button"
                       onClick={() => setCategory(id)}
-                      className={`flex min-h-[76px] flex-1 flex-col items-center justify-center gap-[5px] rounded-xl px-1.5 pb-2.5 pt-[9px] ${
-                        on
-                          ? "bg-white"
-                          : `bg-[#1A1A1A] ${outlineMuted}`
-                      }`}
+                      className={`flex min-h-[76px] flex-1 flex-col items-center justify-center gap-[5px] rounded-xl px-1.5 pb-2.5 pt-[9px] ${on
+                        ? "bg-white"
+                        : `bg-[#1A1A1A] ${outlineMuted}`
+                        }`}
                       /* Preflight uses `font: inherit` on buttons; pin size here so labels are truly 14px */
                       style={{ fontSize: 15, lineHeight: "20px" }}
                     >
                       <CategoryIcon id={id} selected={on} />
                       <span
-                        className={`block max-w-full text-center font-medium ${
-                          on ? "text-black" : "text-white"
-                        }`}
+                        className={`block max-w-full text-center font-medium ${on ? "text-black" : "text-white"
+                          }`}
                       >
                         {label}
                       </span>
@@ -242,11 +238,10 @@ export function SetupScreen({
                   type="button"
                   onClick={() => setDifficulty(id)}
                   style={controlTextStyle}
-                  className={`flex h-10 flex-1 items-center justify-center rounded-xl font-medium ${
-                    on
-                      ? "bg-white text-black"
-                      : `bg-[#1A1A1A]/[0.93] text-white ${outlineMuted}`
-                  }`}
+                  className={`flex h-10 flex-1 items-center justify-center rounded-xl font-medium ${on
+                    ? "bg-white text-black"
+                    : `bg-[#1A1A1A]/[0.93] text-white ${outlineMuted}`
+                    }`}
                 >
                   {label}
                 </button>
