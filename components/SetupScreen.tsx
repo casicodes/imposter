@@ -130,11 +130,6 @@ export function SetupScreen({
       className={`relative flex min-h-dvh w-full flex-col bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased ${inter.className}`}
     >
       <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-xl font-semibold leading-[30px] text-white">
-            Find the imposter
-          </h1>
-        </div>
 
         <div className="flex flex-col gap-3">
           <SectionLabel>Select number of players</SectionLabel>
