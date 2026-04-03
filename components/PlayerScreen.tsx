@@ -265,7 +265,7 @@ export function PlayerScreen({
                 You are the imposter
               </h1>
               <motion.p
-                className="leading-5 text-[#6F6F6F] italic"
+                className="leading-5 text-[#8a8a8a] italic"
                 initial={false}
                 animate={{
                   opacity: revealed && isImposter ? 1 : 0,
@@ -302,7 +302,7 @@ export function PlayerScreen({
               {word}
             </h1>
             <motion.p
-              className="leading-5 text-[#6F6F6F] italic"
+              className="leading-5 text-[#8a8a8a] italic"
               initial={false}
               animate={{
                 opacity: revealed && !isImposter ? 1 : 0,
@@ -359,7 +359,7 @@ export function PlayerScreen({
               aria-label="Hold to reveal your role"
               style={{
                 backgroundImage:
-                  "linear-gradient(in oklab 180deg, #45464B, #45464B)",
+                  "linear-gradient(in oklab, rgb(69, 70, 75), rgb(45 45 48))",
                 boxShadow: "#000000 0px 0px 1px 2px",
                 outline: "1px solid #757575",
               }}
@@ -391,7 +391,7 @@ export function PlayerScreen({
                 className="pointer-events-none absolute left-0 top-0 z-0 box-border h-[32px] w-full rounded-[10px]"
                 style={{
                   backgroundImage:
-                    "linear-gradient(in oklab 180deg, oklab(50.2% 0 -.0001) 0%, oklab(41.3% .0004 -0.005) 100%)",
+                    "linear-gradient(oklab(0.51 0 0) 0%, oklab(0.38 0 0) 100%)",
                   filter: "blur(1px)",
                 }}
               />
