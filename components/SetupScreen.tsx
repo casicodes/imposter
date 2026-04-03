@@ -1,11 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Inter } from "next/font/google";
 import { useEffect, useState, type ReactNode } from "react";
 import type { CategoryId, Difficulty } from "@/lib/categories";
-
-const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 type SetupScreenProps = {
   onStart: (config: {
@@ -23,7 +20,7 @@ const MIN_PLAYERS = 3;
 const MAX_PLAYERS = 12;
 
 const sectionLabelClass =
-  "shrink-0 text-center text-[13px] font-medium leading-[18px] text-[#8A8A8A]";
+  "shrink-0 text-center text-[13px] font-normal leading-[18px] text-[#8A8A8A]";
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
@@ -174,9 +171,7 @@ export function SetupScreen({
   }, [starting]);
 
   return (
-    <div
-      className={`relative flex min-h-dvh w-full flex-col bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased ${inter.className}`}
-    >
+    <div className="relative flex min-h-dvh w-full flex-col bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-3">
           <SectionLabel>Number of players</SectionLabel>
@@ -193,7 +188,7 @@ export function SetupScreen({
               <MinusIcon />
             </button>
             <span
-              className="flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center font-medium text-black"
+              className="flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-black"
               style={controlTextStyle}
             >
               {playerCount}
@@ -230,11 +225,10 @@ export function SetupScreen({
                           [id]: (w[id] ?? 0) + 1,
                         }));
                       }}
-                      className={`flex min-h-[76px] flex-1 flex-col items-center justify-center gap-[5px] rounded-xl px-1.5 pb-2.5 pt-[9px] ${on
+                      className={`flex min-h-[76px] flex-1 flex-row items-center justify-center gap-1.5 rounded-xl p-1 ${on
                         ? "bg-white"
                         : `bg-[#1A1A1A] ${outlineMuted}`
                         }`}
-                      /* Preflight uses `font: inherit` on buttons; pin size here so labels are truly 14px */
                       style={{ fontSize: 15, lineHeight: "20px" }}
                     >
                       <CategoryIcon
@@ -243,7 +237,7 @@ export function SetupScreen({
                         wiggleKey={categoryWiggle[id] ?? 0}
                       />
                       <span
-                        className={`block max-w-full text-center font-medium ${on ? "text-black" : "text-white"
+                        className={`inline-block max-w-full shrink-0 text-center ${on ? "text-black" : "text-white"
                           }`}
                       >
                         {label}
@@ -293,7 +287,7 @@ export function SetupScreen({
                   type="button"
                   onClick={() => setDifficulty(id)}
                   style={controlTextStyle}
-                  className={`flex h-10 flex-1 items-center justify-center rounded-xl font-medium ${on
+                  className={`flex h-10 flex-1 items-center justify-center rounded-xl ${on
                     ? "bg-white text-black"
                     : `bg-[#1A1A1A]/[0.93] text-white ${outlineMuted}`
                     }`}
@@ -324,7 +318,7 @@ export function SetupScreen({
                 setStarting(false);
               }
             }}
-            className="flex h-16 w-full items-center justify-center rounded-xl bg-[#1F8E35] text-lg font-medium leading-[22px] text-white [outline:1px_solid_#4BBB5B] disabled:cursor-wait"
+            className="flex h-16 w-full items-center justify-center rounded-xl bg-[#1F8E35] text-lg leading-[22px] text-white [outline:1px_solid_#4BBB5B] [text-shadow:0_1px_0_#0003] disabled:cursor-wait"
           >
             {starting ? (
               <>

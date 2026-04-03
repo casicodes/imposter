@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Inter } from "next/font/google";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /** Must match `transition: transform 1.5s linear` on `.reveal-hold-overlay` in globals.css. */
@@ -11,8 +10,6 @@ const HOLD_COUNTDOWN_TO_2_MS = HOLD_DURATION_MS / 2;
 const HOLD_COUNTDOWN_TO_1_MS = HOLD_DURATION_MS;
 /** After role is shown, hint fades in after this delay (crew + imposter). */
 const HINT_REVEAL_DELAY_S = 1.5;
-
-const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 const outlineSubtle = "[outline:1px_solid_rgba(233,233,233,0.16)]";
 
@@ -158,7 +155,7 @@ export function PlayerScreen({
 
   return (
     <div
-      className={`relative flex min-h-dvh w-full flex-col overflow-hidden bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased ${inter.className}`}
+      className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased"
     >
       <div className="flex min-h-0 flex-1 flex-col items-stretch justify-center gap-6">
         <div className="relative grid w-full justify-items-center">
