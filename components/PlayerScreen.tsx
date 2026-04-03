@@ -391,7 +391,7 @@ export function PlayerScreen({
                 className="pointer-events-none absolute left-0 top-0 z-0 box-border h-[32px] w-full rounded-[10px]"
                 style={{
                   backgroundImage:
-                    "linear-gradient(oklab(0.51 0 0) 0%, oklab(0.38 0 0) 100%)",
+                    "linear-gradient(oklab(0.45 0 0) 0%, oklab(0.38 0 0) 100%)",
                   filter: "blur(1px)",
                 }}
               />
