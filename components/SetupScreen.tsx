@@ -318,7 +318,7 @@ export function SetupScreen({
                 setStarting(false);
               }
             }}
-            className="flex h-16 w-full items-center justify-center rounded-2xl bg-[#1F8E35] text-lg leading-[22px] text-white [outline:1px_solid_#4BBB5B] [text-shadow:0_1px_0_#0003] disabled:cursor-wait"
+            className="flex h-16 w-full items-center justify-center rounded-xl bg-[#1F8E35] text-2xl leading-[22px] text-white [outline:1px_solid_#4BBB5B] [text-shadow:0_1px_0_#0003] disabled:cursor-wait"
           >
             {starting ? (
               <>

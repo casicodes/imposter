@@ -355,7 +355,7 @@ export function PlayerScreen({
           {!revealed ? (
             <button
               type="button"
-              className={`reveal-hold-btn flex h-16 w-full items-center justify-center rounded-2xl bg-[#181818] text-lg font-medium leading-[22px] text-white ${outlineSubtle} ${pressingReveal ? "reveal-hold-btn--pressing" : ""}`}
+              className={`reveal-hold-btn flex h-16 w-full items-center justify-center rounded-xl bg-[#181818] text-2xl font-medium leading-[22px] text-white ${outlineSubtle} ${pressingReveal ? "reveal-hold-btn--pressing" : ""}`}
               aria-label="Hold to reveal your role"
               onPointerDown={(e) => {
                 e.currentTarget.setPointerCapture(e.pointerId);
@@ -391,7 +391,7 @@ export function PlayerScreen({
                 setRevealed(false);
                 onNextPlayer();
               }}
-              className={`flex h-16 w-full items-center justify-center rounded-2xl bg-white text-lg font-medium leading-[22px] text-black ${nextButtonArmed ? "" : "pointer-events-none"}`}
+              className={`flex h-16 w-full items-center justify-center rounded-xl bg-white text-2xl font-medium leading-[22px] text-black ${nextButtonArmed ? "" : "pointer-events-none"}`}
               aria-disabled={!nextButtonArmed}
               aria-label={
                 nextButtonArmed
