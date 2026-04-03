@@ -182,7 +182,7 @@ export function SetupScreen({
                 setPlayerCount((n) => Math.max(MIN_PLAYERS, n - 1))
               }
               disabled={playerCount <= MIN_PLAYERS}
-              className={`flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={`flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
               aria-label="Fewer players"
             >
               <MinusIcon />
@@ -199,7 +199,7 @@ export function SetupScreen({
                 setPlayerCount((n) => Math.min(MAX_PLAYERS, n + 1))
               }
               disabled={playerCount >= MAX_PLAYERS}
-              className={`flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={`flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
               aria-label="More players"
             >
               <PlusIcon />
@@ -227,7 +227,7 @@ export function SetupScreen({
                       }}
                       className={`flex h-[50px] flex-1 flex-row items-center justify-center gap-1.5 rounded-xl p-1 ${on
                         ? "bg-white"
-                        : `bg-[#1A1A1A] ${outlineMuted}`
+                        : `bg-[#2d2d30] ${outlineMuted}`
                         }`}
                     >
                       <CategoryIcon
@@ -288,7 +288,7 @@ export function SetupScreen({
                   style={controlTextStyle}
                   className={`flex h-[50px] flex-1 items-center justify-center rounded-xl ${on
                     ? "bg-white text-black"
-                    : `bg-[#1A1A1A]/[0.93] text-white ${outlineMuted}`
+                    : `bg-[#2d2d30] text-white ${outlineMuted}`
                     }`}
                 >
                   {label}

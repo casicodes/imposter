@@ -4,7 +4,7 @@
   --background: #ffffff;
   --foreground: #171717;
   /* Page canvas; chrome bars use a tint of this color */
-  --app-canvas: #38393c;
+  --app-canvas: #2d2d30;
 }
 
 @theme inline {

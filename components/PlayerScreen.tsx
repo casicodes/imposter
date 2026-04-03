@@ -332,7 +332,7 @@ export function PlayerScreen({
               onClick={() =>
                 revealed ? setRevealed(false) : onGoToPreviousPlayer()
               }
-              className={`flex size-10 shrink-0 items-center justify-center rounded-full bg-[#181818] ${outlineSubtle}`}
+              className={`flex size-10 shrink-0 items-center justify-center rounded-full bg-[#2d2d30] ${outlineSubtle}`}
               aria-label={
                 revealed ? "Hide role" : "Previous player"
               }
@@ -343,7 +343,7 @@ export function PlayerScreen({
           <button
             type="button"
             onClick={onExitToSetup}
-            className={`flex h-10 shrink-0 items-center justify-center rounded-full bg-[#181818] px-4 font-medium text-white ${outlineSubtle}`}
+            className={`flex h-10 shrink-0 items-center justify-center rounded-full bg-[#2d2d30] px-4 font-medium text-white ${outlineSubtle}`}
           >
             Restart
           </button>
