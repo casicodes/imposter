@@ -219,7 +219,7 @@ export function PlayerScreen({
             />
             <div className="relative z-[1] flex w-full flex-col items-center gap-2">
               <motion.span
-                className="inline-block text-4xl select-none"
+                className="inline-block select-none text-[48px] leading-none"
                 style={{ transformOrigin: "50% 92%" }}
                 initial={false}
                 animate={
