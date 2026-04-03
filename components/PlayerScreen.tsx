@@ -355,8 +355,14 @@ export function PlayerScreen({
           {!revealed ? (
             <button
               type="button"
-              className={`reveal-hold-btn flex h-[70px] w-full items-center justify-center rounded-xl bg-[#181818] text-2xl font-medium leading-[22px] text-white ${outlineSubtle} ${pressingReveal ? "reveal-hold-btn--pressing" : ""}`}
+              className={`reveal-hold-btn box-border flex h-[64px] w-full cursor-pointer items-center justify-center [-webkit-tap-highlight-color:transparent] ${pressingReveal ? "reveal-hold-btn--pressing" : ""}`}
               aria-label="Hold to reveal your role"
+              style={{
+                backgroundImage:
+                  "linear-gradient(in oklab 180deg, #45464B, #45464B)",
+                boxShadow: "#000000 0px 0px 1px 2px",
+                outline: "1px solid #757575",
+              }}
               onPointerDown={(e) => {
                 e.currentTarget.setPointerCapture(e.pointerId);
                 startHold();
@@ -376,12 +382,39 @@ export function PlayerScreen({
               }}
               onContextMenu={(e) => e.preventDefault()}
             >
+              {/*
+               * From Paper — https://app.paper.design/file/01KMGQQST17JDVAEMYXD22D0MV?node=IF-0
+               * Apr 3, 2026 — gloss under .reveal-hold-overlay; hold progress unchanged
+               */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-0 top-0 z-0 box-border h-[32px] w-full rounded-[10px]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(in oklab 180deg, oklab(50.2% 0 -.0001) 0%, oklab(41.3% .0004 -0.005) 100%)",
+                  filter: "blur(1px)",
+                }}
+              />
               <div
                 className="reveal-hold-overlay"
                 aria-hidden
                 onTransitionEnd={onHoldOverlayTransitionEnd}
               />
-              <span className="reveal-hold-label">Hold to reveal</span>
+              <span
+                className="reveal-hold-label"
+                style={{
+                  color: "#FFFFFF",
+                  fontFamily: '"Dangrek", system-ui, sans-serif',
+                  fontSize: "24px",
+                  fontSynthesis: "none",
+                  lineHeight: "22px",
+                  textShadow: "#0000004F 0px 1px 0px",
+                  WebkitFontSmoothing: "antialiased",
+                  MozOsxFontSmoothing: "grayscale",
+                }}
+              >
+                Hold to reveal
+              </span>
             </button>
           ) : (
             <button
@@ -391,7 +424,13 @@ export function PlayerScreen({
                 setRevealed(false);
                 onNextPlayer();
               }}
-              className={`flex h-[70px] w-full items-center justify-center rounded-xl bg-white text-2xl font-medium leading-[22px] text-black ${nextButtonArmed ? "" : "pointer-events-none"}`}
+              className={`relative box-border flex h-[64px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] [-webkit-tap-highlight-color:transparent] ${nextButtonArmed ? "" : "pointer-events-none"}`}
+              style={{
+                backgroundImage:
+                  "linear-gradient(in oklab 180deg, #C0C1C0, #C0C1C0)",
+                boxShadow: "#000000 0px 0px 1px 2px",
+                outline: "1px solid #F2F2F2",
+              }}
               aria-disabled={!nextButtonArmed}
               aria-label={
                 nextButtonArmed
@@ -399,7 +438,35 @@ export function PlayerScreen({
                   : "Release, then tap to continue"
               }
             >
-              {displayPlayer >= playerCount ? "Done" : "Next"}
+              {/*
+               * From Paper — https://app.paper.design/file/01KMGQQST17JDVAEMYXD22D0MV?node=HW-0
+               * Apr 3, 2026
+               */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-0 top-0 z-0 box-border h-[32px] w-full rounded-[10px]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(in oklab 180deg, oklab(91.9% 0 0) 0%, oklab(84.3% 0 0) 100%)",
+                  filter: "blur(1px)",
+                }}
+              />
+              <span
+                className="relative z-[1] inline-flex shrink-0 items-center justify-center"
+                style={{
+                  boxSizing: "border-box",
+                  color: "#000000",
+                  fontFamily: '"Dangrek", system-ui, sans-serif',
+                  fontSize: "24px",
+                  fontSynthesis: "none",
+                  lineHeight: "22px",
+                  textShadow: "#FFFFFF8F 0px 1px 0px",
+                  WebkitFontSmoothing: "antialiased",
+                  MozOsxFontSmoothing: "grayscale",
+                }}
+              >
+                {displayPlayer >= playerCount ? "Done" : "Next"}
+              </span>
             </button>
           )}
         </div>

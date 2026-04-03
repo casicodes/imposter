@@ -301,6 +301,10 @@ export function SetupScreen({
 
       <div className="app-chrome-frost pointer-events-none fixed inset-x-0 bottom-0 z-10 flex justify-center">
         <div className="pointer-events-auto w-full max-w-[390px] px-[15px] py-[15px]">
+          {/*
+           * From Paper — https://app.paper.design/file/01KMGQQST17JDVAEMYXD22D0MV?node=IL-0
+           * Apr 3, 2026
+           */}
           <button
             type="button"
             disabled={starting}
@@ -317,18 +321,48 @@ export function SetupScreen({
                 setStarting(false);
               }
             }}
-            className="flex h-[70px] w-full items-center justify-center rounded-xl bg-[#1F8E35] text-2xl leading-[22px] text-white [outline:1px_solid_#4BBB5B] [text-shadow:0_1px_0_#0003] disabled:cursor-wait"
+            className="relative box-border flex h-[64px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] [-webkit-tap-highlight-color:transparent] disabled:cursor-wait"
+            style={{
+              backgroundImage:
+                "linear-gradient(in oklab 180deg, #1F8E36, #1F8E36)",
+              boxShadow: "#000000 0px 0px 1px 2px",
+              outline: "1px solid #3AA54B",
+            }}
           >
-            {starting ? (
-              <>
-                Starting
-                <span className="inline-block min-w-[3ch] text-left">
-                  {startDots}
-                </span>
-              </>
-            ) : (
-              "Start"
-            )}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-0 top-0 box-border h-[32px] w-full rounded-[10px]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(in oklab 180deg, oklab(63.3% -0.132 0.088) 0%, oklab(60% -0.129 0.086) 100%)",
+                filter: "blur(1px)",
+              }}
+            />
+            <span
+              className="relative z-[1] flex shrink-0 items-center justify-center"
+              style={{
+                color: "#FFFFFF",
+                display: "inline-flex",
+                fontFamily: '"Dangrek", system-ui, sans-serif',
+                fontSize: "24px",
+                fontSynthesis: "none",
+                lineHeight: "22px",
+                textShadow: "#0000004F 0px 1px 0px",
+                WebkitFontSmoothing: "antialiased",
+                MozOsxFontSmoothing: "grayscale",
+              }}
+            >
+              {starting ? (
+                <>
+                  Starting
+                  <span className="inline-block min-w-[3ch] text-left">
+                    {startDots}
+                  </span>
+                </>
+              ) : (
+                "Start"
+              )}
+            </span>
           </button>
         </div>
       </div>

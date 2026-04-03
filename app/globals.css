@@ -49,7 +49,7 @@ body {
 .reveal-hold-btn {
   position: relative;
   overflow: hidden;
-  border-radius: 0.75rem;
+  border-radius: 20px;
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
