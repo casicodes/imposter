@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import type { CategoryId, Difficulty } from "@/lib/categories";
 import { fetchGameRound } from "@/lib/fetch-round";
 import type { GameRound } from "@/lib/game";
+import { rememberSeenWord } from "@/lib/seen-words";
 import { PlayerScreen } from "@/components/PlayerScreen";
 import { SetupScreen } from "@/components/SetupScreen";
 
@@ -21,6 +22,7 @@ export function ImposterApp() {
       setStartError(null);
       try {
         const next = await fetchGameRound(config);
+        rememberSeenWord(next.word);
         setRound(next);
         setPlayerIndex(0);
       } catch (e) {

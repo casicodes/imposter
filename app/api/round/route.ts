@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import type { CategoryId, Difficulty } from "@/lib/categories";
-import { createGameRound, createGameRoundFromPool } from "@/lib/game";
+import {
+  createGameRoundExcluding,
+  createGameRoundFromPool,
+} from "@/lib/game";
 import { createSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/admin";
+import { normalizeWordForDedupe } from "@/lib/word-normalize";
 import { z } from "zod";
 
 const bodySchema = z.object({
@@ -17,6 +21,19 @@ const bodySchema = z.object({
     "mix",
   ]) satisfies z.ZodType<CategoryId>,
   difficulty: z.enum(["easy", "medium", "hard"]) satisfies z.ZodType<Difficulty>,
+  excludeWords: z
+    .array(z.string().max(200))
+    .max(500)
+    .optional()
+    .default([])
+    .transform((words) => {
+      const out = new Set<string>();
+      for (const w of words) {
+        const n = normalizeWordForDedupe(w);
+        if (n) out.add(n);
+      }
+      return [...out];
+    }),
 });
 
 type GameWordRow = {
@@ -39,26 +56,29 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const config = parsed.data;
+  const { excludeWords, ...config } = parsed.data;
+  const excluded = new Set(excludeWords);
 
   if (!isSupabaseConfigured()) {
-    return NextResponse.json(createGameRound(config));
+    return NextResponse.json(createGameRoundExcluding(config, excluded));
   }
 
   try {
     const supabase = createSupabaseAdmin();
     const { data, error } = await supabase.rpc("random_game_word", {
       p_category: config.category,
+      p_exclude: excludeWords,
     });
 
     if (error) {
       console.error("random_game_word rpc error", error);
-      return NextResponse.json(createGameRound(config));
+      return NextResponse.json(createGameRoundExcluding(config, excluded));
     }
 
-    const row = Array.isArray(data) ? data[0] : data;
+    const rows = Array.isArray(data) ? data : data != null ? [data] : [];
+    const row = rows[0];
     if (!row || typeof row !== "object") {
-      return NextResponse.json(createGameRound(config));
+      return NextResponse.json(createGameRoundExcluding(config, excluded));
     }
 
     const r = row as GameWordRow;
@@ -74,6 +94,6 @@ export async function POST(request: Request) {
     return NextResponse.json(createGameRoundFromPool(config, [entry]));
   } catch (e) {
     console.error("round route", e);
-    return NextResponse.json(createGameRound(config));
+    return NextResponse.json(createGameRoundExcluding(config, excluded));
   }
 }

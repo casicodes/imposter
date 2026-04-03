@@ -1,4 +1,5 @@
 import type { CategoryId, Difficulty, WordEntry } from "./categories";
+import { normalizeWordForDedupe } from "./word-normalize";
 import { WORDS_BY_CATEGORY } from "./words";
 
 export type GameConfig = {
@@ -40,4 +41,30 @@ export function createGameRoundFromPool(
 export function createGameRound(config: GameConfig): GameRound {
   const pool = WORDS_BY_CATEGORY[config.category];
   return createGameRoundFromPool(config, pool);
+}
+
+function filterPoolExcluding(
+  pool: WordEntry[],
+  excluded: ReadonlySet<string>,
+): WordEntry[] {
+  if (excluded.size === 0) return pool;
+  return pool.filter(
+    (e) => !excluded.has(normalizeWordForDedupe(e.word)),
+  );
+}
+
+/**
+ * Picks a random word from the local pool, avoiding normalized words in `excluded`.
+ * If every entry is excluded, falls back to the full pool.
+ */
+export function createGameRoundExcluding(
+  config: GameConfig,
+  excluded: ReadonlySet<string>,
+): GameRound {
+  const pool = WORDS_BY_CATEGORY[config.category];
+  const filtered = filterPoolExcluding(pool, excluded);
+  return createGameRoundFromPool(
+    config,
+    filtered.length > 0 ? filtered : pool,
+  );
 }
