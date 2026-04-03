@@ -124,19 +124,19 @@ function CategoryIcon({
 
 const CATEGORY_ROWS: { id: CategoryId; label: string }[][] = [
   [
-    { id: "food", label: "Food & drink" },
-    { id: "movies", label: "Movies & TV" },
-  ],
-  [
-    { id: "animals", label: "Animals" },
-    { id: "places", label: "Places" },
-  ],
-  [
-    { id: "sports", label: "Sports" },
-    { id: "science", label: "Science" },
-  ],
-  [
     { id: "everyday", label: "Everyday objects" },
+    { id: "food", label: "Food & drink" },
+  ],
+  [
+    { id: "movies", label: "Movies & TV" },
+    { id: "animals", label: "Animals" },
+  ],
+  [
+    { id: "places", label: "Places" },
+    { id: "sports", label: "Sports" },
+  ],
+  [
+    { id: "science", label: "Science" },
     { id: "mix", label: "Mix of all" },
   ],
 ];
@@ -147,7 +147,7 @@ export function SetupScreen({
   onDismissError,
 }: SetupScreenProps) {
   const [playerCount, setPlayerCount] = useState(4);
-  const [category, setCategory] = useState<CategoryId>("food");
+  const [category, setCategory] = useState<CategoryId>("everyday");
   const [categoryWiggle, setCategoryWiggle] = useState<
     Partial<Record<CategoryId, number>>
   >({});
@@ -182,13 +182,13 @@ export function SetupScreen({
                 setPlayerCount((n) => Math.max(MIN_PLAYERS, n - 1))
               }
               disabled={playerCount <= MIN_PLAYERS}
-              className={`flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={`text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
               aria-label="Fewer players"
             >
               <MinusIcon />
             </button>
             <span
-              className="flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-black"
+              className="text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-black"
               style={controlTextStyle}
             >
               {playerCount}
@@ -199,7 +199,7 @@ export function SetupScreen({
                 setPlayerCount((n) => Math.min(MAX_PLAYERS, n + 1))
               }
               disabled={playerCount >= MAX_PLAYERS}
-              className={`flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={`text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
               aria-label="More players"
             >
               <PlusIcon />
