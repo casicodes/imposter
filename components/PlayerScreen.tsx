@@ -168,8 +168,8 @@ export function PlayerScreen({
             aria-hidden={revealed}
           >
             <h1
-              className={`tracking-[-0.03em] text-white ${holdCountdown !== null
-                ? "text-[72px] font-bold leading-none tabular-nums tracking-tighter"
+              className={`tracking-tight text-white ${holdCountdown !== null
+                ? "text-[72px] font-bold leading-none tabular-nums tracking-tight"
                 : "text-[24px] font-semibold leading-10"
                 }`}
             >
@@ -261,7 +261,7 @@ export function PlayerScreen({
               >
                 😈
               </motion.span>
-              <h1 className="text-[24px] font-semibold leading-10 tracking-[-0.03em] text-white">
+              <h1 className="text-[24px] font-semibold leading-10 tracking-tight text-white">
                 You are the imposter
               </h1>
               <motion.p
@@ -298,7 +298,7 @@ export function PlayerScreen({
             style={{ transformOrigin: "center" }}
             aria-hidden={!revealed || isImposter}
           >
-            <h1 className="capitalize text-[48px] font-semibold leading-none tracking-[-0.03em] text-white">
+            <h1 className="capitalize text-[48px] font-semibold leading-none tracking-tight text-white">
               {word}
             </h1>
             <motion.p
@@ -343,7 +343,7 @@ export function PlayerScreen({
           <button
             type="button"
             onClick={onExitToSetup}
-            className={`flex shrink-0 items-center justify-center rounded-full bg-[#181818] px-4 py-2.5 font-medium text-white ${outlineSubtle}`}
+            className={`flex h-10 shrink-0 items-center justify-center rounded-full bg-[#181818] px-4 font-medium text-white ${outlineSubtle}`}
           >
             Restart
           </button>
@@ -355,7 +355,7 @@ export function PlayerScreen({
           {!revealed ? (
             <button
               type="button"
-              className={`reveal-hold-btn flex h-[50px] w-full items-center justify-center rounded-xl bg-[#181818] text-2xl font-medium leading-[22px] text-white ${outlineSubtle} ${pressingReveal ? "reveal-hold-btn--pressing" : ""}`}
+              className={`reveal-hold-btn flex h-[70px] w-full items-center justify-center rounded-xl bg-[#181818] text-2xl font-medium leading-[22px] text-white ${outlineSubtle} ${pressingReveal ? "reveal-hold-btn--pressing" : ""}`}
               aria-label="Hold to reveal your role"
               onPointerDown={(e) => {
                 e.currentTarget.setPointerCapture(e.pointerId);
@@ -391,7 +391,7 @@ export function PlayerScreen({
                 setRevealed(false);
                 onNextPlayer();
               }}
-              className={`flex h-[50px] w-full items-center justify-center rounded-xl bg-white text-2xl font-medium leading-[22px] text-black ${nextButtonArmed ? "" : "pointer-events-none"}`}
+              className={`flex h-[70px] w-full items-center justify-center rounded-xl bg-white text-2xl font-medium leading-[22px] text-black ${nextButtonArmed ? "" : "pointer-events-none"}`}
               aria-disabled={!nextButtonArmed}
               aria-label={
                 nextButtonArmed
