@@ -168,9 +168,9 @@ export function PlayerScreen({
             aria-hidden={revealed}
           >
             <h1
-              className={`tracking-tight text-white ${holdCountdown !== null
+              className={`text-white ${holdCountdown !== null
                 ? "text-[72px] font-bold leading-none tabular-nums tracking-tight"
-                : "text-[24px] font-semibold leading-10"
+                : "text-[48px] font-semibold capitalize leading-none tracking-tight"
                 }`}
             >
               {revealed
