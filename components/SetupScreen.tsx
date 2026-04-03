@@ -20,7 +20,7 @@ const MIN_PLAYERS = 3;
 const MAX_PLAYERS = 12;
 
 const sectionLabelClass =
-  "shrink-0 text-center text-[13px] font-normal leading-[18px] text-[#8A8A8A]";
+  "shrink-0 text-center text-[14px] font-normal leading-[20px] text-[#8A8A8A]";
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
@@ -34,8 +34,8 @@ function MinusIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={20}
-      height={20}
+      width={16}
+      height={16}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -53,8 +53,8 @@ function PlusIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={20}
-      height={20}
+      width={16}
+      height={16}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -68,8 +68,8 @@ function PlusIcon() {
   );
 }
 
-/** Pin control text size (Tailwind `text-sm` / rem can read small on some devices). */
-const controlTextStyle = { fontSize: 15, lineHeight: "20px" } as const;
+/** Player count, hint difficulty — match category row type rhythm. */
+const controlTextStyle = { fontSize: 16, lineHeight: "20px" } as const;
 
 const CATEGORY_IMAGE = {
   food: "/category-food.png",
@@ -229,7 +229,6 @@ export function SetupScreen({
                         ? "bg-white"
                         : `bg-[#1A1A1A] ${outlineMuted}`
                         }`}
-                      style={{ fontSize: 15, lineHeight: "20px" }}
                     >
                       <CategoryIcon
                         id={id}
@@ -237,7 +236,7 @@ export function SetupScreen({
                         wiggleKey={categoryWiggle[id] ?? 0}
                       />
                       <span
-                        className={`inline-block max-w-full shrink-0 text-center ${on ? "text-black" : "text-white"
+                        className={`inline-block max-w-full shrink-0 text-center text-[16px] leading-5 ${on ? "text-black" : "text-white"
                           }`}
                       >
                         {label}
