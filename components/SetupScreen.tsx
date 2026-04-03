@@ -225,7 +225,7 @@ export function SetupScreen({
                           [id]: (w[id] ?? 0) + 1,
                         }));
                       }}
-                      className={`flex min-h-[76px] flex-1 flex-row items-center justify-center gap-1.5 rounded-xl p-1 ${on
+                      className={`flex h-[64px] flex-1 flex-row items-center justify-center gap-1.5 rounded-xl p-1 ${on
                         ? "bg-white"
                         : `bg-[#1A1A1A] ${outlineMuted}`
                         }`}
