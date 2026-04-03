@@ -182,13 +182,13 @@ export function SetupScreen({
                 setPlayerCount((n) => Math.max(MIN_PLAYERS, n - 1))
               }
               disabled={playerCount <= MIN_PLAYERS}
-              className={`flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={`flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
               aria-label="Fewer players"
             >
               <MinusIcon />
             </button>
             <span
-              className="flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-black"
+              className="flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-black"
               style={controlTextStyle}
             >
               {playerCount}
@@ -199,7 +199,7 @@ export function SetupScreen({
                 setPlayerCount((n) => Math.min(MAX_PLAYERS, n + 1))
               }
               disabled={playerCount >= MAX_PLAYERS}
-              className={`flex h-10 w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={`flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#1A1A1A] disabled:cursor-not-allowed disabled:opacity-40`}
               aria-label="More players"
             >
               <PlusIcon />
@@ -225,7 +225,7 @@ export function SetupScreen({
                           [id]: (w[id] ?? 0) + 1,
                         }));
                       }}
-                      className={`flex h-[64px] flex-1 flex-row items-center justify-center gap-1.5 rounded-xl p-1 ${on
+                      className={`flex h-[50px] flex-1 flex-row items-center justify-center gap-1.5 rounded-xl p-1 ${on
                         ? "bg-white"
                         : `bg-[#1A1A1A] ${outlineMuted}`
                         }`}
@@ -286,7 +286,7 @@ export function SetupScreen({
                   type="button"
                   onClick={() => setDifficulty(id)}
                   style={controlTextStyle}
-                  className={`flex h-10 flex-1 items-center justify-center rounded-xl ${on
+                  className={`flex h-[50px] flex-1 items-center justify-center rounded-xl ${on
                     ? "bg-white text-black"
                     : `bg-[#1A1A1A]/[0.93] text-white ${outlineMuted}`
                     }`}
@@ -317,7 +317,7 @@ export function SetupScreen({
                 setStarting(false);
               }
             }}
-            className="flex h-16 w-full items-center justify-center rounded-xl bg-[#1F8E35] text-2xl leading-[22px] text-white [outline:1px_solid_#4BBB5B] [text-shadow:0_1px_0_#0003] disabled:cursor-wait"
+            className="flex h-[50px] w-full items-center justify-center rounded-xl bg-[#1F8E35] text-2xl leading-[22px] text-white [outline:1px_solid_#4BBB5B] [text-shadow:0_1px_0_#0003] disabled:cursor-wait"
           >
             {starting ? (
               <>
