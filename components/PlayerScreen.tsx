@@ -9,7 +9,7 @@ const HOLD_DURATION_MS = 1500;
 const HOLD_COUNTDOWN_TO_2_MS = HOLD_DURATION_MS / 2;
 const HOLD_COUNTDOWN_TO_1_MS = HOLD_DURATION_MS;
 /** After role is shown, hint fades in after this delay (crew + imposter). */
-const HINT_REVEAL_DELAY_S = 0.5;
+const HINT_REVEAL_DELAY_S = 0.3;
 
 const outlineSubtle = "[outline:1px_solid_rgba(233,233,233,0.16)]";
 
