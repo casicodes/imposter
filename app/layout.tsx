@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Impo",
-  description: "Find the imposter",
+  title: "Find the imposter",
+  description: "Pass-the-phone party game — everyone sees the word except one imposter.",
 };
 
 export default function RootLayout({
