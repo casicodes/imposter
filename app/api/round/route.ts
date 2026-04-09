@@ -8,8 +8,10 @@ import { createSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/admin"
 import { normalizeWordForDedupe } from "@/lib/word-normalize";
 import { z } from "zod";
 
-const bodySchema = z.object({
+const bodySchema = z
+  .object({
   playerCount: z.number().int().min(3).max(12),
+  imposterCount: z.number().int().min(1).max(11),
   category: z.enum([
     "food",
     "movies",
@@ -34,7 +36,10 @@ const bodySchema = z.object({
       }
       return [...out];
     }),
-});
+  })
+  .refine((d) => d.imposterCount <= d.playerCount - 1, {
+    message: "Must leave at least one crew member",
+  });
 
 type GameWordRow = {
   word: string;

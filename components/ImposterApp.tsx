@@ -16,6 +16,7 @@ export function ImposterApp() {
   const handleStart = useCallback(
     async (config: {
       playerCount: number;
+      imposterCount: number;
       category: CategoryId;
       difficulty: Difficulty;
     }) => {
@@ -57,7 +58,7 @@ export function ImposterApp() {
         key={playerIndex}
         playerIndex={playerIndex}
         playerCount={round.playerCount}
-        isImposter={playerIndex === round.imposterIndex}
+        isImposter={round.imposterIndices.includes(playerIndex)}
         word={round.word}
         hint={round.hint}
         onExitToSetup={handleExitToSetup}

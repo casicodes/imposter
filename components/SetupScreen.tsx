@@ -7,6 +7,7 @@ import type { CategoryId, Difficulty } from "@/lib/categories";
 type SetupScreenProps = {
   onStart: (config: {
     playerCount: number;
+    imposterCount: number;
     category: CategoryId;
     difficulty: Difficulty;
   }) => void | Promise<void>;
@@ -18,6 +19,7 @@ const outlineMuted = "[outline:1px_solid_rgba(233,233,233,0.16)]";
 
 const MIN_PLAYERS = 3;
 const MAX_PLAYERS = 12;
+const MIN_IMPOSTERS = 1;
 
 const sectionLabelClass =
   "shrink-0 text-center text-[14px] font-normal leading-[20px] text-[#8A8A8A]";
@@ -147,6 +149,7 @@ export function SetupScreen({
   onDismissError,
 }: SetupScreenProps) {
   const [playerCount, setPlayerCount] = useState(4);
+  const [imposterCount, setImposterCount] = useState(1);
   const [category, setCategory] = useState<CategoryId>("everyday");
   const [categoryWiggle, setCategoryWiggle] = useState<
     Partial<Record<CategoryId, number>>
@@ -154,6 +157,12 @@ export function SetupScreen({
   const [difficulty, setDifficulty] = useState<Difficulty>("hard");
   const [starting, setStarting] = useState(false);
   const [startDots, setStartDots] = useState("");
+
+  const maxImposters = playerCount - 1;
+
+  useEffect(() => {
+    setImposterCount((c) => Math.min(c, maxImposters));
+  }, [maxImposters]);
 
   useEffect(() => {
     if (!starting) {
@@ -201,6 +210,40 @@ export function SetupScreen({
               disabled={playerCount >= MAX_PLAYERS}
               className={`text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
               aria-label="More players"
+            >
+              <PlusIcon />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <SectionLabel>Number of imposters</SectionLabel>
+          <div className="flex w-full gap-3">
+            <button
+              type="button"
+              onClick={() =>
+                setImposterCount((n) => Math.max(MIN_IMPOSTERS, n - 1))
+              }
+              disabled={imposterCount <= MIN_IMPOSTERS}
+              className={`text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
+              aria-label="Fewer imposters"
+            >
+              <MinusIcon />
+            </button>
+            <span
+              className="text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-black"
+              style={controlTextStyle}
+            >
+              {imposterCount}
+            </span>
+            <button
+              type="button"
+              onClick={() =>
+                setImposterCount((n) => Math.min(maxImposters, n + 1))
+              }
+              disabled={imposterCount >= maxImposters}
+              className={`text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
+              aria-label="More imposters"
             >
               <PlusIcon />
             </button>
@@ -314,6 +357,7 @@ export function SetupScreen({
               try {
                 await onStart({
                   playerCount,
+                  imposterCount,
                   category,
                   difficulty,
                 });

@@ -4,6 +4,7 @@ import { WORDS_BY_CATEGORY } from "./words";
 
 export type GameConfig = {
   playerCount: number;
+  imposterCount: number;
   category: CategoryId;
   difficulty: Difficulty;
 };
@@ -11,13 +12,32 @@ export type GameConfig = {
 export type GameRound = GameConfig & {
   word: string;
   hint: string;
-  imposterIndex: number;
+  /** Sorted ascending; length === `imposterCount`. */
+  imposterIndices: number[];
 };
 
 function randomInt(maxExclusive: number): number {
   const buf = new Uint32Array(1);
   crypto.getRandomValues(buf);
   return buf[0]! % maxExclusive;
+}
+
+/** Uniform random subset of distinct indices in `[0, playerCount)`, sorted ascending. */
+function pickRandomImposterIndices(
+  playerCount: number,
+  imposterCount: number,
+): number[] {
+  if (imposterCount < 1 || imposterCount >= playerCount) {
+    throw new Error("Invalid imposter count for player count");
+  }
+  const indices = Array.from({ length: playerCount }, (_, i) => i);
+  for (let i = 0; i < imposterCount; i++) {
+    const j = i + randomInt(playerCount - i);
+    const t = indices[i]!;
+    indices[i] = indices[j]!;
+    indices[j] = t;
+  }
+  return indices.slice(0, imposterCount).sort((a, b) => a - b);
 }
 
 export function createGameRoundFromPool(
@@ -29,12 +49,15 @@ export function createGameRoundFromPool(
   }
   const entry = pool[randomInt(pool.length)]!;
   const hint = entry.hints[config.difficulty];
-  const imposterIndex = randomInt(config.playerCount);
+  const imposterIndices = pickRandomImposterIndices(
+    config.playerCount,
+    config.imposterCount,
+  );
   return {
     ...config,
     word: entry.word,
     hint,
-    imposterIndex,
+    imposterIndices,
   };
 }
 
