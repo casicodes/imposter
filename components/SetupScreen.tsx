@@ -466,7 +466,7 @@ export function SetupScreen({
                 setStarting(false);
               }
             }}
-            className="relative box-border flex h-[64px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] [-webkit-tap-highlight-color:transparent] disabled:cursor-wait"
+            className="relative box-border flex h-[64px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] disabled:cursor-wait"
             style={{
               backgroundImage:
                 "linear-gradient(in oklab 180deg, #1F8E36, #1F8E36)",

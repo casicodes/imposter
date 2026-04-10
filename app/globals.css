@@ -4,7 +4,7 @@
   --background: #ffffff;
   --foreground: #171717;
   /* Page canvas; chrome bars use a tint of this color */
-  --app-canvas: #202020;
+  --app-canvas: #171717;
 }
 
 @theme inline {
@@ -16,7 +16,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #202020;
+    --background: #171717;
     --foreground: #ededed;
   }
 }
