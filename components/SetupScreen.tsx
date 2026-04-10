@@ -1,14 +1,8 @@
 "use client";
 
-import { Menu, type Anchor, type Direction, useBloomContext } from "bloom-menu";
+import { Menu, type Anchor, type Direction } from "bloom-menu";
 import { motion } from "framer-motion";
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ComponentProps,
-  type ReactNode,
-} from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { CategoryId, Difficulty } from "@/lib/categories";
 import {
   DEFAULT_SETUP_PREFERENCES,
@@ -60,20 +54,6 @@ function SectionLabel({ children }: { children: ReactNode }) {
     <div className="flex w-full">
       <p className={sectionLabelClass}>{children}</p>
     </div>
-  );
-}
-
-/** Must render under `Menu.Root`; adds visible shadow when the menu is open. */
-function BloomContainerWithShadow({
-  className,
-  ...rest
-}: ComponentProps<typeof Menu.Container>) {
-  const { open } = useBloomContext();
-  return (
-    <Menu.Container
-      {...rest}
-      className={`${className ?? ""} ${open ? "setup-bloom-container--open" : "setup-bloom-container--closed"}`}
-    />
   );
 }
 
@@ -131,7 +111,7 @@ function SectionLabelWithBloomOptions({
             <Menu.Portal>
               <Menu.Overlay className="z-40 bg-transparent" />
             </Menu.Portal>
-            <BloomContainerWithShadow
+            <Menu.Container
               buttonSize={closedSize}
               menuWidth={menuWidth}
               menuRadius={14}
@@ -148,7 +128,7 @@ function SectionLabelWithBloomOptions({
                 <ChevronsUpDownIcon />
               </Menu.Trigger>
               <Menu.Content className="p-2.5">{children}</Menu.Content>
-            </BloomContainerWithShadow>
+            </Menu.Container>
           </Menu.Root>
         </div>
       </div>
