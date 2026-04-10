@@ -332,7 +332,7 @@ export function PlayerScreen({
               onClick={() =>
                 revealed ? setRevealed(false) : onGoToPreviousPlayer()
               }
-              className={`flex size-10 shrink-0 items-center justify-center rounded-full bg-[#292929] ${outlineSubtle}`}
+              className={`flex size-10 shrink-0 items-center justify-center rounded-full bg-[#292929] transition-transform active:scale-[0.95] ${outlineSubtle}`}
               aria-label={
                 revealed ? "Hide role" : "Previous player"
               }
@@ -343,7 +343,7 @@ export function PlayerScreen({
           <button
             type="button"
             onClick={onExitToSetup}
-            className={`flex h-10 shrink-0 items-center justify-center rounded-full bg-[#292929] px-4 font-medium text-white ${outlineSubtle}`}
+            className={`flex h-10 shrink-0 items-center justify-center rounded-full bg-[#292929] px-4 font-medium text-white transition-transform active:scale-[0.95] ${outlineSubtle}`}
           >
             Restart
           </button>
@@ -424,7 +424,7 @@ export function PlayerScreen({
                 setRevealed(false);
                 onNextPlayer();
               }}
-              className={`relative box-border flex h-[64px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] [-webkit-tap-highlight-color:transparent] ${nextButtonArmed ? "" : "pointer-events-none"}`}
+              className={`relative box-border flex h-[64px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] ${nextButtonArmed ? "" : "pointer-events-none"}`}
               style={{
                 backgroundImage:
                   "linear-gradient(in oklab 180deg, #C0C1C0, #C0C1C0)",

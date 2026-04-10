@@ -2,8 +2,13 @@
 
 import { Menu, type Anchor, type Direction } from "bloom-menu";
 import { motion } from "framer-motion";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { CategoryId, Difficulty } from "@/lib/categories";
+import {
+  DEFAULT_SETUP_PREFERENCES,
+  readSetupPreferences,
+  writeSetupPreferences,
+} from "@/lib/setup-preferences";
 
 type SetupScreenProps = {
   onStart: (config: {
@@ -22,7 +27,7 @@ const outlineMuted = "[outline:1px_solid_rgba(233,233,233,0.16)]";
 const sectionPanelClass = "rounded-[12px] bg-[#292929] px-4 py-2";
 
 /** − / + counter controls: square footprint, fully rounded (pill/circle). */
-const counterStepBtnClass = `text-[16px] flex size-[50px] shrink-0 items-center justify-center rounded-full text-white ${outlineMuted} bg-[#292929] disabled:cursor-not-allowed disabled:opacity-40`;
+const counterStepBtnClass = `text-[16px] flex size-[50px] shrink-0 items-center justify-center rounded-full text-white ${outlineMuted} bg-[#292929] transition-transform active:scale-[0.95] disabled:cursor-not-allowed disabled:opacity-40`;
 
 const MIN_PLAYERS = 3;
 const MAX_PLAYERS = 12;
@@ -100,7 +105,7 @@ function SectionLabelWithBloomOptions({
             className={`shrink-0 bg-[#292929] ${outlineMuted}`}
           >
             <Menu.Trigger
-              className="gap-1 px-2 text-[15px] font-medium tabular-nums text-white [-webkit-tap-highlight-color:transparent] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B]"
+              className="gap-1 px-2 text-[15px] font-medium tabular-nums text-white [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B]"
               aria-label={aria}
             >
               <span>{valueLabel}</span>
@@ -236,17 +241,47 @@ export function SetupScreen({
   startError,
   onDismissError,
 }: SetupScreenProps) {
-  const [playerCount, setPlayerCount] = useState(4);
-  const [imposterCount, setImposterCount] = useState(1);
-  const [category, setCategory] = useState<CategoryId>("everyday");
+  const [playerCount, setPlayerCount] = useState(
+    DEFAULT_SETUP_PREFERENCES.playerCount,
+  );
+  const [imposterCount, setImposterCount] = useState(
+    DEFAULT_SETUP_PREFERENCES.imposterCount,
+  );
+  const [category, setCategory] = useState<CategoryId>(
+    DEFAULT_SETUP_PREFERENCES.category,
+  );
   const [categoryWiggle, setCategoryWiggle] = useState<
     Partial<Record<CategoryId, number>>
   >({});
-  const [difficulty, setDifficulty] = useState<Difficulty>("hard");
+  const [difficulty, setDifficulty] = useState<Difficulty>(
+    DEFAULT_SETUP_PREFERENCES.difficulty,
+  );
+  const skipPersistRef = useRef(true);
   const [starting, setStarting] = useState(false);
   const [startDots, setStartDots] = useState("");
 
   const maxImposters = playerCount - 1;
+
+  useEffect(() => {
+    const p = readSetupPreferences();
+    setPlayerCount(p.playerCount);
+    setImposterCount(p.imposterCount);
+    setCategory(p.category);
+    setDifficulty(p.difficulty);
+  }, []);
+
+  useEffect(() => {
+    if (skipPersistRef.current) {
+      skipPersistRef.current = false;
+      return;
+    }
+    writeSetupPreferences({
+      playerCount,
+      imposterCount,
+      category,
+      difficulty,
+    });
+  }, [playerCount, imposterCount, category, difficulty]);
 
   useEffect(() => {
     setImposterCount((c) => Math.min(c, maxImposters));
@@ -364,7 +399,7 @@ export function SetupScreen({
                           [id]: (w[id] ?? 0) + 1,
                         }));
                       }}
-                      className={`flex h-[50px] flex-1 flex-row items-center justify-center gap-1.5 rounded-xl p-1 ${on
+                      className={`flex h-[50px] flex-1 flex-row items-center justify-center gap-1.5 rounded-xl p-1 transition-transform active:scale-[0.95] ${on
                         ? "bg-white"
                         : `bg-[#292929] ${outlineMuted}`
                         }`}
@@ -399,7 +434,7 @@ export function SetupScreen({
                 <button
                   type="button"
                   onClick={onDismissError}
-                  className="shrink-0 text-red-300 underline"
+                  className="shrink-0 text-red-300 underline transition-transform active:scale-[0.95]"
                 >
                   Dismiss
                 </button>
@@ -429,7 +464,7 @@ export function SetupScreen({
                 <Menu.Item
                   key={id}
                   onSelect={() => setDifficulty(id)}
-                  className={`flex h-[50px] w-full items-center justify-center rounded-xl ${on
+                  className={`flex h-[50px] w-full items-center justify-center rounded-xl transition-transform active:scale-[0.95] ${on
                     ? "bg-white text-[#202020]"
                     : `bg-[#292929] text-white ${outlineMuted}`
                     }`}
