@@ -1,8 +1,14 @@
 "use client";
 
-import { Menu, type Anchor, type Direction } from "bloom-menu";
+import { Menu, type Anchor, type Direction, useBloomContext } from "bloom-menu";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ComponentProps,
+  type ReactNode,
+} from "react";
 import type { CategoryId, Difficulty } from "@/lib/categories";
 import {
   DEFAULT_SETUP_PREFERENCES,
@@ -24,7 +30,7 @@ type SetupScreenProps = {
 const outlineMuted = "[outline:1px_solid_#c0c0c029]";
 
 /** Closed bloom trigger: same width for Players, Imposters, and Hint difficulty. */
-const BLOOM_CLOSED_SIZE = { width: 88, height: 44 } as const;
+const BLOOM_CLOSED_SIZE = { width: 92, height: 44 } as const;
 
 /** One flex item so Portal + Container are not separate siblings (extra gap vs label). */
 const bloomTriggerShellStyle = {
@@ -54,6 +60,20 @@ function SectionLabel({ children }: { children: ReactNode }) {
     <div className="flex w-full">
       <p className={sectionLabelClass}>{children}</p>
     </div>
+  );
+}
+
+/** Must render under `Menu.Root`; adds visible shadow when the menu is open. */
+function BloomContainerWithShadow({
+  className,
+  ...rest
+}: ComponentProps<typeof Menu.Container>) {
+  const { open } = useBloomContext();
+  return (
+    <Menu.Container
+      {...rest}
+      className={`${className ?? ""} ${open ? "setup-bloom-container--open" : "setup-bloom-container--closed"}`}
+    />
   );
 }
 
@@ -111,7 +131,7 @@ function SectionLabelWithBloomOptions({
             <Menu.Portal>
               <Menu.Overlay className="z-40 bg-transparent" />
             </Menu.Portal>
-            <Menu.Container
+            <BloomContainerWithShadow
               buttonSize={closedSize}
               menuWidth={menuWidth}
               menuRadius={14}
@@ -128,7 +148,7 @@ function SectionLabelWithBloomOptions({
                 <ChevronsUpDownIcon />
               </Menu.Trigger>
               <Menu.Content className="p-2.5">{children}</Menu.Content>
-            </Menu.Container>
+            </BloomContainerWithShadow>
           </Menu.Root>
         </div>
       </div>

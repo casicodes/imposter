@@ -140,3 +140,12 @@ button {
     opacity: 0;
   }
 }
+
+/* Setup bloom pop-ups: layered drop-shadow (stacks with bloom-menu’s animated box-shadow) */
+.setup-bloom-container--closed {
+  filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.22));
+}
+.setup-bloom-container--open {
+  filter: drop-shadow(0 22px 44px rgb(0 0 0 / 0.48))
+    drop-shadow(0 10px 22px rgb(0 0 0 / 0.22));
+}
