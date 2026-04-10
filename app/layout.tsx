@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Dangrek, Geist_Mono } from "next/font/google";
 import { AppContainer } from "@/components/AppContainer";
 import "./globals.css";
@@ -34,6 +35,7 @@ export default function RootLayout({
         <AppContainer className="flex min-h-full flex-1 flex-col">
           {children}
         </AppContainer>
+        <Analytics />
       </body>
     </html>
   );
