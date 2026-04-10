@@ -21,7 +21,17 @@ type SetupScreenProps = {
   onDismissError?: () => void;
 };
 
-const outlineMuted = "[outline:1px_solid_rgba(233,233,233,0.16)]";
+const outlineMuted = "[outline:1px_solid_#c0c0c029]";
+
+/** Closed bloom trigger: same width for Players, Imposters, and Hint difficulty. */
+const BLOOM_CLOSED_SIZE = { width: 88, height: 44 } as const;
+
+/** One flex item so Portal + Container are not separate siblings (extra gap vs label). */
+const bloomTriggerShellStyle = {
+  width: BLOOM_CLOSED_SIZE.width,
+  minWidth: BLOOM_CLOSED_SIZE.width,
+  height: BLOOM_CLOSED_SIZE.height,
+} as const;
 
 /** Panel around each setup section (players, imposters, categories, difficulty). */
 const sectionPanelClass = "rounded-[12px] bg-[#292929] px-4 py-2";
@@ -34,10 +44,10 @@ const MAX_PLAYERS = 12;
 const MIN_IMPOSTERS = 1;
 
 const sectionLabelClass =
-  "shrink-0 text-center text-sm font-normal leading-5 text-neutral-400";
+  "shrink-0 text-center text-base font-normal leading-5 text-neutral-400";
 
 const sectionRowLabelClass =
-  "min-w-0 flex-1 text-left text-sm font-normal leading-5 text-neutral-400";
+  "min-w-0 flex-1 text-left text-base font-normal leading-5 text-neutral-400";
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
@@ -93,27 +103,34 @@ function SectionLabelWithBloomOptions({
     <div className={sectionPanelClass}>
       <div className="flex w-full items-center justify-between gap-2">
         <p className={sectionRowLabelClass}>{label}</p>
-        <Menu.Root direction={direction} anchor={anchor}>
-          <Menu.Portal>
-            <Menu.Overlay className="z-40 bg-transparent" />
-          </Menu.Portal>
-          <Menu.Container
-            buttonSize={closedSize}
-            menuWidth={menuWidth}
-            menuRadius={14}
-            buttonRadius={10}
-            className={`shrink-0 bg-[#292929] ${outlineMuted}`}
-          >
-            <Menu.Trigger
-              className="gap-1 px-2 text-sm font-medium tabular-nums text-white [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B]"
-              aria-label={aria}
+        <div
+          className="flex shrink-0 items-center justify-end overflow-visible"
+          style={bloomTriggerShellStyle}
+        >
+          <Menu.Root direction={direction} anchor={anchor}>
+            <Menu.Portal>
+              <Menu.Overlay className="z-40 bg-transparent" />
+            </Menu.Portal>
+            <Menu.Container
+              buttonSize={closedSize}
+              menuWidth={menuWidth}
+              menuRadius={14}
+              buttonRadius={10}
+              className={`shrink-0 bg-[#292929] ${outlineMuted}`}
             >
-              <span>{valueLabel}</span>
-              <ChevronsUpDownIcon />
-            </Menu.Trigger>
-            <Menu.Content className="p-2.5">{children}</Menu.Content>
-          </Menu.Container>
-        </Menu.Root>
+              <Menu.Trigger
+                className="flex w-full min-w-0 items-center justify-between gap-1 px-2 text-base font-medium tabular-nums text-white [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B]"
+                aria-label={aria}
+              >
+                <span className="min-w-0 flex-1 truncate text-center">
+                  {valueLabel}
+                </span>
+                <ChevronsUpDownIcon />
+              </Menu.Trigger>
+              <Menu.Content className="p-2.5">{children}</Menu.Content>
+            </Menu.Container>
+          </Menu.Root>
+        </div>
       </div>
     </div>
   );
@@ -309,7 +326,7 @@ export function SetupScreen({
           label="Players"
           valueLabel={String(playerCount)}
           menuWidth={200}
-          closedSize={{ width: 80, height: 44 }}
+          closedSize={BLOOM_CLOSED_SIZE}
         >
           <div className="flex w-full gap-2">
             <button
@@ -347,7 +364,7 @@ export function SetupScreen({
           label="Imposters"
           valueLabel={String(imposterCount)}
           menuWidth={200}
-          closedSize={{ width: 80, height: 44 }}
+          closedSize={BLOOM_CLOSED_SIZE}
         >
           <div className="flex w-full gap-2">
             <button
@@ -410,7 +427,7 @@ export function SetupScreen({
                         wiggleKey={categoryWiggle[id] ?? 0}
                       />
                       <span
-                        className={`inline-block max-w-full shrink-0 text-center text-sm leading-5 ${on ? "text-[#202020]" : "text-white"
+                        className={`inline-block max-w-full shrink-0 text-center text-base leading-5 ${on ? "text-[#202020]" : "text-white"
                           }`}
                       >
                         {label}
@@ -426,7 +443,7 @@ export function SetupScreen({
         {startError ? (
           <div
             role="alert"
-            className="rounded-xl border border-red-500/40 bg-red-950/40 px-3 py-2 text-sm text-red-200"
+            className="rounded-xl border border-red-500/40 bg-red-950/40 px-3 py-2 text-base text-red-200"
           >
             <div className="flex items-start justify-between gap-3">
               <span>{startError}</span>
@@ -447,7 +464,7 @@ export function SetupScreen({
           label="Hint difficulty"
           valueLabel={DIFFICULTY_LABEL[difficulty]}
           menuWidth={200}
-          closedSize={{ width: 118, height: 44 }}
+          closedSize={BLOOM_CLOSED_SIZE}
           direction="top"
           anchor="end"
         >
@@ -484,66 +501,72 @@ export function SetupScreen({
            * From Paper — https://app.paper.design/file/01KMGQQST17JDVAEMYXD22D0MV?node=IL-0
            * Apr 3, 2026
            */}
-          <button
-            type="button"
-            disabled={starting}
-            aria-busy={starting}
-            onClick={async () => {
-              setStarting(true);
-              try {
-                await onStart({
-                  playerCount,
-                  imposterCount,
-                  category,
-                  difficulty,
-                });
-              } finally {
-                setStarting(false);
-              }
-            }}
-            className="relative box-border flex h-[64px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] disabled:cursor-wait"
-            style={{
-              backgroundImage:
-                "linear-gradient(in oklab 180deg, #1F8E36, #1F8E36)",
-              boxShadow: "#202020 0px 0px 1px 2px",
-              outline: "1px solid #3AA54B",
-            }}
+          <div
+            className="start-btn-shell"
+            data-starting={starting ? "true" : "false"}
           >
-            <div
-              aria-hidden
-              className="pointer-events-none absolute left-0 top-0 box-border h-[32px] w-full rounded-[10px]"
+            <span className="start-btn-ripple-ring" aria-hidden />
+            <button
+              type="button"
+              disabled={starting}
+              aria-busy={starting}
+              onClick={async () => {
+                setStarting(true);
+                try {
+                  await onStart({
+                    playerCount,
+                    imposterCount,
+                    category,
+                    difficulty,
+                  });
+                } finally {
+                  setStarting(false);
+                }
+              }}
+              className="relative z-[1] box-border flex h-[64px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] disabled:cursor-wait"
               style={{
                 backgroundImage:
-                  "linear-gradient(in oklab 180deg, oklab(63.3% -0.132 0.088) 0%, oklab(60% -0.129 0.086) 100%)",
-                filter: "blur(1px)",
-              }}
-            />
-            <span
-              className="relative z-[1] flex shrink-0 items-center justify-center"
-              style={{
-                color: "#FFFFFF",
-                display: "inline-flex",
-                fontFamily: '"Dangrek", system-ui, sans-serif',
-                fontSize: "24px",
-                fontSynthesis: "none",
-                lineHeight: "22px",
-                textShadow: "#2020204F 0px 1px 0px",
-                WebkitFontSmoothing: "antialiased",
-                MozOsxFontSmoothing: "grayscale",
+                  "linear-gradient(in oklab 180deg, #1F8E36, #1F8E36)",
+                boxShadow: "#202020 0px 0px 1px 2px",
+                outline: "1px solid #3AA54B",
               }}
             >
-              {starting ? (
-                <>
-                  Starting
-                  <span className="inline-block min-w-[3ch] text-left">
-                    {startDots}
-                  </span>
-                </>
-              ) : (
-                "Start"
-              )}
-            </span>
-          </button>
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-0 top-0 box-border h-[32px] w-full rounded-[10px]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(in oklab 180deg, oklab(63.3% -0.132 0.088) 0%, oklab(60% -0.129 0.086) 100%)",
+                  filter: "blur(1px)",
+                }}
+              />
+              <span
+                className="relative z-[1] flex shrink-0 items-center justify-center"
+                style={{
+                  color: "#FFFFFF",
+                  display: "inline-flex",
+                  fontFamily: '"Dangrek", system-ui, sans-serif',
+                  fontSize: "24px",
+                  fontSynthesis: "none",
+                  lineHeight: "22px",
+                  textShadow: "#2020204F 0px 1px 0px",
+                  WebkitFontSmoothing: "antialiased",
+                  MozOsxFontSmoothing: "grayscale",
+                }}
+              >
+                {starting ? (
+                  <>
+                    Starting
+                    <span className="inline-block min-w-[3ch] text-left">
+                      {startDots}
+                    </span>
+                  </>
+                ) : (
+                  "Start"
+                )}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

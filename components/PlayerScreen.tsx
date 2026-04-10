@@ -11,7 +11,7 @@ const HOLD_COUNTDOWN_TO_1_MS = HOLD_DURATION_MS;
 /** After role is shown, hint fades in after this delay (crew + imposter). */
 const HINT_REVEAL_DELAY_S = 0.3;
 
-const outlineSubtle = "[outline:1px_solid_#e9e9e929]";
+const outlineSubtle = "[outline:1px_solid_#c0c0c029]";
 
 function BackChevronIcon() {
   return (
@@ -360,7 +360,7 @@ export function PlayerScreen({
               style={{
                 backgroundColor: "#292929",
                 boxShadow: "#202020 0px 0px 1px 2px",
-                outline: "1px solid #e9e9e929",
+                outline: "1px solid #c0c0c029",
               }}
               onPointerDown={(e) => {
                 e.currentTarget.setPointerCapture(e.pointerId);
@@ -426,7 +426,7 @@ export function PlayerScreen({
               style={{
                 backgroundColor: "#e4e4e4",
                 boxShadow: "#202020 0px 0px 1px 2px",
-                outline: "1px solid #e9e9e929",
+                outline: "1px solid #c0c0c029",
               }}
               aria-disabled={!nextButtonArmed}
               aria-label={

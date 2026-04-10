@@ -91,3 +91,52 @@ button {
   justify-content: center;
   gap: 0.5rem;
 }
+
+/* Setup “Start”: soft waves radiating from the button edge */
+.start-btn-shell {
+  position: relative;
+  width: 100%;
+}
+
+/*
+ * box-shadow spread (not scale): even on all sides.
+ * One pulse 1.3s, then 3s quiet → 4.3s loop.
+ */
+.start-btn-ripple-ring {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 20px;
+  background: transparent;
+  animation: start-btn-ripple-wave 4.3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: box-shadow;
+}
+
+.start-btn-shell[data-starting="true"] .start-btn-ripple-ring {
+  animation-play-state: paused;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+@keyframes start-btn-ripple-wave {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, #3aa54b 55%, transparent);
+  }
+  /* 1.3s / 4.3s ≈ 30.23%: ring reaches full spread */
+  30.23% {
+    box-shadow: 0 0 0 12px transparent;
+  }
+  /* rest of cycle: no emission (3s idle) */
+  31%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .start-btn-ripple-ring {
+    animation: none;
+    opacity: 0;
+  }
+}
