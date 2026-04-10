@@ -261,7 +261,7 @@ export function PlayerScreen({
               >
                 😈
               </motion.span>
-              <h1 className="text-2xl font-semibold leading-10 tracking-tight text-white">
+              <h1 className="text-3xl font-semibold leading-10 tracking-tight text-white">
                 You are the imposter
               </h1>
               <motion.p
