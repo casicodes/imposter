@@ -11,7 +11,7 @@ const HOLD_COUNTDOWN_TO_1_MS = HOLD_DURATION_MS;
 /** After role is shown, hint fades in after this delay (crew + imposter). */
 const HINT_REVEAL_DELAY_S = 0.3;
 
-const outlineSubtle = "[outline:1px_solid_rgba(233,233,233,0.16)]";
+const outlineSubtle = "[outline:1px_solid_#e9e9e929]";
 
 function BackChevronIcon() {
   return (
@@ -169,8 +169,8 @@ export function PlayerScreen({
           >
             <h1
               className={`text-white ${holdCountdown !== null
-                ? "text-[72px] font-bold leading-none tabular-nums tracking-tight"
-                : "text-[48px] font-semibold capitalize leading-none tracking-tight"
+                ? "text-7xl font-bold leading-none tabular-nums"
+                : "text-5xl font-semibold capitalize leading-none"
                 }`}
             >
               {revealed
@@ -219,7 +219,7 @@ export function PlayerScreen({
             />
             <div className="relative z-[1] flex w-full flex-col items-center gap-2">
               <motion.span
-                className="inline-block select-none text-[48px] leading-none"
+                className="inline-block select-none text-5xl leading-none"
                 style={{ transformOrigin: "50% 92%" }}
                 initial={false}
                 animate={
@@ -261,11 +261,11 @@ export function PlayerScreen({
               >
                 😈
               </motion.span>
-              <h1 className="text-[24px] font-semibold leading-10 tracking-tight text-white">
+              <h1 className="text-2xl font-semibold leading-10 tracking-tight text-white">
                 You are the imposter
               </h1>
               <motion.p
-                className="leading-5 text-[#8a8a8a] italic"
+                className="leading-5 text-neutral-400 italic"
                 initial={false}
                 animate={{
                   opacity: revealed && isImposter ? 1 : 0,
@@ -298,11 +298,11 @@ export function PlayerScreen({
             style={{ transformOrigin: "center" }}
             aria-hidden={!revealed || isImposter}
           >
-            <h1 className="capitalize text-[48px] font-semibold leading-none tracking-tight text-white">
+            <h1 className="capitalize text-5xl font-semibold leading-none text-white">
               {word}
             </h1>
             <motion.p
-              className="leading-5 text-[#8a8a8a] italic"
+              className="leading-5 text-neutral-400 italic"
               initial={false}
               animate={{
                 opacity: revealed && !isImposter ? 1 : 0,
@@ -358,10 +358,9 @@ export function PlayerScreen({
               className={`reveal-hold-btn box-border flex h-[64px] w-full cursor-pointer items-center justify-center [-webkit-tap-highlight-color:transparent] ${pressingReveal ? "reveal-hold-btn--pressing" : ""}`}
               aria-label="Hold to reveal your role"
               style={{
-                backgroundImage:
-                  "linear-gradient(in oklab, rgb(69, 70, 75), rgb(45 45 48))",
+                backgroundColor: "#292929",
                 boxShadow: "#202020 0px 0px 1px 2px",
-                outline: "1px solid #757575",
+                outline: "1px solid #e9e9e929",
               }}
               onPointerDown={(e) => {
                 e.currentTarget.setPointerCapture(e.pointerId);
@@ -383,15 +382,14 @@ export function PlayerScreen({
               onContextMenu={(e) => e.preventDefault()}
             >
               {/*
-               * From Paper — https://app.paper.design/file/01KMGQQST17JDVAEMYXD22D0MV?node=IF-0
-               * Apr 3, 2026 — gloss under .reveal-hold-overlay; hold progress unchanged
+               * Top gloss (oklab gradient) over #292929 shell; hold progress — .reveal-hold-overlay
                */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute left-0 top-0 z-0 box-border h-[32px] w-full rounded-[10px]"
                 style={{
                   backgroundImage:
-                    "linear-gradient(oklab(0.45 0 0) 0%, oklab(0.38 0 0) 100%)",
+                    "linear-gradient(oklab(0.33 0 0) 0%, oklab(0.34 0 0) 100%)",
                   filter: "blur(1px)",
                 }}
               />
@@ -426,10 +424,9 @@ export function PlayerScreen({
               }}
               className={`relative box-border flex h-[64px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[20px] [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] ${nextButtonArmed ? "" : "pointer-events-none"}`}
               style={{
-                backgroundImage:
-                  "linear-gradient(in oklab 180deg, #C0C1C0, #C0C1C0)",
+                backgroundColor: "#e4e4e4",
                 boxShadow: "#202020 0px 0px 1px 2px",
-                outline: "1px solid #F2F2F2",
+                outline: "1px solid #e9e9e929",
               }}
               aria-disabled={!nextButtonArmed}
               aria-label={
@@ -438,16 +435,12 @@ export function PlayerScreen({
                   : "Release, then tap to continue"
               }
             >
-              {/*
-               * From Paper — https://app.paper.design/file/01KMGQQST17JDVAEMYXD22D0MV?node=HW-0
-               * Apr 3, 2026
-               */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute left-0 top-0 z-0 box-border h-[32px] w-full rounded-[10px]"
                 style={{
                   backgroundImage:
-                    "linear-gradient(in oklab 180deg, oklab(91.9% 0 0) 0%, oklab(84.3% 0 0) 100%)",
+                    "linear-gradient(oklab(1 0 0) 0%, oklab(0.96 0 0) 100%)",
                   filter: "blur(1px)",
                 }}
               />

@@ -27,17 +27,17 @@ const outlineMuted = "[outline:1px_solid_rgba(233,233,233,0.16)]";
 const sectionPanelClass = "rounded-[12px] bg-[#292929] px-4 py-2";
 
 /** − / + counter controls: square footprint, fully rounded (pill/circle). */
-const counterStepBtnClass = `text-[16px] flex size-[50px] shrink-0 items-center justify-center rounded-full text-white ${outlineMuted} bg-[#292929] transition-transform active:scale-[0.95] disabled:cursor-not-allowed disabled:opacity-40`;
+const counterStepBtnClass = `text-base flex size-[50px] shrink-0 items-center justify-center rounded-full text-white ${outlineMuted} bg-[#292929] transition-transform active:scale-[0.95] disabled:cursor-not-allowed disabled:opacity-40`;
 
 const MIN_PLAYERS = 3;
 const MAX_PLAYERS = 12;
 const MIN_IMPOSTERS = 1;
 
 const sectionLabelClass =
-  "shrink-0 text-center text-[14px] font-normal leading-[20px] text-[#8A8A8A]";
+  "shrink-0 text-center text-sm font-normal leading-5 text-neutral-400";
 
 const sectionRowLabelClass =
-  "min-w-0 flex-1 text-left text-[14px] font-normal leading-[20px] text-[#8A8A8A]";
+  "min-w-0 flex-1 text-left text-sm font-normal leading-5 text-neutral-400";
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
@@ -105,7 +105,7 @@ function SectionLabelWithBloomOptions({
             className={`shrink-0 bg-[#292929] ${outlineMuted}`}
           >
             <Menu.Trigger
-              className="gap-1 px-2 text-[15px] font-medium tabular-nums text-white [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B]"
+              className="gap-1 px-2 text-sm font-medium tabular-nums text-white [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B]"
               aria-label={aria}
             >
               <span>{valueLabel}</span>
@@ -324,7 +324,7 @@ export function SetupScreen({
               <MinusIcon />
             </button>
             <span
-              className="text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-[#202020]"
+              className="text-base flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-[#202020]"
               style={controlTextStyle}
             >
               {playerCount}
@@ -362,7 +362,7 @@ export function SetupScreen({
               <MinusIcon />
             </button>
             <span
-              className="text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-[#202020]"
+              className="text-base flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-[#202020]"
               style={controlTextStyle}
             >
               {imposterCount}
@@ -410,7 +410,7 @@ export function SetupScreen({
                         wiggleKey={categoryWiggle[id] ?? 0}
                       />
                       <span
-                        className={`inline-block max-w-full shrink-0 text-center text-[15px] leading-5 ${on ? "text-[#202020]" : "text-white"
+                        className={`inline-block max-w-full shrink-0 text-center text-sm leading-5 ${on ? "text-[#202020]" : "text-white"
                           }`}
                       >
                         {label}
