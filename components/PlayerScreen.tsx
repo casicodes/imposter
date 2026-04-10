@@ -332,7 +332,7 @@ export function PlayerScreen({
               onClick={() =>
                 revealed ? setRevealed(false) : onGoToPreviousPlayer()
               }
-              className={`flex size-10 shrink-0 items-center justify-center rounded-full bg-[#2d2d30] ${outlineSubtle}`}
+              className={`flex size-10 shrink-0 items-center justify-center rounded-full bg-[#292929] ${outlineSubtle}`}
               aria-label={
                 revealed ? "Hide role" : "Previous player"
               }
@@ -343,7 +343,7 @@ export function PlayerScreen({
           <button
             type="button"
             onClick={onExitToSetup}
-            className={`flex h-10 shrink-0 items-center justify-center rounded-full bg-[#2d2d30] px-4 font-medium text-white ${outlineSubtle}`}
+            className={`flex h-10 shrink-0 items-center justify-center rounded-full bg-[#292929] px-4 font-medium text-white ${outlineSubtle}`}
           >
             Restart
           </button>
@@ -360,7 +360,7 @@ export function PlayerScreen({
               style={{
                 backgroundImage:
                   "linear-gradient(in oklab, rgb(69, 70, 75), rgb(45 45 48))",
-                boxShadow: "#000000 0px 0px 1px 2px",
+                boxShadow: "#202020 0px 0px 1px 2px",
                 outline: "1px solid #757575",
               }}
               onPointerDown={(e) => {
@@ -408,7 +408,7 @@ export function PlayerScreen({
                   fontSize: "24px",
                   fontSynthesis: "none",
                   lineHeight: "22px",
-                  textShadow: "#0000004F 0px 1px 0px",
+                  textShadow: "#2020204F 0px 1px 0px",
                   WebkitFontSmoothing: "antialiased",
                   MozOsxFontSmoothing: "grayscale",
                 }}
@@ -428,7 +428,7 @@ export function PlayerScreen({
               style={{
                 backgroundImage:
                   "linear-gradient(in oklab 180deg, #C0C1C0, #C0C1C0)",
-                boxShadow: "#000000 0px 0px 1px 2px",
+                boxShadow: "#202020 0px 0px 1px 2px",
                 outline: "1px solid #F2F2F2",
               }}
               aria-disabled={!nextButtonArmed}
@@ -455,7 +455,7 @@ export function PlayerScreen({
                 className="relative z-[1] inline-flex shrink-0 items-center justify-center"
                 style={{
                   boxSizing: "border-box",
-                  color: "#000000",
+                  color: "#202020",
                   fontFamily: '"Dangrek", system-ui, sans-serif',
                   fontSize: "24px",
                   fontSynthesis: "none",

@@ -1,5 +1,6 @@
 "use client";
 
+import { Menu, type Anchor, type Direction } from "bloom-menu";
 import { motion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
 import type { CategoryId, Difficulty } from "@/lib/categories";
@@ -17,6 +18,12 @@ type SetupScreenProps = {
 
 const outlineMuted = "[outline:1px_solid_rgba(233,233,233,0.16)]";
 
+/** Panel around each setup section (players, imposters, categories, difficulty). */
+const sectionPanelClass = "rounded-[12px] bg-[#292929] px-4 py-2";
+
+/** − / + counter controls: square footprint, fully rounded (pill/circle). */
+const counterStepBtnClass = `text-[16px] flex size-[50px] shrink-0 items-center justify-center rounded-full text-white ${outlineMuted} bg-[#292929] disabled:cursor-not-allowed disabled:opacity-40`;
+
 const MIN_PLAYERS = 3;
 const MAX_PLAYERS = 12;
 const MIN_IMPOSTERS = 1;
@@ -24,10 +31,85 @@ const MIN_IMPOSTERS = 1;
 const sectionLabelClass =
   "shrink-0 text-center text-[14px] font-normal leading-[20px] text-[#8A8A8A]";
 
+const sectionRowLabelClass =
+  "min-w-0 flex-1 text-left text-[14px] font-normal leading-[20px] text-[#8A8A8A]";
+
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
     <div className="flex w-full">
       <p className={sectionLabelClass}>{children}</p>
+    </div>
+  );
+}
+
+function ChevronsUpDownIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={16}
+      height={16}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-chevrons-up-down shrink-0 text-neutral-500"
+      aria-hidden
+    >
+      <path d="m7 15 5 5 5-5" />
+      <path d="m7 9 5-5 5 5" />
+    </svg>
+  );
+}
+
+/** Label and bloom trigger on one row; options render inside the expanded menu. */
+function SectionLabelWithBloomOptions({
+  label,
+  valueLabel,
+  menuWidth,
+  closedSize,
+  direction = "bottom",
+  anchor = "end",
+  children,
+}: {
+  label: ReactNode;
+  /** Shown on the closed trigger (current value). */
+  valueLabel: string;
+  menuWidth: number;
+  closedSize: { width: number; height: number };
+  /** Hint menu opens upward; others default to downward. */
+  direction?: Direction;
+  anchor?: Anchor;
+  children: ReactNode;
+}) {
+  const aria = `${typeof label === "string" ? label : "Setting"}: ${valueLabel}. Change`;
+  return (
+    <div className={sectionPanelClass}>
+      <div className="flex w-full items-center justify-between gap-2">
+        <p className={sectionRowLabelClass}>{label}</p>
+        <Menu.Root direction={direction} anchor={anchor}>
+          <Menu.Portal>
+            <Menu.Overlay className="z-40 bg-transparent" />
+          </Menu.Portal>
+          <Menu.Container
+            buttonSize={closedSize}
+            menuWidth={menuWidth}
+            menuRadius={14}
+            buttonRadius={10}
+            className={`shrink-0 bg-[#292929] ${outlineMuted}`}
+          >
+            <Menu.Trigger
+              className="gap-1 px-2 text-[15px] font-medium tabular-nums text-white [-webkit-tap-highlight-color:transparent] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B]"
+              aria-label={aria}
+            >
+              <span>{valueLabel}</span>
+              <ChevronsUpDownIcon />
+            </Menu.Trigger>
+            <Menu.Content className="p-2.5">{children}</Menu.Content>
+          </Menu.Container>
+        </Menu.Root>
+      </div>
     </div>
   );
 }
@@ -72,6 +154,12 @@ function PlusIcon() {
 
 /** Player count, hint difficulty — match category row type rhythm. */
 const controlTextStyle = { fontSize: 16, lineHeight: "20px" } as const;
+
+const DIFFICULTY_LABEL: Record<Difficulty, string> = {
+  easy: "Easy",
+  medium: "Medium",
+  hard: "Hard",
+};
 
 const CATEGORY_IMAGE = {
   food: "/category-food.png",
@@ -180,24 +268,28 @@ export function SetupScreen({
   }, [starting]);
 
   return (
-    <div className="relative flex min-h-dvh w-full flex-col bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased">
-      <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-3">
-          <SectionLabel>Number of players</SectionLabel>
-          <div className="flex w-full gap-3">
+    <div className="relative flex min-h-dvh w-full flex-col bg-transparent px-[12px] pb-[120px] pt-[30px] antialiased">
+      <div className="flex flex-col gap-3">
+        <SectionLabelWithBloomOptions
+          label="Players"
+          valueLabel={String(playerCount)}
+          menuWidth={200}
+          closedSize={{ width: 80, height: 44 }}
+        >
+          <div className="flex w-full gap-2">
             <button
               type="button"
               onClick={() =>
                 setPlayerCount((n) => Math.max(MIN_PLAYERS, n - 1))
               }
               disabled={playerCount <= MIN_PLAYERS}
-              className={`text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={counterStepBtnClass}
               aria-label="Fewer players"
             >
               <MinusIcon />
             </button>
             <span
-              className="text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-black"
+              className="text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-[#202020]"
               style={controlTextStyle}
             >
               {playerCount}
@@ -208,30 +300,34 @@ export function SetupScreen({
                 setPlayerCount((n) => Math.min(MAX_PLAYERS, n + 1))
               }
               disabled={playerCount >= MAX_PLAYERS}
-              className={`text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={counterStepBtnClass}
               aria-label="More players"
             >
               <PlusIcon />
             </button>
           </div>
-        </div>
+        </SectionLabelWithBloomOptions>
 
-        <div className="flex flex-col gap-3">
-          <SectionLabel>Number of imposters</SectionLabel>
-          <div className="flex w-full gap-3">
+        <SectionLabelWithBloomOptions
+          label="Imposters"
+          valueLabel={String(imposterCount)}
+          menuWidth={200}
+          closedSize={{ width: 80, height: 44 }}
+        >
+          <div className="flex w-full gap-2">
             <button
               type="button"
               onClick={() =>
                 setImposterCount((n) => Math.max(MIN_IMPOSTERS, n - 1))
               }
               disabled={imposterCount <= MIN_IMPOSTERS}
-              className={`text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={counterStepBtnClass}
               aria-label="Fewer imposters"
             >
               <MinusIcon />
             </button>
             <span
-              className="text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-black"
+              className="text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] bg-white text-center text-[#202020]"
               style={controlTextStyle}
             >
               {imposterCount}
@@ -242,15 +338,15 @@ export function SetupScreen({
                 setImposterCount((n) => Math.min(maxImposters, n + 1))
               }
               disabled={imposterCount >= maxImposters}
-              className={`text-[16px] flex h-[50px] w-full min-w-0 flex-1 items-center justify-center rounded-[10px] text-white ${outlineMuted} bg-[#2d2d30] disabled:cursor-not-allowed disabled:opacity-40`}
+              className={counterStepBtnClass}
               aria-label="More imposters"
             >
               <PlusIcon />
             </button>
           </div>
-        </div>
+        </SectionLabelWithBloomOptions>
 
-        <div className="flex flex-col gap-3">
+        <div className={`flex flex-col gap-3 ${sectionPanelClass}`}>
           <SectionLabel>Categories</SectionLabel>
           <div className="flex flex-col gap-3">
             {CATEGORY_ROWS.map((row) => (
@@ -270,7 +366,7 @@ export function SetupScreen({
                       }}
                       className={`flex h-[50px] flex-1 flex-row items-center justify-center gap-1.5 rounded-xl p-1 ${on
                         ? "bg-white"
-                        : `bg-[#2d2d30] ${outlineMuted}`
+                        : `bg-[#292929] ${outlineMuted}`
                         }`}
                     >
                       <CategoryIcon
@@ -279,7 +375,7 @@ export function SetupScreen({
                         wiggleKey={categoryWiggle[id] ?? 0}
                       />
                       <span
-                        className={`inline-block max-w-full shrink-0 text-center text-[16px] leading-5 ${on ? "text-black" : "text-white"
+                        className={`inline-block max-w-full shrink-0 text-center text-[15px] leading-5 ${on ? "text-[#202020]" : "text-white"
                           }`}
                       >
                         {label}
@@ -312,9 +408,15 @@ export function SetupScreen({
           </div>
         ) : null}
 
-        <div className="flex flex-col gap-3">
-          <SectionLabel>Hint difficulty</SectionLabel>
-          <div className="flex gap-3">
+        <SectionLabelWithBloomOptions
+          label="Hint difficulty"
+          valueLabel={DIFFICULTY_LABEL[difficulty]}
+          menuWidth={200}
+          closedSize={{ width: 118, height: 44 }}
+          direction="top"
+          anchor="end"
+        >
+          <div className="flex w-full flex-col gap-2">
             {(
               [
                 { id: "easy" as const, label: "Easy" },
@@ -324,22 +426,21 @@ export function SetupScreen({
             ).map(({ id, label }) => {
               const on = difficulty === id;
               return (
-                <button
+                <Menu.Item
                   key={id}
-                  type="button"
-                  onClick={() => setDifficulty(id)}
-                  style={controlTextStyle}
-                  className={`flex h-[50px] flex-1 items-center justify-center rounded-xl ${on
-                    ? "bg-white text-black"
-                    : `bg-[#2d2d30] text-white ${outlineMuted}`
+                  onSelect={() => setDifficulty(id)}
+                  className={`flex h-[50px] w-full items-center justify-center rounded-xl ${on
+                    ? "bg-white text-[#202020]"
+                    : `bg-[#292929] text-white ${outlineMuted}`
                     }`}
+                  style={controlTextStyle}
                 >
                   {label}
-                </button>
+                </Menu.Item>
               );
             })}
           </div>
-        </div>
+        </SectionLabelWithBloomOptions>
       </div>
 
       <div className="app-chrome-frost pointer-events-none fixed inset-x-0 bottom-0 z-10 flex justify-center">
@@ -369,7 +470,7 @@ export function SetupScreen({
             style={{
               backgroundImage:
                 "linear-gradient(in oklab 180deg, #1F8E36, #1F8E36)",
-              boxShadow: "#000000 0px 0px 1px 2px",
+              boxShadow: "#202020 0px 0px 1px 2px",
               outline: "1px solid #3AA54B",
             }}
           >
@@ -391,7 +492,7 @@ export function SetupScreen({
                 fontSize: "24px",
                 fontSynthesis: "none",
                 lineHeight: "22px",
-                textShadow: "#0000004F 0px 1px 0px",
+                textShadow: "#2020204F 0px 1px 0px",
                 WebkitFontSmoothing: "antialiased",
                 MozOsxFontSmoothing: "grayscale",
               }}
