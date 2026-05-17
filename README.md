@@ -29,7 +29,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run build` / `npm start` | Production build and serve |
 | `npm run lint` | ESLint |
 | `npm run generate-words` | Generate words with Mistral and insert into Supabase (needs `MISTRAL_API_KEY`) |
-| `npm run export-offline-words` | Pull recent rows from `game_words` into [`lib/offline-words-snapshot.json`](lib/offline-words-snapshot.json) (Supabase env vars; optional `OFFLINE_EXPORT_TARGET`, default ~130). Retries on transient `fetch failed`. If Node still cannot reach Supabase (VPN, paused project, etc.), export rows from the Supabase SQL editor as JSON and run `npm run export-offline-words -- --from-file ./export.json` (array of `category`, `word`, `hint_easy`, `hint_medium`, `hint_hard`). |
+| `npm run export-offline-words` | Pull recent rows from `game_words` into [`lib/offline-words-snapshot.json`](lib/offline-words-snapshot.json). Defaults: **~500** words, **half** to `everyday`, the rest split evenly across the other six categories. Env: `OFFLINE_EXPORT_TARGET` (default 500), `OFFLINE_EXPORT_EVERYDAY_FRACTION` (default `0.5`), `OFFLINE_EXPORT_FETCH_LIMIT` (default 6000). Retries on transient `fetch failed`. If Node cannot reach Supabase, export JSON from SQL (see below) and run `npm run export-offline-words -- --from-file ./export.json`. |
 
 ### Export snapshot without CLI → Supabase (JSON file)
 
@@ -41,7 +41,7 @@ from (
   select category, word, hint_easy, hint_medium, hint_hard
   from public.game_words
   order by created_at desc
-  limit 500
+  limit 6000
 ) row;
 ```
 
@@ -50,6 +50,8 @@ from (
 3. Run: `npm run export-offline-words -- --from-file ./game-words.json`
 
 To verify the script only: `cp scripts/sample-game-words-for-export.json game-words.json` then the same command.
+
+Snapshot sizing: defaults target **500** words with **half** reserved for `everyday` (then the rest split evenly across the other six categories), then the script **fills any leftover slots** until it hits 500 or runs out of rows. Rows are deduped per category by **word + all three hints** (same word with different hints counts as multiple entries). If a category runs out of unique rows, that category’s share is capped and others absorb the budget.
 
 ## Deploy
 

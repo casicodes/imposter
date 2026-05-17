@@ -4,7 +4,8 @@
  *   npm run export-offline-words -- --from-file ./game_words-export.json
  *
  * Default mode needs .env.local: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
- * Writes lib/offline-words-snapshot.json (~120–150 words by default).
+ * Writes lib/offline-words-snapshot.json (default ~500 words; half to everyday).
+ * Rows are deduped per category by **word + easy/medium/hard hints** (not word alone).
  *
  * --from-file: JSON array of { category, word, hint_easy, hint_medium, hint_hard }
  * (e.g. saved from Supabase SQL results when Node cannot reach the API).
@@ -34,6 +35,20 @@ type GameWordRow = {
   hint_medium: string;
   hint_hard: string;
 };
+
+/** Stored categories except `everyday` — everyday gets its own budget first. */
+const NON_EVERYDAY_CATEGORIES: StoredCategoryId[] = [
+  "food",
+  "movies",
+  "animals",
+  "places",
+  "sports",
+  "science",
+];
+
+const DEFAULT_FETCH_LIMIT = 6000;
+const DEFAULT_TARGET_TOTAL = 500;
+const DEFAULT_EVERYDAY_FRACTION = 0.5;
 
 function parseArgs(argv: string[]): { fromFile: string | null } {
   let fromFile: string | null = null;
@@ -91,12 +106,30 @@ function emptySnapshot(): Record<StoredCategoryId, WordEntry[]> {
   };
 }
 
+function rowIdentityKey(row: GameWordRow): string {
+  return [
+    normalizeWordForDedupe(row.word),
+    normalizeWordForDedupe(row.hint_easy),
+    normalizeWordForDedupe(row.hint_medium),
+    normalizeWordForDedupe(row.hint_hard),
+  ].join("\0");
+}
+
 function buildSnapshotFromRows(
   rows: GameWordRow[],
   targetTotal: number,
+  everydayFraction: number,
 ): Record<StoredCategoryId, WordEntry[]> {
   const buckets = emptySnapshot();
-  const seenNorm = new Set<string>();
+  const seenInCategory: Record<StoredCategoryId, Set<string>> = {
+    food: new Set(),
+    movies: new Set(),
+    animals: new Set(),
+    places: new Set(),
+    sports: new Set(),
+    science: new Set(),
+    everyday: new Set(),
+  };
 
   for (const row of rows) {
     if (!isStoredCategoryId(row.category)) continue;
@@ -108,9 +141,12 @@ function buildSnapshotFromRows(
     ) {
       continue;
     }
+    const cat = row.category;
     const norm = normalizeWordForDedupe(row.word);
-    if (!norm || seenNorm.has(norm)) continue;
-    seenNorm.add(norm);
+    if (!norm) continue;
+    const idKey = rowIdentityKey(row);
+    if (seenInCategory[cat].has(idKey)) continue;
+    seenInCategory[cat].add(idKey);
 
     const entry: WordEntry = {
       word: row.word.trim(),
@@ -120,19 +156,46 @@ function buildSnapshotFromRows(
         hard: row.hint_hard.trim(),
       },
     };
-    buckets[row.category].push(entry);
+    buckets[cat].push(entry);
   }
 
-  const n = STORED_CATEGORY_IDS.length;
-  const base = Math.floor(targetTotal / n);
-  let remainder = targetTotal % n;
-
   const out = emptySnapshot();
-  for (const cat of STORED_CATEGORY_IDS) {
-    const want = base + (remainder > 0 ? 1 : 0);
-    if (remainder > 0) remainder -= 1;
-    const pool = buckets[cat];
-    out[cat] = pool.slice(0, Math.min(want, pool.length));
+  const frac = Math.min(1, Math.max(0, everydayFraction));
+  const everydayTarget = Math.floor(targetTotal * frac);
+  out.everyday = buckets.everyday.slice(
+    0,
+    Math.min(everydayTarget, buckets.everyday.length),
+  );
+
+  let remaining = targetTotal - out.everyday.length;
+  const nOther = NON_EVERYDAY_CATEGORIES.length;
+  let base = Math.floor(remaining / nOther);
+  let rem = remaining % nOther;
+
+  for (const cat of NON_EVERYDAY_CATEGORIES) {
+    const want = base + (rem > 0 ? 1 : 0);
+    if (rem > 0) rem -= 1;
+    out[cat] = buckets[cat].slice(0, Math.min(want, buckets[cat].length));
+  }
+
+  function totalCount(o: Record<StoredCategoryId, WordEntry[]>): number {
+    let s = 0;
+    for (const c of STORED_CATEGORY_IDS) s += o[c].length;
+    return s;
+  }
+
+  // Use remaining slots (e.g. everyday pool smaller than 50% target) to pull more
+  // from any category that still has unused words, up to `targetTotal`.
+  while (totalCount(out) < targetTotal) {
+    let progressed = false;
+    for (const c of STORED_CATEGORY_IDS) {
+      if (totalCount(out) >= targetTotal) break;
+      const pool = buckets[c];
+      if (out[c].length >= pool.length) continue;
+      out[c].push(pool[out[c].length]!);
+      progressed = true;
+    }
+    if (!progressed) break;
   }
 
   return out;
@@ -193,11 +256,15 @@ async function fetchRowsFromSupabaseWithRetry(
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const supabase = createSupabaseAdmin();
+    const fetchLimit = Math.max(
+      1,
+      Number(process.env.OFFLINE_EXPORT_FETCH_LIMIT) || DEFAULT_FETCH_LIMIT,
+    );
     const { data, error } = await supabase
       .from("game_words")
       .select("category, word, hint_easy, hint_medium, hint_hard")
       .order("created_at", { ascending: false })
-      .limit(500);
+      .limit(fetchLimit);
 
     if (!error) {
       return (Array.isArray(data) ? data : []) as GameWordRow[];
@@ -235,10 +302,20 @@ async function fetchRowsFromSupabaseWithRetry(
 
 async function main() {
   const { fromFile } = parseArgs(process.argv);
+  const rawTarget = process.env.OFFLINE_EXPORT_TARGET?.trim();
   const targetTotal = Math.max(
     1,
-    Number(process.env.OFFLINE_EXPORT_TARGET) || 130,
+    rawTarget !== undefined && rawTarget !== ""
+      ? Number(rawTarget)
+      : DEFAULT_TARGET_TOTAL,
   );
+
+  const rawFrac = process.env.OFFLINE_EXPORT_EVERYDAY_FRACTION?.trim();
+  const parsedFrac =
+    rawFrac !== undefined && rawFrac !== "" ? Number(rawFrac) : NaN;
+  const everydayFraction = Number.isFinite(parsedFrac)
+    ? Math.min(1, Math.max(0, parsedFrac))
+    : DEFAULT_EVERYDAY_FRACTION;
 
   let rows: GameWordRow[];
 
@@ -275,13 +352,23 @@ async function main() {
     rows = await fetchRowsFromSupabaseWithRetry(url);
   }
 
-  const out = buildSnapshotFromRows(rows, targetTotal);
+  const out = buildSnapshotFromRows(rows, targetTotal, everydayFraction);
   const outPath = resolve(process.cwd(), "lib/offline-words-snapshot.json");
   writeFileSync(outPath, `${JSON.stringify(out, null, 2)}\n`, "utf8");
 
   const n = STORED_CATEGORY_IDS.length;
   const total = STORED_CATEGORY_IDS.reduce((s, c) => s + out[c].length, 0);
-  console.log(`Wrote ${outPath} (${total} words across ${n} categories).`);
+  const breakdown = STORED_CATEGORY_IDS.map((c) => `${c}=${out[c].length}`).join(
+    ", ",
+  );
+  console.log(
+    `Wrote ${outPath} (${total} words; target=${targetTotal}, everydayFraction=${everydayFraction}). Breakdown: ${breakdown}.`,
+  );
+  if (total < targetTotal) {
+    console.log(
+      `Note: fewer than ${targetTotal} unique words exist in the fetched rows (per-category dedupe). Add more rows in Supabase or raise OFFLINE_EXPORT_FETCH_LIMIT.`,
+    );
+  }
 }
 
 main().catch((e) => {
