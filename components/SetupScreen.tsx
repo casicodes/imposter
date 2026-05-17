@@ -1,5 +1,6 @@
 "use client";
 
+import { Switch } from "@base-ui/react/switch";
 import { Menu, type Anchor, type Direction } from "bloom-menu";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -150,20 +151,21 @@ function ShowHintToEveryoneSwitch({
   labelledBy: string;
 }) {
   return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={pressed}
+    <Switch.Root
+      checked={pressed}
+      onCheckedChange={onPressedChange}
       aria-labelledby={labelledBy}
-      onClick={() => onPressedChange(!pressed)}
-      className={`relative h-[30px] w-[52px] shrink-0 rounded-full transition-colors [-webkit-tap-highlight-color:transparent] active:scale-[0.95] ${pressed ? "bg-[#22C55E]" : "bg-[#525252]"
-        }`}
+      className="relative flex h-[30px] w-[52px] shrink-0 cursor-pointer items-center rounded-full outline-none transition-[background-color,transform] [-webkit-tap-highlight-color:transparent] active:scale-[0.95] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B] data-[checked]:bg-[#22C55E] data-[unchecked]:bg-[#525252]"
     >
-      <span
-        className={`pointer-events-none absolute top-[2px] size-[26px] rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.2)] transition-transform ${pressed ? "translate-x-[22px]" : "translate-x-[2px]"
-          }`}
+      <Switch.Thumb
+        className={({ checked }) =>
+          [
+            "pointer-events-none absolute top-[2px] left-[2px] size-[26px] rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.2)] transition-transform",
+            checked ? "translate-x-[22px]" : "translate-x-0",
+          ].join(" ")
+        }
       />
-    </button>
+    </Switch.Root>
   );
 }
 

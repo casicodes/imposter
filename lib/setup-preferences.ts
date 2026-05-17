@@ -23,7 +23,7 @@ const storedSchema = z.object({
   imposterCount: z.number().int(),
   category: categoryIdSchema,
   difficulty: z.enum(["easy", "medium", "hard"]),
-  /** When false, the imposter role screen hides the hint line; crew always sees hints. */
+  /** When true, crew and imposter see the hint; when false, only the imposter does. */
   showHintToEveryone: z.boolean().optional(),
 });
 

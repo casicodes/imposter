@@ -8,7 +8,7 @@ const HOLD_DURATION_MS = 1500;
 /** Countdown: 3 → 2 → 1 with 1 landing when the hold completes. */
 const HOLD_COUNTDOWN_TO_2_MS = HOLD_DURATION_MS / 2;
 const HOLD_COUNTDOWN_TO_1_MS = HOLD_DURATION_MS;
-/** After role is shown, hint fades in after this delay (crew + imposter). */
+/** After role is shown, hint fades in after this delay (when that role’s screen shows a hint). */
 const HINT_REVEAL_DELAY_S = 0.3;
 
 const outlineSubtle = "[outline:1px_solid_#c0c0c029]";
@@ -39,7 +39,7 @@ type PlayerScreenProps = {
   isImposter: boolean;
   word: string;
   hint: string;
-  /** When false, the imposter screen omits the hint line; crew always sees hints. */
+  /** When true, crew and imposter both see the hint. When false, only the imposter sees it. */
   showHintToEveryone?: boolean;
   onExitToSetup: () => void;
   /** Player 2+ only: from unrevealed state, go to previous player’s unrevealed screen. */
@@ -125,10 +125,10 @@ export function PlayerScreen({
 
   useEffect(() => {
     if (!revealed) {
-      setNextButtonArmed(true);
+      queueMicrotask(() => setNextButtonArmed(true));
       return;
     }
-    setNextButtonArmed(false);
+    queueMicrotask(() => setNextButtonArmed(false));
     let finished = false;
     let postUpTimeout = 0;
     const arm = () => {
@@ -267,24 +267,22 @@ export function PlayerScreen({
               <h1 className="text-3xl font-semibold leading-10 tracking-tight text-white">
                 You are the imposter
               </h1>
-              {showHintToEveryone ? (
-                <motion.p
-                  className="leading-5 text-neutral-400 italic"
-                  initial={false}
-                  animate={{
-                    opacity: revealed && isImposter ? 1 : 0,
-                  }}
-                  transition={{
-                    opacity: {
-                      duration: 0.28,
-                      delay: revealed && isImposter ? HINT_REVEAL_DELAY_S : 0,
-                      ease: "easeOut",
-                    },
-                  }}
-                >
-                  (hint: {hint})
-                </motion.p>
-              ) : null}
+              <motion.p
+                className="leading-5 text-neutral-400 italic"
+                initial={false}
+                animate={{
+                  opacity: revealed && isImposter ? 1 : 0,
+                }}
+                transition={{
+                  opacity: {
+                    duration: 0.28,
+                    delay: revealed && isImposter ? HINT_REVEAL_DELAY_S : 0,
+                    ease: "easeOut",
+                  },
+                }}
+              >
+                (hint: {hint})
+              </motion.p>
             </div>
           </motion.div>
           <motion.div
@@ -306,22 +304,24 @@ export function PlayerScreen({
             <h1 className="capitalize text-5xl font-semibold leading-none text-white">
               {word}
             </h1>
-            <motion.p
-              className="leading-5 text-neutral-400 italic"
-              initial={false}
-              animate={{
-                opacity: revealed && !isImposter ? 1 : 0,
-              }}
-              transition={{
-                opacity: {
-                  duration: 0.28,
-                  delay: revealed && !isImposter ? HINT_REVEAL_DELAY_S : 0,
-                  ease: "easeOut",
-                },
-              }}
-            >
-              (hint: {hint})
-            </motion.p>
+            {showHintToEveryone ? (
+              <motion.p
+                className="leading-5 text-neutral-400 italic"
+                initial={false}
+                animate={{
+                  opacity: revealed && !isImposter ? 1 : 0,
+                }}
+                transition={{
+                  opacity: {
+                    duration: 0.28,
+                    delay: revealed && !isImposter ? HINT_REVEAL_DELAY_S : 0,
+                    ease: "easeOut",
+                  },
+                }}
+              >
+                (hint: {hint})
+              </motion.p>
+            ) : null}
           </motion.div>
         </div>
       </div>
