@@ -1,0 +1,16 @@
+[
+  {
+    "category": "food",
+    "word": "Lasagna",
+    "hint_easy": "Layers",
+    "hint_medium": "Garfield",
+    "hint_hard": "Bolognese"
+  },
+  {
+    "category": "science",
+    "word": "Neutron",
+    "hint_easy": "Neutral",
+    "hint_medium": "Nucleus",
+    "hint_hard": "NoCharge"
+  }
+]

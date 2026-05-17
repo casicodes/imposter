@@ -1,0 +1,1024 @@
+{
+  "food": [
+    {
+      "word": "pizza",
+      "hints": {
+        "easy": "cheese",
+        "medium": "tomato",
+        "hard": "slice"
+      }
+    },
+    {
+      "word": "miso",
+      "hints": {
+        "easy": "soup",
+        "medium": "ferment",
+        "hard": "soy"
+      }
+    },
+    {
+      "word": "avocado",
+      "hints": {
+        "easy": "green",
+        "medium": "oil",
+        "hard": "fruit"
+      }
+    },
+    {
+      "word": "ramen",
+      "hints": {
+        "easy": "noodles",
+        "medium": "broth",
+        "hard": "chicken"
+      }
+    },
+    {
+      "word": "sushi",
+      "hints": {
+        "easy": "rice",
+        "medium": "seaweed",
+        "hard": "roll"
+      }
+    },
+    {
+      "word": "taco",
+      "hints": {
+        "easy": "meat",
+        "medium": "shell",
+        "hard": "chili"
+      }
+    },
+    {
+      "word": "honey",
+      "hints": {
+        "easy": "sweet",
+        "medium": "bee",
+        "hard": "nectar"
+      }
+    },
+    {
+      "word": "balsamic",
+      "hints": {
+        "easy": "vinegar",
+        "medium": "glaze",
+        "hard": "italian"
+      }
+    },
+    {
+      "word": "tahini",
+      "hints": {
+        "easy": "pasta",
+        "medium": "sesame",
+        "hard": "dip"
+      }
+    },
+    {
+      "word": "cheesecake",
+      "hints": {
+        "easy": "dessert",
+        "medium": "cream",
+        "hard": "swirl"
+      }
+    },
+    {
+      "word": "spaghetti",
+      "hints": {
+        "easy": "pasta",
+        "medium": "sauce",
+        "hard": "long"
+      }
+    },
+    {
+      "word": "banana",
+      "hints": {
+        "easy": "yellow",
+        "medium": "fruit",
+        "hard": "curious"
+      }
+    },
+    {
+      "word": "yogurt",
+      "hints": {
+        "easy": "dairy",
+        "medium": "probiotic",
+        "hard": "smoothie"
+      }
+    },
+    {
+      "word": "strawberry",
+      "hints": {
+        "easy": "berry",
+        "medium": "red",
+        "hard": "jam"
+      }
+    },
+    {
+      "word": "chocolate",
+      "hints": {
+        "easy": "dessert",
+        "medium": "cocoa",
+        "hard": "sweet"
+      }
+    },
+    {
+      "word": "soup",
+      "hints": {
+        "easy": "food",
+        "medium": "broth",
+        "hard": "consume"
+      }
+    },
+    {
+      "word": "pasta",
+      "hints": {
+        "easy": "food",
+        "medium": "noodle",
+        "hard": "carbonara"
+      }
+    },
+    {
+      "word": "cheeseburger",
+      "hints": {
+        "easy": "burger",
+        "medium": "grill",
+        "hard": "fastfood"
+      }
+    },
+    {
+      "word": "burger",
+      "hints": {
+        "easy": "meat",
+        "medium": "patty",
+        "hard": "bun"
+      }
+    }
+  ],
+  "movies": [
+    {
+      "word": "Titanic",
+      "hints": {
+        "easy": "ship",
+        "medium": "love",
+        "hard": "iceberg"
+      }
+    },
+    {
+      "word": "Interstellar",
+      "hints": {
+        "easy": "space",
+        "medium": "time",
+        "hard": "wormhole"
+      }
+    },
+    {
+      "word": "The Lion King",
+      "hints": {
+        "easy": "king",
+        "medium": "lion",
+        "hard": "prince"
+      }
+    },
+    {
+      "word": "The Matrix",
+      "hints": {
+        "easy": "film",
+        "medium": "cyber",
+        "hard": "red"
+      }
+    },
+    {
+      "word": "Pulp Fiction",
+      "hints": {
+        "easy": "film",
+        "medium": "gang",
+        "hard": "narrative"
+      }
+    },
+    {
+      "word": "Inception",
+      "hints": {
+        "easy": "dream",
+        "medium": "thief",
+        "hard": "layers"
+      }
+    },
+    {
+      "word": "Mad Max: Fury Road",
+      "hints": {
+        "easy": "road",
+        "medium": "car",
+        "hard": "wasteland"
+      }
+    },
+    {
+      "word": "The Matrix Reloaded",
+      "hints": {
+        "easy": "matrix",
+        "medium": "agent",
+        "hard": "reality"
+      }
+    },
+    {
+      "word": "The Lord of the Rings",
+      "hints": {
+        "easy": "ring",
+        "medium": "fellowship",
+        "hard": "middle"
+      }
+    },
+    {
+      "word": "The Silence of the Lambs",
+      "hints": {
+        "easy": "hamburger",
+        "medium": "lamb",
+        "hard": "claw"
+      }
+    },
+    {
+      "word": "Jurassic Park",
+      "hints": {
+        "easy": "dinosaur",
+        "medium": "island",
+        "hard": "DNA"
+      }
+    },
+    {
+      "word": "The Shawshank Redemption",
+      "hints": {
+        "easy": "prison",
+        "medium": "hope",
+        "hard": "time"
+      }
+    },
+    {
+      "word": "The Dark Knight",
+      "hints": {
+        "easy": "Batman",
+        "medium": "crime",
+        "hard": "night"
+      }
+    },
+    {
+      "word": "Forrest Gump",
+      "hints": {
+        "easy": "movie",
+        "medium": "hero",
+        "hard": "history"
+      }
+    },
+    {
+      "word": "Star Wars",
+      "hints": {
+        "easy": "space",
+        "medium": "light",
+        "hard": "galaxy"
+      }
+    },
+    {
+      "word": "The Godfather",
+      "hints": {
+        "easy": "crime",
+        "medium": "family",
+        "hard": "power"
+      }
+    },
+    {
+      "word": "TheMatrix",
+      "hints": {
+        "easy": "computer",
+        "medium": "cyber",
+        "hard": "reality"
+      }
+    },
+    {
+      "word": "TheShawshankRedemption",
+      "hints": {
+        "easy": "prison",
+        "medium": "hope",
+        "hard": "redemption"
+      }
+    },
+    {
+      "word": "Jaws",
+      "hints": {
+        "easy": "ocean",
+        "medium": "shark",
+        "hard": "attack"
+      }
+    }
+  ],
+  "animals": [
+    {
+      "word": "octopus",
+      "hints": {
+        "easy": "sea",
+        "medium": "arms",
+        "hard": "ink"
+      }
+    },
+    {
+      "word": "kangaroo",
+      "hints": {
+        "easy": "marsupial",
+        "medium": "pouch",
+        "hard": "hop"
+      }
+    },
+    {
+      "word": "jellyfish",
+      "hints": {
+        "easy": "water",
+        "medium": "glow",
+        "hard": "umbrella"
+      }
+    },
+    {
+      "word": "sloth",
+      "hints": {
+        "easy": "slow",
+        "medium": "tree",
+        "hard": "hang"
+      }
+    },
+    {
+      "word": "elephant",
+      "hints": {
+        "easy": "trunk",
+        "medium": "herd",
+        "hard": "large"
+      }
+    },
+    {
+      "word": "penguin",
+      "hints": {
+        "easy": "bird",
+        "medium": "ocean",
+        "hard": "waddle"
+      }
+    },
+    {
+      "word": "toucan",
+      "hints": {
+        "easy": "bird",
+        "medium": "beak",
+        "hard": "colorful"
+      }
+    },
+    {
+      "word": "platypus",
+      "hints": {
+        "easy": "egg",
+        "medium": "bill",
+        "hard": "duck"
+      }
+    },
+    {
+      "word": "zebra",
+      "hints": {
+        "easy": "stripes",
+        "medium": "horse",
+        "hard": "black"
+      }
+    },
+    {
+      "word": "dolphin",
+      "hints": {
+        "easy": "ocean",
+        "medium": "fish",
+        "hard": "sing"
+      }
+    },
+    {
+      "word": "fennec",
+      "hints": {
+        "easy": "fox",
+        "medium": "desert",
+        "hard": "ears"
+      }
+    },
+    {
+      "word": "lemur",
+      "hints": {
+        "easy": "monkey",
+        "medium": "madagascar",
+        "hard": "tail"
+      }
+    },
+    {
+      "word": "whale",
+      "hints": {
+        "easy": "ocean",
+        "medium": "giant",
+        "hard": "mystery"
+      }
+    },
+    {
+      "word": "lion",
+      "hints": {
+        "easy": "king",
+        "medium": "roar",
+        "hard": "pride"
+      }
+    },
+    {
+      "word": "snake",
+      "hints": {
+        "easy": "slither",
+        "medium": "venom",
+        "hard": "coil"
+      }
+    },
+    {
+      "word": "giraffe",
+      "hints": {
+        "easy": "tall",
+        "medium": "neck",
+        "hard": "spot"
+      }
+    },
+    {
+      "word": "deer",
+      "hints": {
+        "easy": "hunt",
+        "medium": "woods",
+        "hard": "stag"
+      }
+    },
+    {
+      "word": "koala",
+      "hints": {
+        "easy": "bear",
+        "medium": "australia",
+        "hard": "eucalyptus"
+      }
+    },
+    {
+      "word": "shark",
+      "hints": {
+        "easy": "ocean",
+        "medium": "fin",
+        "hard": "bite"
+      }
+    }
+  ],
+  "places": [
+    {
+      "word": "Berlin",
+      "hints": {
+        "easy": "Germany",
+        "medium": "Brandenburg",
+        "hard": "wall"
+      }
+    },
+    {
+      "word": "Rome",
+      "hints": {
+        "easy": "Italy",
+        "medium": "Colosseum",
+        "hard": "ancient"
+      }
+    },
+    {
+      "word": "New York",
+      "hints": {
+        "easy": "city",
+        "medium": "statue",
+        "hard": "skyline"
+      }
+    },
+    {
+      "word": "Tokyo",
+      "hints": {
+        "easy": "Japan",
+        "medium": "tower",
+        "hard": "skyline"
+      }
+    },
+    {
+      "word": "Paris",
+      "hints": {
+        "easy": "city",
+        "medium": "Eiffel",
+        "hard": "french"
+      }
+    },
+    {
+      "word": "Sydney",
+      "hints": {
+        "easy": "Australia",
+        "medium": "Opera",
+        "hard": "harbour"
+      }
+    },
+    {
+      "word": "Cairo",
+      "hints": {
+        "easy": "egypt",
+        "medium": "pyramid",
+        "hard": "nile"
+      }
+    },
+    {
+      "word": "Lisbon",
+      "hints": {
+        "easy": "portugal",
+        "medium": "tower",
+        "hard": "river"
+      }
+    },
+    {
+      "word": "Marrakech",
+      "hints": {
+        "easy": "morocco",
+        "medium": "market",
+        "hard": "spice"
+      }
+    },
+    {
+      "word": "Buenos Aires",
+      "hints": {
+        "easy": "argentina",
+        "medium": "tango",
+        "hard": "river"
+      }
+    },
+    {
+      "word": "Dubai",
+      "hints": {
+        "easy": "desert",
+        "medium": "sky",
+        "hard": "united"
+      }
+    },
+    {
+      "word": "Venice",
+      "hints": {
+        "easy": "canal",
+        "medium": "ducks",
+        "hard": "italy"
+      }
+    },
+    {
+      "word": "Miami",
+      "hints": {
+        "easy": "Florida",
+        "medium": "beach",
+        "hard": "sun"
+      }
+    },
+    {
+      "word": "London",
+      "hints": {
+        "easy": "UK",
+        "medium": "tower",
+        "hard": "bridge"
+      }
+    },
+    {
+      "word": "Amazon",
+      "hints": {
+        "easy": "river",
+        "medium": "jungle",
+        "hard": "rainforest"
+      }
+    },
+    {
+      "word": "NewYork",
+      "hints": {
+        "easy": "city",
+        "medium": "statue",
+        "hard": "bridge"
+      }
+    },
+    {
+      "word": "Lagos",
+      "hints": {
+        "easy": "Nigeria",
+        "medium": "river",
+        "hard": "city"
+      }
+    },
+    {
+      "word": "Kyoto",
+      "hints": {
+        "easy": "Japan",
+        "medium": "temple",
+        "hard": "culture"
+      }
+    },
+    {
+      "word": "madrid",
+      "hints": {
+        "easy": "spain",
+        "medium": "tapas",
+        "hard": "royal"
+      }
+    }
+  ],
+  "sports": [
+    {
+      "word": "football",
+      "hints": {
+        "easy": "soccer",
+        "medium": "kick",
+        "hard": "penalty"
+      }
+    },
+    {
+      "word": "basketball",
+      "hints": {
+        "easy": "hoop",
+        "medium": "court",
+        "hard": "dunk"
+      }
+    },
+    {
+      "word": "baseball",
+      "hints": {
+        "easy": "ball",
+        "medium": "bat",
+        "hard": "home"
+      }
+    },
+    {
+      "word": "golf",
+      "hints": {
+        "easy": "ball",
+        "medium": "club",
+        "hard": "fairway"
+      }
+    },
+    {
+      "word": "tennis",
+      "hints": {
+        "easy": "ball",
+        "medium": "racket",
+        "hard": "serve"
+      }
+    },
+    {
+      "word": "volleyball",
+      "hints": {
+        "easy": "ball",
+        "medium": "net",
+        "hard": "serve"
+      }
+    },
+    {
+      "word": "rugby union",
+      "hints": {
+        "easy": "rugby",
+        "medium": "team",
+        "hard": "scrum"
+      }
+    },
+    {
+      "word": "tabletennis",
+      "hints": {
+        "easy": "table",
+        "medium": "racket",
+        "hard": "serve"
+      }
+    },
+    {
+      "word": "curling",
+      "hints": {
+        "easy": "stone",
+        "medium": "ice",
+        "hard": "slip"
+      }
+    },
+    {
+      "word": "badminton",
+      "hints": {
+        "easy": "racket",
+        "medium": "shuttle",
+        "hard": "net"
+      }
+    },
+    {
+      "word": "rugby",
+      "hints": {
+        "easy": "ball",
+        "medium": "scrum",
+        "hard": "pass"
+      }
+    },
+    {
+      "word": "swimming",
+      "hints": {
+        "easy": "pool",
+        "medium": "stroke",
+        "hard": "dive"
+      }
+    },
+    {
+      "word": "hockey",
+      "hints": {
+        "easy": "ice",
+        "medium": "stick",
+        "hard": "puck"
+      }
+    },
+    {
+      "word": "soccer",
+      "hints": {
+        "easy": "football",
+        "medium": "penalty",
+        "hard": "goal"
+      }
+    }
+  ],
+  "science": [
+    {
+      "word": "DNA",
+      "hints": {
+        "easy": "genetic",
+        "medium": "twist",
+        "hard": "code"
+      }
+    },
+    {
+      "word": "quantum",
+      "hints": {
+        "easy": "particle",
+        "medium": "light",
+        "hard": "wave"
+      }
+    },
+    {
+      "word": "photosynthesis",
+      "hints": {
+        "easy": "plant",
+        "medium": "sun",
+        "hard": "oxygen"
+      }
+    },
+    {
+      "word": "astronomy",
+      "hints": {
+        "easy": "stars",
+        "medium": "sky",
+        "hard": "celestial"
+      }
+    },
+    {
+      "word": "gravity",
+      "hints": {
+        "easy": "fall",
+        "medium": "earth",
+        "hard": "force"
+      }
+    },
+    {
+      "word": "biology",
+      "hints": {
+        "easy": "life",
+        "medium": "cells",
+        "hard": "organism"
+      }
+    },
+    {
+      "word": "molecule",
+      "hints": {
+        "easy": "tiny",
+        "medium": "bond",
+        "hard": "atoms"
+      }
+    },
+    {
+      "word": "fusion",
+      "hints": {
+        "easy": "heat",
+        "medium": "energy",
+        "hard": "plasma"
+      }
+    },
+    {
+      "word": "atom",
+      "hints": {
+        "easy": "tiny",
+        "medium": "particle",
+        "hard": "nucleus"
+      }
+    },
+    {
+      "word": "globe",
+      "hints": {
+        "easy": "earth",
+        "medium": "map",
+        "hard": "rotation"
+      }
+    },
+    {
+      "word": "hydrogen",
+      "hints": {
+        "easy": "light",
+        "medium": "atom",
+        "hard": "element"
+      }
+    },
+    {
+      "word": "chemistry",
+      "hints": {
+        "easy": "science",
+        "medium": "elements",
+        "hard": "reaction"
+      }
+    },
+    {
+      "word": "atmosphere",
+      "hints": {
+        "easy": "air",
+        "medium": "layer",
+        "hard": "ozone"
+      }
+    },
+    {
+      "word": "experiment",
+      "hints": {
+        "easy": "test",
+        "medium": "lab",
+        "hard": "hypothesis"
+      }
+    },
+    {
+      "word": "galaxy",
+      "hints": {
+        "easy": "space",
+        "medium": "stars",
+        "hard": "universe"
+      }
+    },
+    {
+      "word": "quantumcomputing",
+      "hints": {
+        "easy": "computer",
+        "medium": "bits",
+        "hard": "entanglement"
+      }
+    },
+    {
+      "word": "cell",
+      "hints": {
+        "easy": "body",
+        "medium": "organ",
+        "hard": "nucleus"
+      }
+    },
+    {
+      "word": "physics",
+      "hints": {
+        "easy": "science",
+        "medium": "force",
+        "hard": "energy"
+      }
+    }
+  ],
+  "everyday": [
+    {
+      "word": "remote",
+      "hints": {
+        "easy": "control",
+        "medium": "button",
+        "hard": "tv"
+      }
+    },
+    {
+      "word": "tablet",
+      "hints": {
+        "easy": "screen",
+        "medium": "touch",
+        "hard": "laptop"
+      }
+    },
+    {
+      "word": "toaster",
+      "hints": {
+        "easy": "bread",
+        "medium": "cook",
+        "hard": "pop-up"
+      }
+    },
+    {
+      "word": "keyboard",
+      "hints": {
+        "easy": "type",
+        "medium": "keys",
+        "hard": "click"
+      }
+    },
+    {
+      "word": "lamp",
+      "hints": {
+        "easy": "light",
+        "medium": "bulb",
+        "hard": "shade"
+      }
+    },
+    {
+      "word": "phone",
+      "hints": {
+        "easy": "call",
+        "medium": "screen",
+        "hard": "app"
+      }
+    },
+    {
+      "word": "printer",
+      "hints": {
+        "easy": "ink",
+        "medium": "paper",
+        "hard": "document"
+      }
+    },
+    {
+      "word": "scalpel",
+      "hints": {
+        "easy": "knife",
+        "medium": "surgeon",
+        "hard": "cut"
+      }
+    },
+    {
+      "word": "camera",
+      "hints": {
+        "easy": "photo",
+        "medium": "film",
+        "hard": "lens"
+      }
+    },
+    {
+      "word": "umbrella",
+      "hints": {
+        "easy": "rain",
+        "medium": "handle",
+        "hard": "cover"
+      }
+    },
+    {
+      "word": "laptop",
+      "hints": {
+        "easy": "computer",
+        "medium": "screen",
+        "hard": "wireless"
+      }
+    },
+    {
+      "word": "chair",
+      "hints": {
+        "easy": "sit",
+        "medium": "wood",
+        "hard": "lean"
+      }
+    },
+    {
+      "word": "mirror",
+      "hints": {
+        "easy": "reflect",
+        "medium": "glass",
+        "hard": "image"
+      }
+    },
+    {
+      "word": "clock",
+      "hints": {
+        "easy": "time",
+        "medium": "ticks",
+        "hard": "tell"
+      }
+    },
+    {
+      "word": "table",
+      "hints": {
+        "easy": "sit",
+        "medium": "wood",
+        "hard": "dinner"
+      }
+    },
+    {
+      "word": "desk",
+      "hints": {
+        "easy": "work",
+        "medium": "table",
+        "hard": "office"
+      }
+    },
+    {
+      "word": "notebook",
+      "hints": {
+        "easy": "write",
+        "medium": "paper",
+        "hard": "journal"
+      }
+    },
+    {
+      "word": "toilet",
+      "hints": {
+        "easy": "flush",
+        "medium": "seat",
+        "hard": "water"
+      }
+    }
+  ]
+}

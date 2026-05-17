@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "generate-words": "tsx scripts/generate-words.ts"
+    "generate-words": "tsx scripts/generate-words.ts",
+    "export-offline-words": "tsx scripts/export-offline-words.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
