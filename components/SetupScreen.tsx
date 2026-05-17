@@ -533,7 +533,7 @@ export function SetupScreen({
               })}
             </div>
           </SectionLabelWithBloomOptions>
-          <div className="flex w-full items-center justify-between gap-2.5">
+          <div className="flex w-full items-center justify-between gap-2.5 border-t border-[#c0c0c029] pt-2.5">
             <p
               className={sectionRowLabelClass}
               id="setup-show-hint-label"
