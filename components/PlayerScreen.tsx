@@ -39,6 +39,8 @@ type PlayerScreenProps = {
   isImposter: boolean;
   word: string;
   hint: string;
+  /** When false, the imposter screen omits the hint line; crew always sees hints. */
+  showHintToEveryone?: boolean;
   onExitToSetup: () => void;
   /** Player 2+ only: from unrevealed state, go to previous player’s unrevealed screen. */
   onGoToPreviousPlayer: () => void;
@@ -51,6 +53,7 @@ export function PlayerScreen({
   isImposter,
   word,
   hint,
+  showHintToEveryone = true,
   onExitToSetup,
   onGoToPreviousPlayer,
   onNextPlayer,
@@ -264,22 +267,24 @@ export function PlayerScreen({
               <h1 className="text-3xl font-semibold leading-10 tracking-tight text-white">
                 You are the imposter
               </h1>
-              <motion.p
-                className="leading-5 text-neutral-400 italic"
-                initial={false}
-                animate={{
-                  opacity: revealed && isImposter ? 1 : 0,
-                }}
-                transition={{
-                  opacity: {
-                    duration: 0.28,
-                    delay: revealed && isImposter ? HINT_REVEAL_DELAY_S : 0,
-                    ease: "easeOut",
-                  },
-                }}
-              >
-                (hint: {hint})
-              </motion.p>
+              {showHintToEveryone ? (
+                <motion.p
+                  className="leading-5 text-neutral-400 italic"
+                  initial={false}
+                  animate={{
+                    opacity: revealed && isImposter ? 1 : 0,
+                  }}
+                  transition={{
+                    opacity: {
+                      duration: 0.28,
+                      delay: revealed && isImposter ? HINT_REVEAL_DELAY_S : 0,
+                      ease: "easeOut",
+                    },
+                  }}
+                >
+                  (hint: {hint})
+                </motion.p>
+              ) : null}
             </div>
           </motion.div>
           <motion.div

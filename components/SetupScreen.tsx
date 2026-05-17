@@ -16,6 +16,7 @@ type SetupScreenProps = {
     imposterCount: number;
     category: CategoryId;
     difficulty: Difficulty;
+    showHintToEveryone: boolean;
   }) => void | Promise<void>;
   startError?: string | null;
   onDismissError?: () => void;
@@ -86,6 +87,8 @@ function SectionLabelWithBloomOptions({
   closedSize,
   direction = "bottom",
   anchor = "end",
+  /** When true, omit the outer section panel — use inside a parent card. */
+  omitCard = false,
   children,
 }: {
   label: ReactNode;
@@ -96,43 +99,71 @@ function SectionLabelWithBloomOptions({
   /** Hint menu opens upward; others default to downward. */
   direction?: Direction;
   anchor?: Anchor;
+  omitCard?: boolean;
   children: ReactNode;
 }) {
   const aria = `${typeof label === "string" ? label : "Setting"}: ${valueLabel}. Change`;
-  return (
-    <div className={sectionPanelClass}>
-      <div className="flex w-full items-center justify-between gap-2">
-        <p className={sectionRowLabelClass}>{label}</p>
-        <div
-          className="flex shrink-0 items-center justify-end overflow-visible"
-          style={bloomTriggerShellStyle}
-        >
-          <Menu.Root direction={direction} anchor={anchor}>
-            <Menu.Portal>
-              <Menu.Overlay className="z-40 bg-transparent" />
-            </Menu.Portal>
-            <Menu.Container
-              buttonSize={closedSize}
-              menuWidth={menuWidth}
-              menuRadius={14}
-              buttonRadius={10}
-              className={`shrink-0 bg-[#292929] ${outlineMuted}`}
+  const row = (
+    <div className="flex w-full items-center justify-between gap-2">
+      <p className={sectionRowLabelClass}>{label}</p>
+      <div
+        className="flex shrink-0 items-center justify-end overflow-visible"
+        style={bloomTriggerShellStyle}
+      >
+        <Menu.Root direction={direction} anchor={anchor}>
+          <Menu.Portal>
+            <Menu.Overlay className="z-40 bg-transparent" />
+          </Menu.Portal>
+          <Menu.Container
+            buttonSize={closedSize}
+            menuWidth={menuWidth}
+            menuRadius={14}
+            buttonRadius={10}
+            className={`shrink-0 bg-[#292929] ${outlineMuted}`}
+          >
+            <Menu.Trigger
+              className="flex w-full min-w-0 items-center justify-between gap-1 px-2 text-base font-medium tabular-nums text-white [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B]"
+              aria-label={aria}
             >
-              <Menu.Trigger
-                className="flex w-full min-w-0 items-center justify-between gap-1 px-2 text-base font-medium tabular-nums text-white [-webkit-tap-highlight-color:transparent] transition-transform active:scale-[0.95] hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3AA54B]"
-                aria-label={aria}
-              >
-                <span className="min-w-0 flex-1 truncate text-center">
-                  {valueLabel}
-                </span>
-                <ChevronsUpDownIcon />
-              </Menu.Trigger>
-              <Menu.Content className="p-2.5">{children}</Menu.Content>
-            </Menu.Container>
-          </Menu.Root>
-        </div>
+              <span className="min-w-0 flex-1 truncate text-center">
+                {valueLabel}
+              </span>
+              <ChevronsUpDownIcon />
+            </Menu.Trigger>
+            <Menu.Content className="p-2.5">{children}</Menu.Content>
+          </Menu.Container>
+        </Menu.Root>
       </div>
     </div>
+  );
+  if (omitCard) return row;
+  return <div className={sectionPanelClass}>{row}</div>;
+}
+
+function ShowHintToEveryoneSwitch({
+  pressed,
+  onPressedChange,
+  labelledBy,
+}: {
+  pressed: boolean;
+  onPressedChange: (next: boolean) => void;
+  labelledBy: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={pressed}
+      aria-labelledby={labelledBy}
+      onClick={() => onPressedChange(!pressed)}
+      className={`relative h-[30px] w-[52px] shrink-0 rounded-full transition-colors [-webkit-tap-highlight-color:transparent] active:scale-[0.95] ${pressed ? "bg-[#22C55E]" : "bg-[#525252]"
+        }`}
+    >
+      <span
+        className={`pointer-events-none absolute top-[2px] size-[26px] rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.2)] transition-transform ${pressed ? "translate-x-[22px]" : "translate-x-[2px]"
+          }`}
+      />
+    </button>
   );
 }
 
@@ -273,6 +304,9 @@ export function SetupScreen({
   const [difficulty, setDifficulty] = useState<Difficulty>(
     DEFAULT_SETUP_PREFERENCES.difficulty,
   );
+  const [showHintToEveryone, setShowHintToEveryone] = useState(
+    DEFAULT_SETUP_PREFERENCES.showHintToEveryone,
+  );
   const skipPersistRef = useRef(true);
   const [starting, setStarting] = useState(false);
   const [startDots, setStartDots] = useState("");
@@ -285,6 +319,7 @@ export function SetupScreen({
     setImposterCount(p.imposterCount);
     setCategory(p.category);
     setDifficulty(p.difficulty);
+    setShowHintToEveryone(p.showHintToEveryone);
   }, []);
 
   useEffect(() => {
@@ -297,8 +332,9 @@ export function SetupScreen({
       imposterCount,
       category,
       difficulty,
+      showHintToEveryone,
     });
-  }, [playerCount, imposterCount, category, difficulty]);
+  }, [playerCount, imposterCount, category, difficulty, showHintToEveryone]);
 
   useEffect(() => {
     setImposterCount((c) => Math.min(c, maxImposters));
@@ -460,39 +496,55 @@ export function SetupScreen({
           </div>
         ) : null}
 
-        <SectionLabelWithBloomOptions
-          label="Hint difficulty"
-          valueLabel={DIFFICULTY_LABEL[difficulty]}
-          menuWidth={200}
-          closedSize={BLOOM_CLOSED_SIZE}
-          direction="top"
-          anchor="end"
-        >
-          <div className="flex w-full flex-col gap-2">
-            {(
-              [
-                { id: "easy" as const, label: "Easy" },
-                { id: "medium" as const, label: "Medium" },
-                { id: "hard" as const, label: "Hard" },
-              ] as const
-            ).map(({ id, label }) => {
-              const on = difficulty === id;
-              return (
-                <Menu.Item
-                  key={id}
-                  onSelect={() => setDifficulty(id)}
-                  className={`flex h-[50px] w-full items-center justify-center rounded-xl transition-transform active:scale-[0.95] ${on
-                    ? "bg-white text-[#202020]"
-                    : `bg-[#292929] text-white ${outlineMuted}`
-                    }`}
-                  style={controlTextStyle}
-                >
-                  {label}
-                </Menu.Item>
-              );
-            })}
+        <div className={`flex flex-col gap-2.5 ${sectionPanelClass}`}>
+          <SectionLabelWithBloomOptions
+            label="Hint difficulty"
+            valueLabel={DIFFICULTY_LABEL[difficulty]}
+            menuWidth={200}
+            closedSize={BLOOM_CLOSED_SIZE}
+            direction="top"
+            anchor="end"
+            omitCard
+          >
+            <div className="flex w-full flex-col gap-2">
+              {(
+                [
+                  { id: "easy" as const, label: "Easy" },
+                  { id: "medium" as const, label: "Medium" },
+                  { id: "hard" as const, label: "Hard" },
+                ] as const
+              ).map(({ id, label }) => {
+                const on = difficulty === id;
+                return (
+                  <Menu.Item
+                    key={id}
+                    onSelect={() => setDifficulty(id)}
+                    className={`flex h-[50px] w-full items-center justify-center rounded-xl transition-transform active:scale-[0.95] ${on
+                      ? "bg-white text-[#202020]"
+                      : `bg-[#292929] text-white ${outlineMuted}`
+                      }`}
+                    style={controlTextStyle}
+                  >
+                    {label}
+                  </Menu.Item>
+                );
+              })}
+            </div>
+          </SectionLabelWithBloomOptions>
+          <div className="flex w-full items-center justify-between gap-2.5">
+            <p
+              className={sectionRowLabelClass}
+              id="setup-show-hint-label"
+            >
+              Show hint to everyone
+            </p>
+            <ShowHintToEveryoneSwitch
+              labelledBy="setup-show-hint-label"
+              pressed={showHintToEveryone}
+              onPressedChange={setShowHintToEveryone}
+            />
           </div>
-        </SectionLabelWithBloomOptions>
+        </div>
       </div>
 
       <div className="app-chrome-frost pointer-events-none fixed inset-x-0 bottom-0 z-10 flex justify-center">
@@ -518,6 +570,7 @@ export function SetupScreen({
                     imposterCount,
                     category,
                     difficulty,
+                    showHintToEveryone,
                   });
                 } finally {
                   setStarting(false);

@@ -12,6 +12,8 @@ export function ImposterApp() {
   const [round, setRound] = useState<GameRound | null>(null);
   const [playerIndex, setPlayerIndex] = useState(0);
   const [startError, setStartError] = useState<string | null>(null);
+  const [sessionShowHintToEveryone, setSessionShowHintToEveryone] =
+    useState(true);
 
   const handleStart = useCallback(
     async (config: {
@@ -19,11 +21,18 @@ export function ImposterApp() {
       imposterCount: number;
       category: CategoryId;
       difficulty: Difficulty;
+      showHintToEveryone: boolean;
     }) => {
       setStartError(null);
       try {
-        const next = await fetchGameRound(config);
+        const next = await fetchGameRound({
+          playerCount: config.playerCount,
+          imposterCount: config.imposterCount,
+          category: config.category,
+          difficulty: config.difficulty,
+        });
         rememberSeenWord(next.word);
+        setSessionShowHintToEveryone(config.showHintToEveryone);
         setRound(next);
         setPlayerIndex(0);
       } catch (e) {
@@ -61,6 +70,7 @@ export function ImposterApp() {
         isImposter={round.imposterIndices.includes(playerIndex)}
         word={round.word}
         hint={round.hint}
+        showHintToEveryone={sessionShowHintToEveryone}
         onExitToSetup={handleExitToSetup}
         onGoToPreviousPlayer={handleGoToPreviousPlayer}
         onNextPlayer={handleNextPlayer}

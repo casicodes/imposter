@@ -23,6 +23,8 @@ const storedSchema = z.object({
   imposterCount: z.number().int(),
   category: categoryIdSchema,
   difficulty: z.enum(["easy", "medium", "hard"]),
+  /** When false, the imposter role screen hides the hint line; crew always sees hints. */
+  showHintToEveryone: z.boolean().optional(),
 });
 
 export type SetupPreferences = {
@@ -30,6 +32,7 @@ export type SetupPreferences = {
   imposterCount: number;
   category: CategoryId;
   difficulty: Difficulty;
+  showHintToEveryone: boolean;
 };
 
 export const DEFAULT_SETUP_PREFERENCES: SetupPreferences = {
@@ -37,6 +40,7 @@ export const DEFAULT_SETUP_PREFERENCES: SetupPreferences = {
   imposterCount: 1,
   category: "everyday",
   difficulty: "hard",
+  showHintToEveryone: true,
 };
 
 function clampPlayerCount(n: number): number {
@@ -63,6 +67,7 @@ function normalize(raw: unknown): SetupPreferences {
     imposterCount,
     category: parsed.data.category,
     difficulty: parsed.data.difficulty,
+    showHintToEveryone: parsed.data.showHintToEveryone ?? true,
   };
 }
 
@@ -89,6 +94,7 @@ export function writeSetupPreferences(prefs: SetupPreferences): void {
     imposterCount,
     category: prefs.category,
     difficulty: prefs.difficulty,
+    showHintToEveryone: prefs.showHintToEveryone,
   };
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
