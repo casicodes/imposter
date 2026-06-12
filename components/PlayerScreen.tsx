@@ -5,9 +5,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 /** Must match `transition: transform 1.5s linear` on `.reveal-hold-overlay` in globals.css. */
 const HOLD_DURATION_MS = 1500;
-/** Countdown: 3 → 2 → 1 with 1 landing when the hold completes. */
-const HOLD_COUNTDOWN_TO_2_MS = HOLD_DURATION_MS / 2;
-const HOLD_COUNTDOWN_TO_1_MS = HOLD_DURATION_MS;
+/** Countdown: 3 → 2 → 1, one third of the hold each (1 visible before reveal). */
+const HOLD_COUNTDOWN_STEP_MS = HOLD_DURATION_MS / 3;
+const HOLD_COUNTDOWN_TO_2_MS = HOLD_COUNTDOWN_STEP_MS;
+const HOLD_COUNTDOWN_TO_1_MS = HOLD_COUNTDOWN_STEP_MS * 2;
+/** Visual scale per step: 3 = 1×, 2 = 2×, 1 = 4× (base `text-7xl`). */
+function holdCountdownScale(n: number): number {
+  return 2 ** (3 - n);
+}
 /** After role is shown, hint fades in after this delay (when that role’s screen shows a hint). */
 const HINT_REVEAL_DELAY_S = 0.3;
 
@@ -158,7 +163,8 @@ export function PlayerScreen({
 
   return (
     <div
-      className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased"
+      className={`relative flex min-h-dvh w-full flex-col bg-transparent px-[15px] pb-[120px] pt-[30px] antialiased ${holdCountdown !== null ? "overflow-visible" : "overflow-hidden"
+        }`}
     >
       <div className="flex min-h-0 flex-1 flex-col items-stretch justify-center gap-6">
         <div className="relative grid w-full justify-items-center">
@@ -170,18 +176,25 @@ export function PlayerScreen({
             transition={{ duration: 0.5, ease: "easeOut" }}
             aria-hidden={revealed}
           >
-            <h1
+            <motion.h1
               className={`text-white ${holdCountdown !== null
                 ? "text-7xl font-bold leading-none tabular-nums"
                 : "text-5xl font-semibold capitalize leading-none"
                 }`}
+              style={{ transformOrigin: "center center" }}
+              initial={false}
+              animate={{
+                scale:
+                  holdCountdown !== null ? holdCountdownScale(holdCountdown) : 1,
+              }}
+              transition={{ duration: 0.12, ease: "easeOut" }}
             >
               {revealed
                 ? "\u00a0"
                 : holdCountdown !== null
                   ? holdCountdown
                   : `Player ${displayPlayer}`}
-            </h1>
+            </motion.h1>
           </motion.div>
           <motion.div
             className={`relative col-start-1 row-start-1 flex w-full max-w-full flex-col justify-center gap-2 text-center ${revealed && isImposter ? "z-10" : "pointer-events-none z-0"

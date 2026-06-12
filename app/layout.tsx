@@ -30,6 +30,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${dangrek.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
         <AppContainer className="flex min-h-full flex-1 flex-col">
