@@ -10,7 +10,7 @@ export type CategoryId =
 
 export type Difficulty = "easy" | "medium" | "hard";
 
-/** `en` = English words; `ne` = Nepali Devanagari words with simple English hints. */
+/** `en` = English words; `ne` = Nepali Devanagari words and hints. */
 export type WordLanguage = "en" | "ne";
 
 export type WordEntry = {

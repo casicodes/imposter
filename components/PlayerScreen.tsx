@@ -163,6 +163,13 @@ export function PlayerScreen({
 
   const displayPlayer = playerIndex + 1;
   const showBackButton = playerIndex > 0;
+  const isNepali = wordLanguage === "ne";
+  const hintClassName = [
+    "leading-5 text-neutral-400 italic",
+    isNepali ? "font-[family-name:var(--font-devanagari)] not-italic" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div
@@ -284,7 +291,7 @@ export function PlayerScreen({
                 You are the imposter
               </h1>
               <motion.p
-                className="leading-5 text-neutral-400 italic"
+                className={hintClassName}
                 initial={false}
                 animate={{
                   opacity: revealed && isImposter ? 1 : 0,
@@ -328,7 +335,7 @@ export function PlayerScreen({
             </h1>
             {showHintToEveryone ? (
               <motion.p
-                className="leading-5 text-neutral-400 italic"
+                className={hintClassName}
                 initial={false}
                 animate={{
                   opacity: revealed && !isImposter ? 1 : 0,

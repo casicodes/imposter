@@ -25,7 +25,7 @@ const storedSchema = z.object({
   difficulty: z.enum(["easy", "medium", "hard"]),
   /** When true, crew and imposter see the hint; when false, only the imposter does. */
   showHintToEveryone: z.boolean().optional(),
-  /** When true, use Nepali Devanagari words with simple English hints. */
+  /** When true, use Nepali Devanagari words and hints. */
   nepaliWords: z.boolean().optional(),
 });
 

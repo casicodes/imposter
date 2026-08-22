@@ -456,7 +456,7 @@ export function SetupScreen({
                 Nepali words
               </p>
               <p className="mt-0.5 text-sm leading-4 text-neutral-500">
-                Devanagari secrets, simple English hints
+                Word and hints in Devanagari
               </p>
             </div>
             <ShowHintToEveryoneSwitch
