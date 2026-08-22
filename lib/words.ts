@@ -1,28 +1,53 @@
-import type { CategoryId, WordEntry } from "./categories";
+import type { CategoryId, WordEntry, WordLanguage } from "./categories";
+import nepaliWordsSnapshot from "./nepali-words-snapshot.json";
 import offlineWordsSnapshot from "./offline-words-snapshot.json";
 
-type OfflineSnapshot = Record<
-  Exclude<CategoryId, "mix">,
-  WordEntry[]
->;
+type OfflineSnapshot = Record<Exclude<CategoryId, "mix">, WordEntry[]>;
 
-const snapshot = offlineWordsSnapshot as OfflineSnapshot;
+function buildWordsByCategory(snapshot: OfflineSnapshot): Record<CategoryId, WordEntry[]> {
+  const food = snapshot.food ?? [];
+  const movies = snapshot.movies ?? [];
+  const animals = snapshot.animals ?? [];
+  const places = snapshot.places ?? [];
+  const sports = snapshot.sports ?? [];
+  const science = snapshot.science ?? [];
+  const everyday = snapshot.everyday ?? [];
+  return {
+    food,
+    movies,
+    animals,
+    places,
+    sports,
+    science,
+    everyday,
+    mix: [
+      ...food,
+      ...movies,
+      ...animals,
+      ...places,
+      ...sports,
+      ...science,
+      ...everyday,
+    ],
+  };
+}
 
-const food = snapshot.food ?? [];
-const movies = snapshot.movies ?? [];
-const animals = snapshot.animals ?? [];
-const places = snapshot.places ?? [];
-const sports = snapshot.sports ?? [];
-const science = snapshot.science ?? [];
-const everyday = snapshot.everyday ?? [];
+const english = buildWordsByCategory(offlineWordsSnapshot as OfflineSnapshot);
+const nepali = buildWordsByCategory(nepaliWordsSnapshot as OfflineSnapshot);
 
-export const WORDS_BY_CATEGORY: Record<CategoryId, WordEntry[]> = {
-  food,
-  movies,
-  animals,
-  places,
-  sports,
-  science,
-  everyday,
-  mix: [...food, ...movies, ...animals, ...places, ...sports, ...science, ...everyday],
+/** Default English offline pack (also used as API fallback). */
+export const WORDS_BY_CATEGORY = english;
+
+export const WORDS_BY_LANGUAGE: Record<
+  WordLanguage,
+  Record<CategoryId, WordEntry[]>
+> = {
+  en: english,
+  ne: nepali,
 };
+
+export function wordsForLanguage(
+  language: WordLanguage,
+): Record<CategoryId, WordEntry[]> {
+  return WORDS_BY_LANGUAGE[language];
+}

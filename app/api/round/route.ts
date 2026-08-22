@@ -23,6 +23,7 @@ const bodySchema = z
     "mix",
   ]) satisfies z.ZodType<CategoryId>,
   difficulty: z.enum(["easy", "medium", "hard"]) satisfies z.ZodType<Difficulty>,
+  wordLanguage: z.enum(["en", "ne"]).optional().default("en"),
   excludeWords: z
     .array(z.string().max(200))
     .max(500)
@@ -63,6 +64,11 @@ export async function POST(request: Request) {
 
   const { excludeWords, ...config } = parsed.data;
   const excluded = new Set(excludeWords);
+
+  /** Nepali words are served from the bundled local pack only. */
+  if (config.wordLanguage === "ne") {
+    return NextResponse.json(createGameRoundExcluding(config, excluded));
+  }
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json(createGameRoundExcluding(config, excluded));

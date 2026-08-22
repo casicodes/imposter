@@ -21,6 +21,11 @@ function shouldFallbackToLocal(status: number): boolean {
 }
 
 export async function fetchGameRound(config: GameConfig): Promise<GameRound> {
+  /** Nepali pack is bundled client-side only (not in Supabase yet). */
+  if (config.wordLanguage === "ne") {
+    return localRound(config);
+  }
+
   if (typeof navigator !== "undefined" && navigator.onLine === false) {
     return localRound(config);
   }

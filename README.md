@@ -1,6 +1,6 @@
 # Imposter
 
-**[drinknplay.vercel.app](https://drinknplay.vercel.app/)** — pass-the-phone party game: everyone gets the same secret word and a hint, except one imposter who only sees the hint. Configure player count, category, and hint difficulty, then play in person.
+**[drinknplay.vercel.app](https://drinknplay.vercel.app/)** — pass-the-phone party game: everyone gets the same secret word and a hint, except one imposter who only sees the hint. Configure player count, category, hint difficulty, and optionally **Nepali words** (Devanagari secrets with simple English hints, e.g. मकै → corn), then play in person.
 
 ## Stack
 

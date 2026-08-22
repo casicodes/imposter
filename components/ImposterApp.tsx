@@ -5,6 +5,7 @@ import type { CategoryId, Difficulty } from "@/lib/categories";
 import { fetchGameRound } from "@/lib/fetch-round";
 import type { GameRound } from "@/lib/game";
 import { rememberSeenWord } from "@/lib/seen-words";
+import { wordLanguageFromPrefs } from "@/lib/setup-preferences";
 import { PlayerScreen } from "@/components/PlayerScreen";
 import { SetupScreen } from "@/components/SetupScreen";
 
@@ -22,6 +23,7 @@ export function ImposterApp() {
       category: CategoryId;
       difficulty: Difficulty;
       showHintToEveryone: boolean;
+      nepaliWords: boolean;
     }) => {
       setStartError(null);
       try {
@@ -30,6 +32,7 @@ export function ImposterApp() {
           imposterCount: config.imposterCount,
           category: config.category,
           difficulty: config.difficulty,
+          wordLanguage: wordLanguageFromPrefs(config.nepaliWords),
         });
         rememberSeenWord(next.word);
         setSessionShowHintToEveryone(config.showHintToEveryone);
@@ -70,6 +73,7 @@ export function ImposterApp() {
         isImposter={round.imposterIndices.includes(playerIndex)}
         word={round.word}
         hint={round.hint}
+        wordLanguage={round.wordLanguage}
         showHintToEveryone={sessionShowHintToEveryone}
         onExitToSetup={handleExitToSetup}
         onGoToPreviousPlayer={handleGoToPreviousPlayer}

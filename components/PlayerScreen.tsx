@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { WordLanguage } from "@/lib/categories";
 
 /** Must match `transition: transform 1.5s linear` on `.reveal-hold-overlay` in globals.css. */
 const HOLD_DURATION_MS = 1500;
@@ -46,6 +47,7 @@ type PlayerScreenProps = {
   hint: string;
   /** When true, crew and imposter both see the hint. When false, only the imposter sees it. */
   showHintToEveryone?: boolean;
+  wordLanguage?: WordLanguage;
   onExitToSetup: () => void;
   /** Player 2+ only: from unrevealed state, go to previous player’s unrevealed screen. */
   onGoToPreviousPlayer: () => void;
@@ -59,6 +61,7 @@ export function PlayerScreen({
   word,
   hint,
   showHintToEveryone = true,
+  wordLanguage = "en",
   onExitToSetup,
   onGoToPreviousPlayer,
   onNextPlayer,
@@ -314,7 +317,13 @@ export function PlayerScreen({
             style={{ transformOrigin: "center" }}
             aria-hidden={!revealed || isImposter}
           >
-            <h1 className="capitalize text-5xl font-semibold leading-none text-white">
+            <h1
+              className={`text-5xl font-semibold leading-none text-white ${
+                wordLanguage === "ne"
+                  ? "font-[family-name:var(--font-devanagari)]"
+                  : "capitalize"
+              }`}
+            >
               {word}
             </h1>
             {showHintToEveryone ? (

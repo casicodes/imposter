@@ -1,12 +1,19 @@
-import type { CategoryId, Difficulty, WordEntry } from "./categories";
+import type {
+  CategoryId,
+  Difficulty,
+  WordEntry,
+  WordLanguage,
+} from "./categories";
 import { normalizeWordForDedupe } from "./word-normalize";
-import { WORDS_BY_CATEGORY } from "./words";
+import { wordsForLanguage } from "./words";
 
 export type GameConfig = {
   playerCount: number;
   imposterCount: number;
   category: CategoryId;
   difficulty: Difficulty;
+  /** Word pack language. Defaults to English. */
+  wordLanguage?: WordLanguage;
 };
 
 export type GameRound = GameConfig & {
@@ -14,7 +21,12 @@ export type GameRound = GameConfig & {
   hint: string;
   /** Sorted ascending; length === `imposterCount`. */
   imposterIndices: number[];
+  wordLanguage: WordLanguage;
 };
+
+function resolveWordLanguage(language: WordLanguage | undefined): WordLanguage {
+  return language === "ne" ? "ne" : "en";
+}
 
 function randomInt(maxExclusive: number): number {
   const buf = new Uint32Array(1);
@@ -47,6 +59,7 @@ export function createGameRoundFromPool(
   if (pool.length === 0) {
     throw new Error("Word pool is empty");
   }
+  const wordLanguage = resolveWordLanguage(config.wordLanguage);
   const entry = pool[randomInt(pool.length)]!;
   const hint = entry.hints[config.difficulty];
   const imposterIndices = pickRandomImposterIndices(
@@ -55,6 +68,7 @@ export function createGameRoundFromPool(
   );
   return {
     ...config,
+    wordLanguage,
     word: entry.word,
     hint,
     imposterIndices,
@@ -62,8 +76,9 @@ export function createGameRoundFromPool(
 }
 
 export function createGameRound(config: GameConfig): GameRound {
-  const pool = WORDS_BY_CATEGORY[config.category];
-  return createGameRoundFromPool(config, pool);
+  const wordLanguage = resolveWordLanguage(config.wordLanguage);
+  const pool = wordsForLanguage(wordLanguage)[config.category];
+  return createGameRoundFromPool({ ...config, wordLanguage }, pool);
 }
 
 function filterPoolExcluding(
@@ -84,10 +99,11 @@ export function createGameRoundExcluding(
   config: GameConfig,
   excluded: ReadonlySet<string>,
 ): GameRound {
-  const pool = WORDS_BY_CATEGORY[config.category];
+  const wordLanguage = resolveWordLanguage(config.wordLanguage);
+  const pool = wordsForLanguage(wordLanguage)[config.category];
   const filtered = filterPoolExcluding(pool, excluded);
   return createGameRoundFromPool(
-    config,
+    { ...config, wordLanguage },
     filtered.length > 0 ? filtered : pool,
   );
 }

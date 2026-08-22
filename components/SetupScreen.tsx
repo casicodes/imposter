@@ -18,6 +18,7 @@ type SetupScreenProps = {
     category: CategoryId;
     difficulty: Difficulty;
     showHintToEveryone: boolean;
+    nepaliWords: boolean;
   }) => void | Promise<void>;
   startError?: string | null;
   onDismissError?: () => void;
@@ -309,6 +310,9 @@ export function SetupScreen({
   const [showHintToEveryone, setShowHintToEveryone] = useState(
     DEFAULT_SETUP_PREFERENCES.showHintToEveryone,
   );
+  const [nepaliWords, setNepaliWords] = useState(
+    DEFAULT_SETUP_PREFERENCES.nepaliWords,
+  );
   const skipPersistRef = useRef(true);
   const [starting, setStarting] = useState(false);
   const [startDots, setStartDots] = useState("");
@@ -322,6 +326,7 @@ export function SetupScreen({
     setCategory(p.category);
     setDifficulty(p.difficulty);
     setShowHintToEveryone(p.showHintToEveryone);
+    setNepaliWords(p.nepaliWords);
   }, []);
 
   useEffect(() => {
@@ -335,8 +340,16 @@ export function SetupScreen({
       category,
       difficulty,
       showHintToEveryone,
+      nepaliWords,
     });
-  }, [playerCount, imposterCount, category, difficulty, showHintToEveryone]);
+  }, [
+    playerCount,
+    imposterCount,
+    category,
+    difficulty,
+    showHintToEveryone,
+    nepaliWords,
+  ]);
 
   useEffect(() => {
     setImposterCount((c) => Math.min(c, maxImposters));
@@ -437,7 +450,24 @@ export function SetupScreen({
         </SectionLabelWithBloomOptions>
 
         <div className={`flex flex-col gap-3 ${sectionPanelClass}`}>
-          <SectionLabel>Categories</SectionLabel>
+          <div className="flex w-full items-center justify-between gap-2.5">
+            <div className="min-w-0 flex-1">
+              <p className={sectionRowLabelClass} id="setup-nepali-words-label">
+                Nepali words
+              </p>
+              <p className="mt-0.5 text-sm leading-4 text-neutral-500">
+                Devanagari secrets, simple English hints
+              </p>
+            </div>
+            <ShowHintToEveryoneSwitch
+              labelledBy="setup-nepali-words-label"
+              pressed={nepaliWords}
+              onPressedChange={setNepaliWords}
+            />
+          </div>
+          <div className="border-t border-[#c0c0c029] pt-3">
+            <SectionLabel>Categories</SectionLabel>
+          </div>
           <div className="flex flex-col gap-3">
             {CATEGORY_ROWS.map((row) => (
               <div key={row.map((c) => c.id).join("-")} className="flex gap-3">
@@ -573,6 +603,7 @@ export function SetupScreen({
                     category,
                     difficulty,
                     showHintToEveryone,
+                    nepaliWords,
                   });
                 } finally {
                   setStarting(false);

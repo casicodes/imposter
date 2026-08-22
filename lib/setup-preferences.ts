@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { CategoryId, Difficulty } from "@/lib/categories";
+import type { CategoryId, Difficulty, WordLanguage } from "@/lib/categories";
 
 const STORAGE_KEY = "imposter-setup-preferences-v1";
 
@@ -25,6 +25,8 @@ const storedSchema = z.object({
   difficulty: z.enum(["easy", "medium", "hard"]),
   /** When true, crew and imposter see the hint; when false, only the imposter does. */
   showHintToEveryone: z.boolean().optional(),
+  /** When true, use Nepali Devanagari words with simple English hints. */
+  nepaliWords: z.boolean().optional(),
 });
 
 export type SetupPreferences = {
@@ -33,6 +35,7 @@ export type SetupPreferences = {
   category: CategoryId;
   difficulty: Difficulty;
   showHintToEveryone: boolean;
+  nepaliWords: boolean;
 };
 
 export const DEFAULT_SETUP_PREFERENCES: SetupPreferences = {
@@ -41,6 +44,7 @@ export const DEFAULT_SETUP_PREFERENCES: SetupPreferences = {
   category: "everyday",
   difficulty: "hard",
   showHintToEveryone: true,
+  nepaliWords: false,
 };
 
 function clampPlayerCount(n: number): number {
@@ -68,6 +72,7 @@ function normalize(raw: unknown): SetupPreferences {
     category: parsed.data.category,
     difficulty: parsed.data.difficulty,
     showHintToEveryone: parsed.data.showHintToEveryone ?? true,
+    nepaliWords: parsed.data.nepaliWords ?? false,
   };
 }
 
@@ -95,10 +100,15 @@ export function writeSetupPreferences(prefs: SetupPreferences): void {
     category: prefs.category,
     difficulty: prefs.difficulty,
     showHintToEveryone: prefs.showHintToEveryone,
+    nepaliWords: prefs.nepaliWords,
   };
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
   } catch {
     /* quota or private mode */
   }
+}
+
+export function wordLanguageFromPrefs(nepaliWords: boolean): WordLanguage {
+  return nepaliWords ? "ne" : "en";
 }

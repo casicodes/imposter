@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { Dangrek, Geist_Mono } from "next/font/google";
+import { Dangrek, Geist_Mono, Noto_Sans_Devanagari } from "next/font/google";
 import { AppContainer } from "@/components/AppContainer";
 import "./globals.css";
 
@@ -9,6 +9,13 @@ const dangrek = Dangrek({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-dangrek",
+});
+
+const notoDevanagari = Noto_Sans_Devanagari({
+  weight: ["500", "600", "700"],
+  subsets: ["devanagari"],
+  display: "swap",
+  variable: "--font-devanagari",
 });
 
 const geistMono = Geist_Mono({
@@ -29,7 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dangrek.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${dangrek.variable} ${notoDevanagari.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
